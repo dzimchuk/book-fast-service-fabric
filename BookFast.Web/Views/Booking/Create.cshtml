@@ -1,0 +1,64 @@
+﻿@model BookFast.Web.ViewModels.CreateBookingViewModel
+
+@{
+    ViewData["Title"] = "Book an accommodation";
+}
+
+<h2>@ViewBag.AccommodationName</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-muted"></div>
+        <input type="hidden" value="@ViewBag.AccommodationId" name="AccommodationId"/>
+        <div class="form-group">
+            <label asp-for="FromDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input type="text" asp-for="FromDate" class="form-control" id="startDate"/>
+                <span asp-validation-for="FromDate" class="text-muted"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ToDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input type="text" asp-for="ToDate" class="form-control" id="endDate"/>
+                <span asp-validation-for="ToDate" class="text-muted"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Book!" class="btn btn-success"/>
+                <a class="btn btn-default" asp-controller="home" asp-action="Index">Cancel</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/jquery.datetimepicker.css" />
+}
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#startDate").datetimepicker({
+                format: "Y-m-d H:i",
+                onShow: function() {
+                    this.setOptions({
+                        maxDate: jQuery('#endDate').val() ? jQuery('#endDate').val() : false
+                    });
+                }
+            });
+
+            $("#endDate").datetimepicker({
+                format: "Y-m-d H:i",
+                onShow: function () {
+                    this.setOptions({
+                        minDate: jQuery('#startDate').val() ? jQuery('#startDate').val() : false
+                    });
+                }
+            });
+        })
+    </script>
+}

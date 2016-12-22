@@ -1,0 +1,36 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<BookFast.Web.Contracts.Search.SearchResult>
+
+@{
+    ViewBag.Title = "Search Results";
+}
+
+<h2>Search Results for "@ViewBag.SearchText"</h2>
+
+@foreach (var result in Model)
+{
+    <div class="row">
+        <h3><a asp-controller="accommodation" asp-action="details" asp-route-id='@result.Document["Id"]'>@result.Document["Name"] at @result.Document["FacilityName"] (#rooms: @result.Document["RoomCount"])</a></h3>
+        @{ 
+            var imagesJson = result.Document["Images"];
+            if (imagesJson != null)
+            {
+                var images = JsonConvert.DeserializeObject<string[]>(imagesJson.ToString());
+                if (images.Any())
+                {
+                    @:@await Html.PartialAsync("_ImageListPartial", images.Take(3))
+                }
+            }
+        }
+        <p>
+            @if (result.Highlights != null && result.Highlights.ContainsKey("Description"))
+            {
+                @Html.Raw(result.Highlights["Description"].First())
+            }
+            else
+            {
+                @result.Document["Description"]
+            }
+        </p>
+    </div>
+}

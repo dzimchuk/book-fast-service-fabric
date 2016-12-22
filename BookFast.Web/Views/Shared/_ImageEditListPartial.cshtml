@@ -1,0 +1,26 @@
+﻿@model IEnumerable<string>
+
+<div>
+    <div class="row" id="imageList">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var image in Model)
+            {
+                <div class="col-sm-6 col-md-3 img-container">
+                    <img class="img-thumbnail" src="@image" alt="">
+                    <button class="btn btn-remove-image btn-info" data-image="@image">Remove</button>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="row">
+        <strong>Add image</strong>:
+        <br />
+        <span class="input-control text">
+            <input type="file" id="file" name="file" />
+        </span>
+        <button class="btn btn-primary btn-add-image">Upload</button>
+    </div>
+    
+</div>

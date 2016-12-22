@@ -1,0 +1,13 @@
+﻿@model IEnumerable<string>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var image in Model)
+        {
+            <div class="col-sm-6 col-md-3">
+                <img class="img-thumbnail" src="@image" alt="">
+            </div>
+        }
+    </div>
+}

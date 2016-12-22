@@ -1,0 +1,46 @@
+﻿@model BookFast.Web.ViewModels.AccommodationViewModel
+
+@{
+    ViewBag.Title = "Details - " + Model.Name;
+}
+
+<h2>@Model.Name</h2>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RoomCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RoomCount)
+        </dd>
+    </dl>
+</div>
+
+@await Html.PartialAsync("_ImageListPartial", Model.Images)
+
+<p>
+    @if (await AuthorizationService.AuthorizeAsync(User, "FacilityProviderOnly"))
+    {
+        <a class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
+    <a class="btn btn-default" asp-controller="facility" asp-action="details" asp-route-id="@Model.FacilityId">Facility Details</a>
+
+    @if (await AuthorizationService.AuthorizeAsync(User, "Customer") || !User.Identity.IsAuthenticated)
+    {
+        <a class="btn btn-success" asp-controller="booking" asp-action="create" asp-route-id="@Model.Id">Book it!</a>
+    }
+</p>
