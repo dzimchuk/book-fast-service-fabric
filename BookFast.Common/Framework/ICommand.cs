@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BookFast.Web.Contracts.Framework
+namespace BookFast.Common.Framework
 {
     public interface ICommand<in TModel>
     {

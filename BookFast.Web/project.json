@@ -47,10 +47,16 @@
     "preserveCompilationContext": true
   },
 
+  "runtimeOptions": {
+    "configProperties": {
+      "System.GC.Server": true
+    }
+  },
+
   "publishOptions": {
     "include": [
       "wwwroot",
-      "Views",
+      "**/*.cshtml",
       "appsettings.json",
       "web.config"
     ]

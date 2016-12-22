@@ -1,5 +1,5 @@
-﻿using BookFast.Web.Contracts;
-using BookFast.Web.Contracts.Framework;
+﻿using BookFast.Common.Framework;
+using BookFast.Web.Contracts;
 using BookFast.Web.Proxy.Mappers;
 using BookFast.Web.Proxy.RestClient;
 using Microsoft.Extensions.Configuration;

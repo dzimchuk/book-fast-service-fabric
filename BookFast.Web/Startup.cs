@@ -1,4 +1,4 @@
-﻿using BookFast.Web.Contracts.Framework;
+﻿using BookFast.Common.Framework;
 using BookFast.Web.Infrastructure;
 using BookFast.Web.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Builder;

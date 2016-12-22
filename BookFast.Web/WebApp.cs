@@ -25,7 +25,7 @@ namespace BookFast.Web
                 new ServiceInstanceListener(serviceContext =>
                     new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", url =>
                     {
-                        ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting WebListener on {url}");
+                        ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
 
                         return new WebHostBuilder().UseKestrel()
                                     .ConfigureServices(
