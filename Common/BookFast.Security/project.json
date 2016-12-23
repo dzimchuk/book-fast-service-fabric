@@ -2,9 +2,6 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "BookFast.Facility.Contracts": "1.0.0-*",
-    "BookFast.Framework": "1.0.0-*",
-    "BookFast.Security": "1.0.0-*",
     "NETStandard.Library": "1.6.0"
   },
 

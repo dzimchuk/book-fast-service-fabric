@@ -1,8 +1,8 @@
 ﻿using BookFast.Facility.Business.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BookFast.Common.Framework;
 using BookFast.Facility.Contracts;
+using BookFast.Framework;
 
 namespace BookFast.Facility.Business.Composition
 {

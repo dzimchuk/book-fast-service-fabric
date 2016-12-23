@@ -1,4 +1,4 @@
-﻿using BookFast.Common.Framework;
+﻿using BookFast.Framework;
 using BookFast.Web.Contracts.Security;
 using BookFast.Web.Controllers;
 using BookFast.Web.Infrastructure;

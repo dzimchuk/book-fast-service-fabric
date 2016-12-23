@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
-using BookFast.Common.Security;
-using BookFast.Facility.Business;
 
-namespace BookFast.Facility.Infrastructure
+namespace BookFast.Security.AspNetCore
 {
     internal class SecurityContextProvider : ISecurityContext, ISecurityContextAcceptor
     {

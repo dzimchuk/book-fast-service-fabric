@@ -5,6 +5,7 @@ using BookFast.Facility.Business.Data;
 using BookFast.Facility.Contracts;
 using BookFast.Facility.Contracts.Exceptions;
 using BookFast.Facility.Contracts.Models;
+using BookFast.Security;
 
 namespace BookFast.Facility.Business.Services
 {

@@ -1,13 +1,11 @@
 ﻿using BookFast.Facility.Controllers;
-using BookFast.Facility.Infrastructure;
-using BookFast.Facility.Infrastructure.Authentication;
 using BookFast.Facility.Mappers;
 using BookFast.Facility.Swagger;
-using BookFast.Common.Framework;
-using BookFast.Common.Security;
-using BookFast.Facility.Business;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using BookFast.Framework;
+using BookFast.Security.AspNetCore.Authentication;
+using BookFast.Security;
 
 namespace BookFast.Facility.Composition
 {
@@ -21,7 +19,6 @@ namespace BookFast.Facility.Composition
             services.AddMvc();
 
             RegisterAuthorizationPolicies(services);
-            RegisterApplicationServices(services);
             RegisterMappers(services);
 
             services.AddSwashbuckle();
@@ -37,11 +34,6 @@ namespace BookFast.Facility.Composition
                                                             config.RequireRole(InteractorRole.FacilityProvider.ToString(), InteractorRole.ImporterProcess.ToString());
                                                         });
                 });
-        }
-
-        private static void RegisterApplicationServices(IServiceCollection services)
-        {
-            services.AddScoped<ISecurityContext, SecurityContextProvider>();
         }
 
         private static void RegisterMappers(IServiceCollection services)

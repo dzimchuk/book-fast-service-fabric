@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace BookFast.Facility.Infrastructure
+namespace BookFast.Security.AspNetCore
 {
-    internal static class SecurityContextExtensions
+    public static class SecurityContextExtensions
     {
         public static void UseSecurityContext(this IApplicationBuilder builder)
         {

@@ -1,4 +1,4 @@
-﻿namespace BookFast.Common.Security
+﻿namespace BookFast.Security
 {
     public enum InteractorRole
     {

@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace BookFast.Facility.Infrastructure
+namespace BookFast.Security.AspNetCore
 {
     internal interface ISecurityContextAcceptor
     {

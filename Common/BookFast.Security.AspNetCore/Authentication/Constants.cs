@@ -1,6 +1,6 @@
-﻿namespace BookFast.Facility.Infrastructure.Authentication
+﻿namespace BookFast.Security.AspNetCore.Authentication
 {
-    internal static class Constants
+    public static class Constants
     {
         public static string OrganizationalAuthenticationScheme = "Bearer Organizational";
         public static string CustomerAuthenticationScheme = "Bearer Customer";

@@ -1,7 +1,7 @@
-﻿using BookFast.Common.Framework;
-using BookFast.Facility.Business.Data;
+﻿using BookFast.Facility.Business.Data;
 using BookFast.Facility.Data.Mappers;
 using BookFast.Facility.Data.Models;
+using BookFast.Framework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;

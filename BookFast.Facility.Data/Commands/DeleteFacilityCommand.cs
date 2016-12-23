@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using BookFast.Facility.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using BookFast.Common.Framework;
+using BookFast.Framework;
 
 namespace BookFast.Facility.Data.Commands
 {

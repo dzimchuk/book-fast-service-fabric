@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace BookFast.Facility.Infrastructure.Authentication
+namespace BookFast.Security.AspNetCore.Authentication
 {
     public class AuthenticationOptions
     {

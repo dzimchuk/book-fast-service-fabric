@@ -21,7 +21,8 @@
     "Microsoft.ServiceFabric.Services": "2.4.145",
     "AutoMapper": "4.2.1",
     "Swashbuckle.SwaggerGen": "6.0.0-beta901",
-    "BookFast.Facility.Data": "1.0.0-*"
+    "BookFast.Facility.Data": "1.0.0-*",
+    "BookFast.Security.AspNetCore": "1.0.0-*"
   },
 
   "tools": {

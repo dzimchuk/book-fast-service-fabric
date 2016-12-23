@@ -1,4 +1,4 @@
-﻿namespace BookFast.Facility.Infrastructure.Authentication
+﻿namespace BookFast.Security.AspNetCore.Authentication
 {
     public class B2CAuthenticationOptions
     {

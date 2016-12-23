@@ -1,4 +1,4 @@
-﻿namespace BookFast.Facility.Business
+﻿namespace BookFast.Security
 {
     public interface ISecurityContext
     {

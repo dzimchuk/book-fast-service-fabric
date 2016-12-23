@@ -1,4 +1,4 @@
-﻿using BookFast.Common.Framework;
+﻿using BookFast.Framework;
 using BookFast.Web.Contracts;
 using BookFast.Web.Proxy.Mappers;
 using BookFast.Web.Proxy.RestClient;

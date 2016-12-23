@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using BookFast.Facility.Business;
 
-namespace BookFast.Facility.Infrastructure
+namespace BookFast.Security.AspNetCore
 {
     internal class SecurityContextMiddleware
     {

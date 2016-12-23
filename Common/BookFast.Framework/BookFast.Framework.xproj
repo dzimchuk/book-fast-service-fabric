@@ -7,8 +7,8 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>3ac33986-d2f0-461f-b1f7-84c94f3d037b</ProjectGuid>
-    <RootNamespace>BookFast.Common</RootNamespace>
+    <ProjectGuid>df0b5158-3ad8-4590-9109-ff497cfe6b9f</ProjectGuid>
+    <RootNamespace>BookFast.Framework</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>

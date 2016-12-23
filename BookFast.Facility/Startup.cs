@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using BookFast.Facility.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,9 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using BookFast.Facility.Infrastructure.Authentication;
 using System.Security.Claims;
-using BookFast.Common.Framework;
+using BookFast.Framework;
+using BookFast.Security.AspNetCore.Authentication;
+using BookFast.Security.AspNetCore;
 
 namespace BookFast.Facility
 {
@@ -40,6 +40,7 @@ namespace BookFast.Facility
             var modules = new List<ICompositionModule>
                           {
                               new Composition.CompositionModule(),
+                              new Security.AspNetCore.Composition.CompositionModule(),
                               new Business.Composition.CompositionModule(),
                               new Data.Composition.CompositionModule()
                           };
@@ -53,7 +54,7 @@ namespace BookFast.Facility
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
-            IOptions<Infrastructure.Authentication.AuthenticationOptions> authOptions, IOptions<B2CAuthenticationOptions> b2cAuthOptions)
+            IOptions<Security.AspNetCore.Authentication.AuthenticationOptions> authOptions, IOptions<B2CAuthenticationOptions> b2cAuthOptions)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

@@ -2,10 +2,11 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "BookFast.Facility.Contracts": "1.0.0-*",
-    "BookFast.Framework": "1.0.0-*",
     "BookFast.Security": "1.0.0-*",
-    "NETStandard.Library": "1.6.0"
+    "BookFast.Framework": "1.0.0-*",
+    "NETStandard.Library": "1.6.0",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "System.Security.Claims": "4.0.1"
   },
 
   "frameworks": {
