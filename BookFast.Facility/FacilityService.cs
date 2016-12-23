@@ -20,19 +20,24 @@ namespace BookFast.Facility
             return new ServiceInstanceListener[]
             {
                 new ServiceInstanceListener(serviceContext =>
-                    new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", url =>
                     {
-                        ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
+                        var config = serviceContext.CodePackageActivationContext.GetConfigurationPackageObject("Config");
+                        var environment = config.Settings.Sections["Environment"].Parameters["ASPNETCORE_ENVIRONMENT"].Value;
+                        return new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", url =>
+                        {
+                            ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
 
-                        return new WebHostBuilder().UseKestrel()
-                                    .ConfigureServices(
-                                        services => services
-                                            .AddSingleton<StatelessServiceContext>(serviceContext))
-                                    .UseContentRoot(Directory.GetCurrentDirectory())
-                                    .UseStartup<Startup>()
-                                    .UseUrls(url)
-                                    .Build();
-                    }))
+                            return new WebHostBuilder().UseKestrel()
+                                        .ConfigureServices(
+                                            services => services
+                                                .AddSingleton<StatelessServiceContext>(serviceContext))
+                                        .UseContentRoot(Directory.GetCurrentDirectory())
+                                        .UseStartup<Startup>()
+                                        .UseEnvironment(environment)
+                                        .UseUrls(url)
+                                        .Build();
+                        });
+                    })
             };
         }
     }

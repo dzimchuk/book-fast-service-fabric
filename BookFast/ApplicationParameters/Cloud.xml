@@ -3,5 +3,6 @@
   <Parameters>
     <Parameter Name="FacilityService_InstanceCount" Value="-1" />
     <Parameter Name="WebApp_InstanceCount" Value="-1" />
+    <Parameter Name="ASPNETCORE_ENVIRONMENT" Value="Production" />
   </Parameters>
 </Application>
