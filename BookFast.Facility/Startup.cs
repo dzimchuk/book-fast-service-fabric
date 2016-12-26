@@ -11,22 +11,19 @@ using System.Security.Claims;
 using BookFast.Framework;
 using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Security.AspNetCore;
+using System.Fabric;
 
 namespace BookFast.Facility
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, StatelessServiceContext serviceContext)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddServiceFabricConfiguration(serviceContext);
 
             if (env.IsDevelopment())
             {
-                builder.AddUserSecrets();
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 

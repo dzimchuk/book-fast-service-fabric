@@ -4,6 +4,7 @@
     <Parameter Name="FacilityService_InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebApp_InstanceCount" DefaultValue="-1" />
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="FacilityService:Data:DefaultConnection:ConnectionString" DefaultValue="Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -15,6 +16,21 @@
         <Settings>
           <Section Name="Environment">
             <Parameter Name="ASPNETCORE_ENVIRONMENT" Value="[ASPNETCORE_ENVIRONMENT]" />
+          </Section>
+          <Section Name="Data">
+            <Parameter Name="DefaultConnection:ConnectionString" Value="[FacilityService:Data:DefaultConnection:ConnectionString]" />
+          </Section>
+          <Section Name="Authentication">
+            <Parameter Name="AzureAd:Audience" Value="https://devunleashed.onmicrosoft.com/book-fast-api" />
+            <Parameter Name="AzureAd:Instance" Value="https://login.microsoftonline.com/" />
+            <Parameter Name="AzureAd:ValidIssuers" Value="Comma separated list of tenant identifiers, e.g. https://sts.windows.net/490789ec-b183-4ba5-97cf-e69ec8870130/,https://sts.windows.net/f418e7eb-0dcd-40be-9b81-c58c87c57d9a/" />
+            <Parameter Name="AzureAd:B2C:Instance" Value="https://login.microsoftonline.com/" />
+            <Parameter Name="AzureAd:B2C:TenantId" Value="" />
+            <Parameter Name="AzureAd:B2C:Audience" Value="" />
+            <Parameter Name="AzureAd:B2C:Policy" Value="" />
+          </Section>
+          <Section Name="ApplicationInsights">
+            <Parameter Name="InstrumentationKey" Value="" />
           </Section>
         </Settings>
       </ConfigOverride>

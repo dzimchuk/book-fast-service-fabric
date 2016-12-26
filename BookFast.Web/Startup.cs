@@ -8,29 +8,23 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Fabric;
 
 namespace BookFast.Web
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, StatelessServiceContext serviceContext)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddServiceFabricConfiguration(serviceContext);
 
             if (env.IsDevelopment())
             {
-                builder.AddUserSecrets();
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
             Configuration = builder.Build();
-
-            System.Net.ServicePointManager.ServerCertificateValidationCallback +=
-                (o, certificate, chain, errors) => true;
         }
 
         private IConfigurationRoot Configuration { get; }
