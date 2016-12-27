@@ -1,10 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="BookFastType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
-    <Parameter Name="FacilityService_InstanceCount" DefaultValue="-1" />
-    <Parameter Name="WebApp_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
+    <Parameter Name="WebApp:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
-    <Parameter Name="FacilityService:Data:DefaultConnection:ConnectionString" DefaultValue="Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true" />
+    <Parameter Name="FacilityService:Data:DefaultConnection:ConnectionString" DefaultValue="" />
+    <Parameter Name="FacilityService:Authentication:AzureAd:Audience" DefaultValue="" />
+    <Parameter Name="FacilityService:Authentication:AzureAd:Instance" DefaultValue="https://login.microsoftonline.com/" />
+    <Parameter Name="FacilityService:Authentication:AzureAd:ValidIssuers" DefaultValue="" />
+    <Parameter Name="FacilityService:Authentication:AzureAd:B2C:Instance" DefaultValue="https://login.microsoftonline.com/" />
+    <Parameter Name="FacilityService:Authentication:AzureAd:B2C:TenantId" DefaultValue="" />
+    <Parameter Name="FacilityService:Authentication:AzureAd:B2C:Audience" DefaultValue="" />
+    <Parameter Name="FacilityService:Authentication:AzureAd:B2C:Policy" DefaultValue="" />
+    <Parameter Name="FacilityService:ApplicationInsights:InstrumentationKey" DefaultValue="" />
+    <Parameter Name="WebApp:Data:DefaultConnection:ConnectionString" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:ApiResource" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:Instance" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:ValidIssuers" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:ClientId" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:ClientSecret" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:PostLogoutRedirectUri" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:B2C:Instance" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:B2C:TenantId" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:B2C:ClientId" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:B2C:ClientSecret" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:B2C:PostLogoutRedirectUri" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy" DefaultValue="" />
+    <Parameter Name="WebApp:Authentication:AzureAd:B2C:Policies:EditProfilePolicy" DefaultValue="" />
+    <Parameter Name="WebApp:ApplicationInsights:InstrumentationKey" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -21,16 +44,16 @@
             <Parameter Name="DefaultConnection:ConnectionString" Value="[FacilityService:Data:DefaultConnection:ConnectionString]" />
           </Section>
           <Section Name="Authentication">
-            <Parameter Name="AzureAd:Audience" Value="https://devunleashed.onmicrosoft.com/book-fast-api" />
-            <Parameter Name="AzureAd:Instance" Value="https://login.microsoftonline.com/" />
-            <Parameter Name="AzureAd:ValidIssuers" Value="Comma separated list of tenant identifiers, e.g. https://sts.windows.net/490789ec-b183-4ba5-97cf-e69ec8870130/,https://sts.windows.net/f418e7eb-0dcd-40be-9b81-c58c87c57d9a/" />
-            <Parameter Name="AzureAd:B2C:Instance" Value="https://login.microsoftonline.com/" />
-            <Parameter Name="AzureAd:B2C:TenantId" Value="" />
-            <Parameter Name="AzureAd:B2C:Audience" Value="" />
-            <Parameter Name="AzureAd:B2C:Policy" Value="" />
+            <Parameter Name="AzureAd:Audience" Value="[FacilityService:Authentication:AzureAd:Audience]" />
+            <Parameter Name="AzureAd:Instance" Value="[FacilityService:Authentication:AzureAd:Instance]" />
+            <Parameter Name="AzureAd:ValidIssuers" Value="[FacilityService:Authentication:AzureAd:ValidIssuers]" />
+            <Parameter Name="AzureAd:B2C:Instance" Value="[FacilityService:Authentication:AzureAd:B2C:Instance]" />
+            <Parameter Name="AzureAd:B2C:TenantId" Value="[FacilityService:Authentication:AzureAd:B2C:TenantId]" />
+            <Parameter Name="AzureAd:B2C:Audience" Value="[FacilityService:Authentication:AzureAd:B2C:Audience]" />
+            <Parameter Name="AzureAd:B2C:Policy" Value="[FacilityService:Authentication:AzureAd:B2C:Policy]" />
           </Section>
           <Section Name="ApplicationInsights">
-            <Parameter Name="InstrumentationKey" Value="" />
+            <Parameter Name="InstrumentationKey" Value="[FacilityService:ApplicationInsights:InstrumentationKey]" />
           </Section>
         </Settings>
       </ConfigOverride>
@@ -38,7 +61,36 @@
   </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="BookFast.WebPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
+    <ConfigOverrides>
+      <ConfigOverride Name="Config">
+        <Settings>
+          <Section Name="Environment">
+            <Parameter Name="ASPNETCORE_ENVIRONMENT" Value="[ASPNETCORE_ENVIRONMENT]" />
+          </Section>
+          <Section Name="Data">
+            <Parameter Name="DefaultConnection:ConnectionString" Value="[WebApp:Data:DefaultConnection:ConnectionString]" />
+          </Section>
+          <Section Name="Authentication">
+            <Parameter Name="AzureAd:ApiResource" Value="[WebApp:Authentication:AzureAd:ApiResource]" />
+            <Parameter Name="AzureAd:Instance" Value="[WebApp:Authentication:AzureAd:Instance]" />
+            <Parameter Name="AzureAd:ValidIssuers" Value="[WebApp:Authentication:AzureAd:ValidIssuers]" />
+            <Parameter Name="AzureAd:ClientId" Value="[WebApp:Authentication:AzureAd:ClientId]" />
+            <Parameter Name="AzureAd:ClientSecret" Value="[WebApp:Authentication:AzureAd:ClientSecret]" />
+            <Parameter Name="AzureAd:PostLogoutRedirectUri" Value="[WebApp:Authentication:AzureAd:PostLogoutRedirectUri]" />
+            <Parameter Name="AzureAd:B2C:Instance" Value="[WebApp:Authentication:AzureAd:B2C:Instance]" />
+            <Parameter Name="AzureAd:B2C:TenantId" Value="[WebApp:Authentication:AzureAd:B2C:TenantId]" />
+            <Parameter Name="AzureAd:B2C:ClientId" Value="[WebApp:Authentication:AzureAd:B2C:ClientId]" />
+            <Parameter Name="AzureAd:B2C:ClientSecret" Value="[WebApp:Authentication:AzureAd:B2C:ClientSecret]" />
+            <Parameter Name="AzureAd:B2C:PostLogoutRedirectUri" Value="[WebApp:Authentication:AzureAd:B2C:PostLogoutRedirectUri]" />
+            <Parameter Name="AzureAd:B2C:Policies:SignInOrSignUpPolicy" Value="[WebApp:Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy]" />
+            <Parameter Name="AzureAd:B2C:Policies:EditProfilePolicy" Value="[WebApp:Authentication:AzureAd:B2C:Policies:EditProfilePolicy]" />
+          </Section>
+          <Section Name="ApplicationInsights">
+            <Parameter Name="InstrumentationKey" Value="[WebApp:ApplicationInsights:InstrumentationKey]" />
+          </Section>
+        </Settings>
+      </ConfigOverride>
+    </ConfigOverrides>
   </ServiceManifestImport>
   <DefaultServices>
     <!-- The section below creates instances of service types, when an instance of this 
@@ -47,12 +99,12 @@
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
     <Service Name="FacilityService">
-      <StatelessService ServiceTypeName="FacilityServiceType" InstanceCount="[FacilityService_InstanceCount]">
+      <StatelessService ServiceTypeName="FacilityServiceType" InstanceCount="[FacilityService:ServiceFabric:InstanceCount]">
         <SingletonPartition />
       </StatelessService>
     </Service>
     <Service Name="WebApp">
-      <StatelessService ServiceTypeName="WebAppType" InstanceCount="[WebApp_InstanceCount]">
+      <StatelessService ServiceTypeName="WebAppType" InstanceCount="[WebApp:ServiceFabric:InstanceCount]">
         <SingletonPartition />
       </StatelessService>
     </Service>

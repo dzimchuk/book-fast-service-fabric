@@ -51,9 +51,7 @@
   "publishOptions": {
     "include": [
       "wwwroot",
-      "**/*.cshtml",
-      "appsettings.json",
-      "web.config"
+      "**/*.cshtml"
     ]
   },
 
