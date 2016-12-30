@@ -1,0 +1,4 @@
+**/wwwroot/lib/*
+**/bower_components/*
+**/wwwroot/css/*.min.css
+**/wwwroot/js/*.min.js
