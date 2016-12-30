@@ -9,15 +9,11 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
-    "Microsoft.ServiceFabric": "5.4.145",
-    "Microsoft.ServiceFabric.AspNetCore.Kestrel": "2.4.145-preview",
-    "Microsoft.ServiceFabric.Data": "2.4.145",
-    "Microsoft.ServiceFabric.Services": "2.4.145",
     "AutoMapper": "4.2.1",
-    "Swashbuckle.SwaggerGen": "6.0.0-beta901",
     "BookFast.Facility.Data": "1.0.0-*",
     "BookFast.Security.AspNetCore": "1.0.0-*",
-    "BookFast.ServiceFabric": "1.0.0-*"
+    "BookFast.ServiceFabric": "1.0.0-*",
+    "BookFast.Swagger": "1.0.0-*"
   },
 
   "tools": {

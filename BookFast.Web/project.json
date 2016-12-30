@@ -20,10 +20,6 @@
     "Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory": "4.0.209160138-alpha",
     "Microsoft.IdentityModel.Protocols.OpenIdConnect": "2.0.0",
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
-    "Microsoft.ServiceFabric": "5.4.145",
-    "Microsoft.ServiceFabric.AspNetCore.Kestrel": "2.4.145-preview",
-    "Microsoft.ServiceFabric.Data": "2.4.145",
-    "Microsoft.ServiceFabric.Services": "2.4.145",
     "AutoMapper": "4.2.1",
     "BookFast.Web.Proxy": "1.0.0-*",
     "BookFast.ServiceFabric": "1.0.0-*"

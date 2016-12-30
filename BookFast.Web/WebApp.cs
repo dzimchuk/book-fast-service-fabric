@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Fabric;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using BookFast.ServiceFabric;
 
 namespace BookFast.Web
 {
@@ -17,26 +14,11 @@ namespace BookFast.Web
         public WebApp(StatelessServiceContext context)
             : base(context)
         { }
-        
-        protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners()
-        {
-            return new ServiceInstanceListener[]
-            {
-                new ServiceInstanceListener(serviceContext =>
-                    new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", url =>
-                    {
-                        ServiceEventSource.Current.ServiceMessage(serviceContext, $"Starting Kestrel on {url}");
 
-                        return new WebHostBuilder().UseKestrel()
-                                    .ConfigureServices(
-                                        services => services
-                                            .AddSingleton<StatelessServiceContext>(serviceContext))
-                                    .UseContentRoot(Directory.GetCurrentDirectory())
-                                    .UseStartup<Startup>()
-                                    .UseUrls(url)
-                                    .Build();
-                    }))
+        protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners() =>
+            new ServiceInstanceListener[]
+            {
+                ServiceInstanceListenerFactory.CreateListener(typeof(Startup), (serviceContext, message) => ServiceEventSource.Current.ServiceMessage(serviceContext, message))
             };
-        }
     }
 }

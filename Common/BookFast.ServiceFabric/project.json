@@ -3,7 +3,7 @@
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "Microsoft.Extensions.Configuration": "1.0.1",
-    "Microsoft.ServiceFabric": "5.4.145"
+    "Microsoft.ServiceFabric.AspNetCore.Kestrel": "2.4.145-preview"
   },
 
   "frameworks": {

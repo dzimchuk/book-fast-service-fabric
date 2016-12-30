@@ -1,7 +1,7 @@
 ﻿using Swashbuckle.Swagger.Model;
 using Swashbuckle.SwaggerGen.Generator;
 
-namespace BookFast.Facility.Swagger
+namespace BookFast.Swagger
 {
     internal class DefaultContentTypeOperationFilter : IOperationFilter
     {

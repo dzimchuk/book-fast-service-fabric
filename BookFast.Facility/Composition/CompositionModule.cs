@@ -1,11 +1,11 @@
 ﻿using BookFast.Facility.Controllers;
 using BookFast.Facility.Mappers;
-using BookFast.Facility.Swagger;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.Framework;
 using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Security;
+using BookFast.Swagger;
 
 namespace BookFast.Facility.Composition
 {
@@ -21,7 +21,7 @@ namespace BookFast.Facility.Composition
             RegisterAuthorizationPolicies(services);
             RegisterMappers(services);
 
-            services.AddSwashbuckle();
+            services.AddSwashbuckle("Book Fast Facility API", "v1", "BookFast.Facility.xml");
         }
 
         private static void RegisterAuthorizationPolicies(IServiceCollection services)
