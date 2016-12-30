@@ -4,7 +4,8 @@
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "AutoMapper": "4.2.1",
-    "Microsoft.Rest.ClientRuntime": "2.2.0",
+    "Microsoft.Rest.ClientRuntime": "2.3.2",
+    "Microsoft.ServiceFabric.Services": "2.4.145",
     "BookFast.Web.Contracts": "1.0.0-*",
     "BookFast.Framework": "1.0.0-*"
   },

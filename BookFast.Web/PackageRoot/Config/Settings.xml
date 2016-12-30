@@ -16,7 +16,7 @@
   </Section>
 
   <Section Name="Authentication">
-    <Parameter Name="AzureAd:ApiResource" Value="App ID URI of the API app" />
+    <Parameter Name="AzureAd:ApiResource" Value="App ID URI of one of the API apps in Azure AD (needed for initial authorization code redemption" />
     <Parameter Name="AzureAd:Instance" Value="e.g. https://login.microsoftonline.com/" />
     <Parameter Name="AzureAd:ValidIssuers" Value="Comma separated list of tenant identifiers, e.g. https://sts.windows.net/490789ec-b183-4ba5-97cf-e69ec8870130/,https://sts.windows.net/f418e7eb-0dcd-40be-9b81-c58c87c57d9a/" />
     <Parameter Name="AzureAd:ClientId" Value="" />
@@ -37,5 +37,6 @@
 
   <Section Name="BookFastApi">
     <Parameter Name="FacilityService" Value="fabric:/BookFast/FacilityService" />
+    <Parameter Name="FacilityServiceApiResource" Value="App ID URI of the API app in Azure AD" />
   </Section>
 </Settings>

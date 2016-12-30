@@ -2,6 +2,7 @@
 {
     public class ApiOptions
     {
-        public string BaseUrl { get; set; }
+        public string FacilityService { get; set; }
+        public string FacilityServiceApiResource { get; set; }
     }
 }

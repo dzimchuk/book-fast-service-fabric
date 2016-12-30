@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Models;
+using Microsoft.ServiceFabric.Services.Communication.Client;
+using BookFast.Web.Proxy.RestClient;
+using Microsoft.Extensions.Options;
 
 namespace BookFast.Web.Proxy
 {
@@ -12,17 +15,23 @@ namespace BookFast.Web.Proxy
     {
         private readonly IBookFastAPIFactory restClientFactory;
         private readonly IFacilityMapper mapper;
+        private readonly ICommunicationClientFactory<HttpCommunicationClient<IBookFastFacilityAPI>> factory;
+        private readonly ApiOptions apiOptions;
 
-        public FacilityProxy(IBookFastAPIFactory restClientFactory, IFacilityMapper mapper)
+        public FacilityProxy(IBookFastAPIFactory restClientFactory, IFacilityMapper mapper, 
+            ICommunicationClientFactory<HttpCommunicationClient<IBookFastFacilityAPI>> factory, 
+            IOptions<ApiOptions> apiOptions)
         {
             this.restClientFactory = restClientFactory;
             this.mapper = mapper;
+            this.factory = factory;
+            this.apiOptions = apiOptions.Value;
         }
 
         public async Task<List<Facility>> ListAsync()
         {
-            var client = await restClientFactory.CreateAsync();
-            var result = await client.ListFacilitiesWithHttpMessagesAsync();
+            var partitionClient = new ServicePartitionClient<HttpCommunicationClient<IBookFastFacilityAPI>>(factory, new Uri("fabric:/"));
+            var result = await partitionClient.InvokeWithRetryAsync(client => client.API.ListFacilitiesWithHttpMessagesAsync());
 
             return mapper.MapFrom(result.Body);
         }

@@ -11,7 +11,7 @@ namespace BookFast.Web.Infrastructure.Authentication
 {
     internal static class OrganizationalAuthentication
     {
-        public static async Task<string> AcquireAccessTokenAsync(AuthenticationOptions authOptions, string userId)
+        public static async Task<string> AcquireAccessTokenAsync(AuthenticationOptions authOptions, string userId, string resource)
         {
             var clientCredential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
             var authenticationContext = new AuthenticationContext(authOptions.Authority);
@@ -19,7 +19,7 @@ namespace BookFast.Web.Infrastructure.Authentication
             try
             {
                 var user = !string.IsNullOrEmpty(userId) ? new UserIdentifier(userId, UserIdentifierType.UniqueId) : UserIdentifier.AnyUser;
-                var authenticationResult = await authenticationContext.AcquireTokenSilentAsync(authOptions.ApiResource,
+                var authenticationResult = await authenticationContext.AcquireTokenSilentAsync(resource,
                     clientCredential, user);
 
                 return authenticationResult.AccessToken;

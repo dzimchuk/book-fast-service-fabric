@@ -18,10 +18,7 @@ namespace BookFast.Web.Proxy.RestClient
 
         public async Task<IBookFastAPI> CreateAsync()
         {
-            var accessToken = await accessTokenProvider.AcquireTokenAsync();
-            var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
-
-            return new BookFastAPI(new Uri(apiOptions.BaseUrl, UriKind.Absolute), credentials);
+            throw new NotImplementedException();
         }
     }
 }

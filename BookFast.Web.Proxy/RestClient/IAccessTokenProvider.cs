@@ -4,6 +4,6 @@ namespace BookFast.Web.Proxy.RestClient
 {
     public interface IAccessTokenProvider
     {
-        Task<string> AcquireTokenAsync();
+        Task<string> AcquireTokenAsync(string resource);
     }
 }
