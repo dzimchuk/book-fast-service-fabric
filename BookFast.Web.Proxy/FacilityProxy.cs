@@ -13,33 +13,31 @@ namespace BookFast.Web.Proxy
 {
     internal class FacilityProxy : IFacilityService
     {
-        private readonly IBookFastAPIFactory restClientFactory;
         private readonly IFacilityMapper mapper;
         private readonly ICommunicationClientFactory<HttpCommunicationClient<IBookFastFacilityAPI>> factory;
         private readonly ApiOptions apiOptions;
 
-        public FacilityProxy(IBookFastAPIFactory restClientFactory, IFacilityMapper mapper, 
+        public FacilityProxy(IFacilityMapper mapper, 
             ICommunicationClientFactory<HttpCommunicationClient<IBookFastFacilityAPI>> factory, 
             IOptions<ApiOptions> apiOptions)
         {
-            this.restClientFactory = restClientFactory;
             this.mapper = mapper;
             this.factory = factory;
             this.apiOptions = apiOptions.Value;
         }
 
+        private ServicePartitionClient<HttpCommunicationClient<IBookFastFacilityAPI>> PartitionClient =>
+            new ServicePartitionClient<HttpCommunicationClient<IBookFastFacilityAPI>>(factory, new Uri(apiOptions.FacilityService));
+        
         public async Task<List<Facility>> ListAsync()
         {
-            var partitionClient = new ServicePartitionClient<HttpCommunicationClient<IBookFastFacilityAPI>>(factory, new Uri("fabric:/"));
-            var result = await partitionClient.InvokeWithRetryAsync(client => client.API.ListFacilitiesWithHttpMessagesAsync());
-
+            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.ListFacilitiesWithHttpMessagesAsync());
             return mapper.MapFrom(result.Body);
         }
 
         public async Task<Facility> FindAsync(Guid facilityId)
         {
-            var client = await restClientFactory.CreateAsync();
-            var result = await client.FindFacilityWithHttpMessagesAsync(facilityId);
+            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.FindFacilityWithHttpMessagesAsync(facilityId));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new FacilityNotFoundException(facilityId);
@@ -47,16 +45,14 @@ namespace BookFast.Web.Proxy
             return mapper.MapFrom(result.Body);
         }
 
-        public async Task CreateAsync(FacilityDetails details)
+        public Task CreateAsync(FacilityDetails details)
         {
-            var client = await restClientFactory.CreateAsync();
-            await client.CreateFacilityWithHttpMessagesAsync(mapper.MapFrom(details));
+            return PartitionClient.InvokeWithRetryAsync(client => client.API.CreateFacilityWithHttpMessagesAsync(mapper.MapFrom(details)));
         }
 
         public async Task UpdateAsync(Guid facilityId, FacilityDetails details)
         {
-            var client = await restClientFactory.CreateAsync();
-            var result = await client.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.MapFrom(details));
+            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.MapFrom(details)));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new FacilityNotFoundException(facilityId);
@@ -64,8 +60,7 @@ namespace BookFast.Web.Proxy
 
         public async Task DeleteAsync(Guid facilityId)
         {
-            var client = await restClientFactory.CreateAsync();
-            var result = await client.DeleteFacilityWithHttpMessagesAsync(facilityId);
+            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.DeleteFacilityWithHttpMessagesAsync(facilityId));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new FacilityNotFoundException(facilityId);

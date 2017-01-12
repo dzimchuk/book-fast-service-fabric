@@ -88,6 +88,9 @@
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[WebApp:ApplicationInsights:InstrumentationKey]" />
           </Section>
+          <Section Name="BookFastApi">
+            <Parameter Name="FacilityServiceApiResource" Value="[WebApp:Authentication:AzureAd:ApiResource]" />
+          </Section>
         </Settings>
       </ConfigOverride>
     </ConfigOverrides>
