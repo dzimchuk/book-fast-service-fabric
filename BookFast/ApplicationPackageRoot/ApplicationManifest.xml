@@ -3,6 +3,7 @@
   <Parameters>
     <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebApp:ServiceFabric:InstanceCount" DefaultValue="-1" />
+    <Parameter Name="HttpsCertThumbprint" DefaultValue="" />
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="FacilityService:Data:DefaultConnection:ConnectionString" DefaultValue="" />
     <Parameter Name="FacilityService:Authentication:AzureAd:Audience" DefaultValue="" />
@@ -94,6 +95,9 @@
         </Settings>
       </ConfigOverride>
     </ConfigOverrides>
+    <Policies>
+      <EndpointBindingPolicy EndpointRef="ServiceEndpoint" CertificateRef="HttpsCert" />
+    </Policies>
   </ServiceManifestImport>
   <DefaultServices>
     <!-- The section below creates instances of service types, when an instance of this 
@@ -112,4 +116,7 @@
       </StatelessService>
     </Service>
   </DefaultServices>
+  <Certificates>
+    <EndpointCertificate X509FindValue="[HttpsCertThumbprint]" Name="HttpsCert" />
+  </Certificates>
 </ApplicationManifest>
