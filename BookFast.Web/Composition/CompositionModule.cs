@@ -5,6 +5,7 @@ using BookFast.Web.Infrastructure;
 using BookFast.Web.Infrastructure.Authentication;
 using BookFast.Web.Mappers;
 using BookFast.Web.Proxy.RestClient;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
@@ -18,8 +19,8 @@ namespace BookFast.Web.Composition
             services.Configure<B2CAuthenticationOptions>(configuration.GetSection("Authentication:AzureAd:B2C"));
             services.Configure<B2CPolicies>(configuration.GetSection("Authentication:AzureAd:B2C:Policies"));
 
-            services.AddScoped<SecurityContext>();
-            services.AddScoped<IAccessTokenProvider, AccessTokenProvider>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
 
             services.AddMvc();
 

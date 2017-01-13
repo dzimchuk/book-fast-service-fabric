@@ -1,6 +1,7 @@
 ﻿using BookFast.Web.Infrastructure.Authentication;
 using BookFast.Web.Proxy.RestClient;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
@@ -11,31 +12,31 @@ namespace BookFast.Web.Infrastructure
         private readonly AuthenticationOptions authOptions;
         private readonly B2CAuthenticationOptions b2cAuthOptions;
         private readonly IAuthorizationService authorizationService;
-        private readonly SecurityContext securityContext;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         private const string ObjectId = "http://schemas.microsoft.com/identity/claims/objectidentifier";
 
         public AccessTokenProvider(IOptions<AuthenticationOptions> authOptions, IOptions<B2CAuthenticationOptions> b2cAuthOptions, 
-            IAuthorizationService authorizationService, SecurityContext securityContext)
+            IAuthorizationService authorizationService, IHttpContextAccessor httpContextAccessor)
         {
             this.authOptions = authOptions.Value;
             this.b2cAuthOptions = b2cAuthOptions.Value;
             this.authorizationService = authorizationService;
-            this.securityContext = securityContext;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> AcquireTokenAsync(string resource)
         {
-            return await authorizationService.AuthorizeAsync(securityContext.Principal, "FacilityProviderOnly") ?
+            return await authorizationService.AuthorizeAsync(httpContextAccessor.HttpContext?.User, "FacilityProviderOnly") ?
                 await OrganizationalAuthentication.AcquireAccessTokenAsync(authOptions, GetUserId(), resource) : await B2CAuthentication.AcquireAccessTokenAsync(b2cAuthOptions);
         }
 
         private string GetUserId()
         {
-            if (securityContext.Principal == null)
+            if (httpContextAccessor.HttpContext?.User == null)
                 return null;
 
-            return securityContext.Principal.FindFirst(ObjectId)?.Value;
+            return httpContextAccessor.HttpContext.User.FindFirst(ObjectId)?.Value;
         }
     }
 }

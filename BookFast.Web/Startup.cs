@@ -74,9 +74,7 @@ namespace BookFast.Web
 
             app.UseOpenIdConnectB2CAuthentication(b2cAuthOptions.Value, b2cPolicies.Value, true);
             app.UseOpenIdConnectOrganizationalAuthentication(authOptions.Value, false);
-
-            app.UseSecurityContext();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
