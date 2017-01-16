@@ -1,11 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="BookFastType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
+    <Parameter Name="SearchService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebApp:ServiceFabric:InstanceCount" DefaultValue="-1" />
+    
     <Parameter Name="HttpsCertThumbprint" DefaultValue="" />
+    
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+
+    <Parameter Name="SearchService:Search:QueryKey" DefaultValue="" />
+    <Parameter Name="SearchService:Search:AdminKey" DefaultValue="" />
+    <Parameter Name="SearchService:Search:ServiceName" DefaultValue="" />
+    <Parameter Name="SearchService:Search:IndexName" DefaultValue="" />
+    <Parameter Name="SearchService:ApplicationInsights:InstrumentationKey" DefaultValue="" />
+    
     <Parameter Name="FacilityService:Data:DefaultConnection:ConnectionString" DefaultValue="" />
+    <Parameter Name="FacilityService:Data:Azure:Storage:ConnectionString" DefaultValue="" />
+    <Parameter Name="FacilityService:Data:Azure:Storage:SearchIndexQueueName" DefaultValue="" />
     <Parameter Name="FacilityService:Authentication:AzureAd:Audience" DefaultValue="" />
     <Parameter Name="FacilityService:Authentication:AzureAd:Instance" DefaultValue="https://login.microsoftonline.com/" />
     <Parameter Name="FacilityService:Authentication:AzureAd:ValidIssuers" DefaultValue="" />
@@ -14,7 +26,7 @@
     <Parameter Name="FacilityService:Authentication:AzureAd:B2C:Audience" DefaultValue="" />
     <Parameter Name="FacilityService:Authentication:AzureAd:B2C:Policy" DefaultValue="" />
     <Parameter Name="FacilityService:ApplicationInsights:InstrumentationKey" DefaultValue="" />
-    <Parameter Name="WebApp:Data:DefaultConnection:ConnectionString" DefaultValue="" />
+    
     <Parameter Name="WebApp:Authentication:AzureAd:ApiResource" DefaultValue="" />
     <Parameter Name="WebApp:Authentication:AzureAd:Instance" DefaultValue="" />
     <Parameter Name="WebApp:Authentication:AzureAd:ValidIssuers" DefaultValue="" />
@@ -34,6 +46,27 @@
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="BookFast.SearchPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides>
+      <ConfigOverride Name="Config">
+        <Settings>
+          <Section Name="Environment">
+            <Parameter Name="ASPNETCORE_ENVIRONMENT" Value="[ASPNETCORE_ENVIRONMENT]" />
+          </Section>
+          <Section Name="Search">
+            <Parameter Name="QueryKey" Value="[SearchService:Search:QueryKey]" />
+            <Parameter Name="AdminKey" Value="[SearchService:Search:AdminKey]" />
+            <Parameter Name="ServiceName" Value="[SearchService:Search:ServiceName]" />
+            <Parameter Name="IndexName" Value="[SearchService:Search:IndexName]" />
+          </Section>
+          <Section Name="ApplicationInsights">
+            <Parameter Name="InstrumentationKey" Value="[SearchService:ApplicationInsights:InstrumentationKey]" />
+          </Section>
+        </Settings>
+      </ConfigOverride>
+    </ConfigOverrides>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="BookFast.FacilityPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides>
       <ConfigOverride Name="Config">
@@ -43,6 +76,8 @@
           </Section>
           <Section Name="Data">
             <Parameter Name="DefaultConnection:ConnectionString" Value="[FacilityService:Data:DefaultConnection:ConnectionString]" />
+            <Parameter Name="Azure:Storage:ConnectionString" Value="[FacilityService:Data:Azure:Storage:ConnectionString]" />
+            <Parameter Name="Azure:Storage:SearchIndexQueueName" Value="[FacilityService:Data:Azure:Storage:SearchIndexQueueName]" />
           </Section>
           <Section Name="Authentication">
             <Parameter Name="AzureAd:Audience" Value="[FacilityService:Authentication:AzureAd:Audience]" />
@@ -67,9 +102,6 @@
         <Settings>
           <Section Name="Environment">
             <Parameter Name="ASPNETCORE_ENVIRONMENT" Value="[ASPNETCORE_ENVIRONMENT]" />
-          </Section>
-          <Section Name="Data">
-            <Parameter Name="DefaultConnection:ConnectionString" Value="[WebApp:Data:DefaultConnection:ConnectionString]" />
           </Section>
           <Section Name="Authentication">
             <Parameter Name="AzureAd:ApiResource" Value="[WebApp:Authentication:AzureAd:ApiResource]" />
@@ -105,6 +137,11 @@
          ServiceFabric PowerShell module.
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="SearchService">
+      <StatelessService ServiceTypeName="SearchServiceType" InstanceCount="[SearchService:ServiceFabric:InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
     <Service Name="FacilityService">
       <StatelessService ServiceTypeName="FacilityServiceType" InstanceCount="[FacilityService:ServiceFabric:InstanceCount]">
         <SingletonPartition />

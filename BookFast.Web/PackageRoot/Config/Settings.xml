@@ -11,10 +11,6 @@
     <Parameter Name="LogLevel:Microsoft" Value="Information" />
   </Section>
 
-  <Section Name="Data">
-    <Parameter Name="DefaultConnection:ConnectionString" Value="Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true" />
-  </Section>
-
   <Section Name="Authentication">
     <Parameter Name="AzureAd:ApiResource" Value="App ID URI of one of the API apps in Azure AD (needed for initial authorization code redemption" />
     <Parameter Name="AzureAd:Instance" Value="e.g. https://login.microsoftonline.com/" />

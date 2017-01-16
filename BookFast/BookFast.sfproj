@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BookFast.Facility\BookFast.Facility.xproj" />
+    <ProjectReference Include="..\BookFast.Search\BookFast.Search.xproj" />
     <ProjectReference Include="..\BookFast.Web\BookFast.Web.xproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />

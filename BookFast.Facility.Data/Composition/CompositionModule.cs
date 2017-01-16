@@ -1,4 +1,5 @@
-﻿using BookFast.Facility.Business.Data;
+﻿using BookFast.Facility.Business;
+using BookFast.Facility.Business.Data;
 using BookFast.Facility.Data.Mappers;
 using BookFast.Facility.Data.Models;
 using BookFast.Framework;
@@ -19,6 +20,9 @@ namespace BookFast.Facility.Data.Composition
 
             services.AddScoped<IFacilityMapper, FacilityMapper>();
             services.AddScoped<IAccommodationMapper, AccommodationMapper>();
+
+            services.Configure<SearchOptions>(configuration.GetSection("Data:Azure:Storage"));
+            services.AddSingleton<ISearchIndexer, SearchIndexer>();
         }
     }
 }
