@@ -1,20 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="BookFastType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
+    <Parameter Name="IndexerService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="SearchService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebApp:ServiceFabric:InstanceCount" DefaultValue="-1" />
-    
     <Parameter Name="HttpsCertThumbprint" DefaultValue="" />
-    
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
-
+    <Parameter Name="IndexerService:Queue:ConnectionString" DefaultValue="" />
+    <Parameter Name="IndexerService:Queue:SearchIndexQueueName" DefaultValue="" />
     <Parameter Name="SearchService:Search:QueryKey" DefaultValue="" />
     <Parameter Name="SearchService:Search:AdminKey" DefaultValue="" />
     <Parameter Name="SearchService:Search:ServiceName" DefaultValue="" />
     <Parameter Name="SearchService:Search:IndexName" DefaultValue="" />
     <Parameter Name="SearchService:ApplicationInsights:InstrumentationKey" DefaultValue="" />
-    
     <Parameter Name="FacilityService:Data:DefaultConnection:ConnectionString" DefaultValue="" />
     <Parameter Name="FacilityService:Data:Azure:Storage:ConnectionString" DefaultValue="" />
     <Parameter Name="FacilityService:Data:Azure:Storage:SearchIndexQueueName" DefaultValue="" />
@@ -26,7 +25,6 @@
     <Parameter Name="FacilityService:Authentication:AzureAd:B2C:Audience" DefaultValue="" />
     <Parameter Name="FacilityService:Authentication:AzureAd:B2C:Policy" DefaultValue="" />
     <Parameter Name="FacilityService:ApplicationInsights:InstrumentationKey" DefaultValue="" />
-    
     <Parameter Name="WebApp:Authentication:AzureAd:ApiResource" DefaultValue="" />
     <Parameter Name="WebApp:Authentication:AzureAd:Instance" DefaultValue="" />
     <Parameter Name="WebApp:Authentication:AzureAd:ValidIssuers" DefaultValue="" />
@@ -45,6 +43,25 @@
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="BookFast.Search.IndexerPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides>
+      <ConfigOverride Name="Config">
+        <Settings>
+          <Section Name="Queue">
+            <Parameter Name="ConnectionString" Value="[IndexerService:Queue:ConnectionString]" />
+            <Parameter Name="SearchIndexQueueName" Value="[IndexerService:Queue:SearchIndexQueueName]" />
+          </Section>
+          <Section Name="Search">
+            <Parameter Name="QueryKey" Value="[SearchService:Search:QueryKey]" />
+            <Parameter Name="AdminKey" Value="[SearchService:Search:AdminKey]" />
+            <Parameter Name="ServiceName" Value="[SearchService:Search:ServiceName]" />
+            <Parameter Name="IndexName" Value="[SearchService:Search:IndexName]" />
+          </Section>
+        </Settings>
+      </ConfigOverride>
+    </ConfigOverrides>
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="BookFast.SearchPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides>
@@ -137,6 +154,11 @@
          ServiceFabric PowerShell module.
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="SearchIndexer">
+      <StatelessService ServiceTypeName="IndexerServiceType" InstanceCount="[IndexerService:ServiceFabric:InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
     <Service Name="SearchService">
       <StatelessService ServiceTypeName="SearchServiceType" InstanceCount="[SearchService:ServiceFabric:InstanceCount]">
         <SingletonPartition />

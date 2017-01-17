@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "BookFast.Search.Adapter": "1.0.0-*",
+    "BookFast.ServiceFabric": "1.0.0-*",
+    "WindowsAzure.Storage": "7.0.0"
+  },
+
+  "tools": {
+  },
+
+  "frameworks": {
+    "net461": { }
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true
+  },
+
+  "publishOptions": {
+    "include": []
+  },
+
+  "scripts": {
+  }
+}

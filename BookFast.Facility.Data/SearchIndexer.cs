@@ -13,7 +13,7 @@ namespace BookFast.Facility.Data
     {
         private readonly CloudQueue queue;
 
-        public SearchIndexer(IOptions<SearchOptions> options)
+        public SearchIndexer(IOptions<SearchQueueOptions> options)
         {
             var storageAccount = CloudStorageAccount.Parse(options.Value.ConnectionString);
             var queueClient = storageAccount.CreateCloudQueueClient();

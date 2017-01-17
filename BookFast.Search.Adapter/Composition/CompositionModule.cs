@@ -6,6 +6,7 @@ using Microsoft.Azure.Search;
 using Microsoft.Extensions.Options;
 using BookFast.Search.Business.Data;
 using BookFast.Search.Adapter.Mappers;
+using BookFast.Search.Contracts;
 
 namespace BookFast.Search.Adapter.Composition
 {
@@ -19,6 +20,8 @@ namespace BookFast.Search.Adapter.Composition
 
             services.AddScoped<ISearchResultMapper, SearchResultMapper>();
             services.AddScoped<ISearchDataSource>(provider => new SearchDataSource(CreateSearchIndexClient(provider, false), provider.GetService<ISearchResultMapper>()));
+
+            services.AddSingleton<ISearchIndexer, SearchIndexer>();
         }
 
         private static ISearchIndexClient CreateSearchIndexClient(IServiceProvider provider, bool useAdminKey)

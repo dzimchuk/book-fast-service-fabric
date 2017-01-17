@@ -21,7 +21,7 @@ namespace BookFast.Facility.Data.Composition
             services.AddScoped<IFacilityMapper, FacilityMapper>();
             services.AddScoped<IAccommodationMapper, AccommodationMapper>();
 
-            services.Configure<SearchOptions>(configuration.GetSection("Data:Azure:Storage"));
+            services.Configure<SearchQueueOptions>(configuration.GetSection("Data:Azure:Storage"));
             services.AddSingleton<ISearchIndexer, SearchIndexer>();
         }
     }

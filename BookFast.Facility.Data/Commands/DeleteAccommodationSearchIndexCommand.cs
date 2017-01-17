@@ -20,8 +20,8 @@ namespace BookFast.Facility.Data.Commands
         {
             var payload = new Dictionary<string, object>
             {
-                { "command", "delete" },
-                { "Id", accommodationId }
+                { "Action", "delete" },
+                { "Accommodation", new { Id = accommodationId } }
             };
 
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(payload));

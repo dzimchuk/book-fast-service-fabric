@@ -22,16 +22,21 @@ namespace BookFast.Facility.Data.Commands
         {
             var payload = new Dictionary<string, object>
             {
-                { "command", "update" },
-                { "Id", accommodation.Id },
-                { "FacilityId", accommodation.FacilityId },
-                { "Name", accommodation.Details.Name },
-                { "Description", accommodation.Details.Description },
-                { "FacilityName", facility.Details.Name },
-                { "FacilityDescription", facility.Details.Description },
-                { "Location", facility.Location },
-                { "RoomCount", accommodation.Details.RoomCount },
-                { "Images", accommodation.Details.Images }
+                { "Action", "update" },
+                { "Accommodation",
+                    new
+                    {
+                        Id = accommodation.Id,
+                        FacilityId = accommodation.FacilityId,
+                        Name = accommodation.Details.Name,
+                        Description = accommodation.Details.Description,
+                        FacilityName = facility.Details.Name,
+                        FacilityDescription = facility.Details.Description,
+                        FacilityLocation = facility.Location,
+                        RoomCount = accommodation.Details.RoomCount,
+                        Images = accommodation.Details.Images
+                    }
+                }
             };
 
             var message = new CloudQueueMessage(JsonConvert.SerializeObject(payload));
