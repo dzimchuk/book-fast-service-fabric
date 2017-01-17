@@ -34,5 +34,7 @@
   <Section Name="BookFastApi">
     <Parameter Name="FacilityService" Value="fabric:/BookFast/FacilityService" />
     <Parameter Name="FacilityServiceApiResource" Value="App ID URI of the API app in Azure AD" />
+
+    <Parameter Name="SearchService" Value="fabric:/BookFast/SearchService" />
   </Section>
 </Settings>

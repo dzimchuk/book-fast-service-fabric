@@ -70,7 +70,7 @@ namespace BookFast.Web.Proxy.RestClient
         {
             if (baseUri == null)
             {
-                throw new System.ArgumentNullException("baseUri");
+                throw new System.ArgumentNullException(nameof(baseUri));
             }
             this.BaseUri = baseUri;
         }
@@ -94,7 +94,7 @@ namespace BookFast.Web.Proxy.RestClient
         {
             if (baseUri == null)
             {
-                throw new System.ArgumentNullException("baseUri");
+                throw new System.ArgumentNullException(nameof(baseUri));
             }
             this.BaseUri = baseUri;
         }
@@ -115,7 +115,7 @@ namespace BookFast.Web.Proxy.RestClient
         {
             if (credentials == null)
             {
-                throw new System.ArgumentNullException("credentials");
+                throw new System.ArgumentNullException(nameof(credentials));
             }
             this.Credentials = credentials;
             if (this.Credentials != null)
@@ -143,7 +143,7 @@ namespace BookFast.Web.Proxy.RestClient
         {
             if (credentials == null)
             {
-                throw new System.ArgumentNullException("credentials");
+                throw new System.ArgumentNullException(nameof(credentials));
             }
             this.Credentials = credentials;
             if (this.Credentials != null)
@@ -171,11 +171,11 @@ namespace BookFast.Web.Proxy.RestClient
         {
             if (baseUri == null)
             {
-                throw new System.ArgumentNullException("baseUri");
+                throw new System.ArgumentNullException(nameof(baseUri));
             }
             if (credentials == null)
             {
-                throw new System.ArgumentNullException("credentials");
+                throw new System.ArgumentNullException(nameof(credentials));
             }
             this.BaseUri = baseUri;
             this.Credentials = credentials;
@@ -207,11 +207,11 @@ namespace BookFast.Web.Proxy.RestClient
         {
             if (baseUri == null)
             {
-                throw new System.ArgumentNullException("baseUri");
+                throw new System.ArgumentNullException(nameof(baseUri));
             }
             if (credentials == null)
             {
-                throw new System.ArgumentNullException("credentials");
+                throw new System.ArgumentNullException(nameof(credentials));
             }
             this.BaseUri = baseUri;
             this.Credentials = credentials;

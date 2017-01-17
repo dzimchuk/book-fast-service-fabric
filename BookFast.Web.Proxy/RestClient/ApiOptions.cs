@@ -4,5 +4,7 @@
     {
         public string FacilityService { get; set; }
         public string FacilityServiceApiResource { get; set; }
+
+        public string SearchService { get; set; }
     }
 }

@@ -24,11 +24,16 @@ namespace BookFast.Web.Proxy.Composition
             services.Configure<ApiOptions>(configuration.GetSection("BookFastApi"));
             
             services.AddSingleton(new FabricClient());
-            services.AddSingleton<ICommunicationClientFactory<FacilityClient>>(
-                serviceProvider => new FacilityClientFactory(
+
+            services.AddSingleton<ICommunicationClientFactory<CommunicationClient<IBookFastFacilityAPI>>>(
+                serviceProvider => new FacilityCommunicationClientFactory(
                     new ServicePartitionResolver(() => serviceProvider.GetService<FabricClient>()), 
                     serviceProvider.GetService<IAccessTokenProvider>(), 
                     serviceProvider.GetService<IOptions<ApiOptions>>()));
+
+            services.AddSingleton<ICommunicationClientFactory<CommunicationClient<IBookFastSearchAPI>>>(
+                serviceProvider => new SearchCommunicationClientFactory(
+                    new ServicePartitionResolver(() => serviceProvider.GetService<FabricClient>())));
 
             services.AddScoped<IBookFastAPIFactory, BookFastAPIFactory>();
 
