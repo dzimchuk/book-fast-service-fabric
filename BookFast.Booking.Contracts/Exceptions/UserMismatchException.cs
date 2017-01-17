@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookFast.Facility.Contracts.Exceptions
+namespace BookFast.Booking.Contracts.Exceptions
 {
     public class UserMismatchException : Exception
     {

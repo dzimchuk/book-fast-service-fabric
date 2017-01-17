@@ -29,6 +29,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BookFast.Booking\BookFast.Booking.xproj" />
     <ProjectReference Include="..\BookFast.Facility\BookFast.Facility.xproj" />
     <ProjectReference Include="..\BookFast.Search.Indexer\BookFast.Search.Indexer.xproj" />
     <ProjectReference Include="..\BookFast.Search\BookFast.Search.xproj" />

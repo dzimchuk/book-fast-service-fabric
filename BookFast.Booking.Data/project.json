@@ -1,0 +1,28 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
+    "Microsoft.EntityFrameworkCore.Tools": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    },
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
+    "AutoMapper": "4.2.1",
+    "BookFast.Booking.Business": "1.0.0-*"
+  },
+
+  "tools": {
+    "Microsoft.EntityFrameworkCore.Tools": {
+      "version": "1.0.0-preview2-final"
+    }
+  },
+
+  "frameworks": {
+    "net461": {}
+  },
+
+  "buildOptions": {
+    "emitEntryPoint": true
+  }
+}
