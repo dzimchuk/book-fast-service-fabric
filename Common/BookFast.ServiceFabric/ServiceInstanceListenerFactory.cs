@@ -14,9 +14,6 @@ namespace BookFast.ServiceFabric
         {
             return new ServiceInstanceListener(serviceContext =>
             {
-                var config = serviceContext.CodePackageActivationContext.GetConfigurationPackageObject("Config");
-                var environment = config.Settings.Sections["Environment"].Parameters["ASPNETCORE_ENVIRONMENT"].Value;
-
                 return new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", url =>
                 {
                     loggingCallback(serviceContext, $"Starting Kestrel on {url}");
@@ -27,7 +24,6 @@ namespace BookFast.ServiceFabric
                                         .AddSingleton<StatelessServiceContext>(serviceContext))
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseStartup(startupType)
-                                .UseEnvironment(environment)
                                 .UseUrls(url)
                                 .Build();
                 });
@@ -38,9 +34,6 @@ namespace BookFast.ServiceFabric
         {
             return new ServiceInstanceListener(serviceContext =>
             {
-                var config = serviceContext.CodePackageActivationContext.GetConfigurationPackageObject("Config");
-                var environment = config.Settings.Sections["Environment"].Parameters["ASPNETCORE_ENVIRONMENT"].Value;
-
                 return new WebListenerCommunicationListener(serviceContext, "ServiceEndpoint", url =>
                 {
                     loggingCallback(serviceContext, $"Starting WebListener on {url}");
@@ -51,7 +44,6 @@ namespace BookFast.ServiceFabric
                                         .AddSingleton<StatelessServiceContext>(serviceContext))
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseStartup(startupType)
-                                .UseEnvironment(environment)
                                 .UseUrls(url)
                                 .Build();
                 });
