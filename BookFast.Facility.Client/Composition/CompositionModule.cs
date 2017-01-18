@@ -14,7 +14,7 @@ namespace BookFast.Facility.Client.Composition
     {
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<Options>(configuration.GetSection("FacilityApi"));
+            services.Configure<ApiOptions>(configuration.GetSection("FacilityApi"));
 
             services.AddSingleton(new FabricClient());
 
@@ -22,7 +22,7 @@ namespace BookFast.Facility.Client.Composition
                 serviceProvider => new FacilityCommunicationClientFactory(
                     new ServicePartitionResolver(() => serviceProvider.GetService<FabricClient>()),
                     serviceProvider.GetService<IAccessTokenProvider>(),
-                    serviceProvider.GetService<IOptions<Options>>()));
+                    serviceProvider.GetService<IOptions<ApiOptions>>()));
 
             services.AddSingleton<IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>>, FacilityPartitionClientFactory>();
         }

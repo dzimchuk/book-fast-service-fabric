@@ -58,6 +58,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Facility.Client", 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Rest", "Common\BookFast.Rest\BookFast.Rest.xproj", "{B25E5363-3345-47FB-80DF-382C8195A912}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Search.Client", "BookFast.Search.Client\BookFast.Search.Client.xproj", "{0812E3F9-EF02-4A9E-9914-BCEECF80425F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -258,6 +260,14 @@ Global
 		{B25E5363-3345-47FB-80DF-382C8195A912}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B25E5363-3345-47FB-80DF-382C8195A912}.Release|x64.ActiveCfg = Release|Any CPU
 		{B25E5363-3345-47FB-80DF-382C8195A912}.Release|x64.Build.0 = Release|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Debug|x64.Build.0 = Debug|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Release|x64.ActiveCfg = Release|Any CPU
+		{0812E3F9-EF02-4A9E-9914-BCEECF80425F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

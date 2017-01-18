@@ -8,15 +8,15 @@ namespace BookFast.Facility.Client
     internal class FacilityPartitionClientFactory : IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>>
     {
         private readonly ICommunicationClientFactory<CommunicationClient<IBookFastFacilityAPI>> factory;
-        private readonly Options options;
+        private readonly ApiOptions apiOptions;
 
-        public FacilityPartitionClientFactory(ICommunicationClientFactory<CommunicationClient<IBookFastFacilityAPI>> factory, IOptions<Options> options)
+        public FacilityPartitionClientFactory(ICommunicationClientFactory<CommunicationClient<IBookFastFacilityAPI>> factory, IOptions<ApiOptions> apiOptions)
         {
             this.factory = factory;
-            this.options = options.Value;
+            this.apiOptions = apiOptions.Value;
         }
 
         public ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>> CreatePartitionClient() => 
-            new ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>>(factory, new Uri(options.ServiceUri));
+            new ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>>(factory, new Uri(apiOptions.ServiceUri));
     }
 }

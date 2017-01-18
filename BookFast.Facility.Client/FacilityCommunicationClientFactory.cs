@@ -13,13 +13,13 @@ namespace BookFast.Facility.Client
     internal class FacilityCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastFacilityAPI>>
     {
         private readonly IAccessTokenProvider accessTokenProvider;
-        private readonly Options options;
+        private readonly ApiOptions apiOptions;
 
-        public FacilityCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider, IOptions<Options> options)
+        public FacilityCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider, IOptions<ApiOptions> apiOptions)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
             this.accessTokenProvider = accessTokenProvider;
-            this.options = options.Value;
+            this.apiOptions = apiOptions.Value;
         }
 
         protected override void AbortClient(CommunicationClient<IBookFastFacilityAPI> client)
@@ -34,7 +34,7 @@ namespace BookFast.Facility.Client
             // create that connection here.
             // an HTTP client doesn't maintain a persistent connection.
 
-            var accessToken = await accessTokenProvider.AcquireTokenAsync(options.ServiceApiResource);
+            var accessToken = await accessTokenProvider.AcquireTokenAsync(apiOptions.ServiceApiResource);
             var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
 
             return new CommunicationClient<IBookFastFacilityAPI>(new BookFastFacilityAPI(new Uri(endpoint), credentials));
