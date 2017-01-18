@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Security.Claims;
 using BookFast.Framework;
 using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Security.AspNetCore;
@@ -51,48 +50,19 @@ namespace BookFast.Facility
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
-            IOptions<Security.AspNetCore.Authentication.AuthenticationOptions> authOptions, IOptions<B2CAuthenticationOptions> b2cAuthOptions)
+            IOptions<Security.AspNetCore.Authentication.AuthenticationOptions> authOptions)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
             app.UseApplicationInsightsRequestTelemetry();
             app.UseApplicationInsightsExceptionTelemetry();
-
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                AuthenticationScheme = Constants.CustomerAuthenticationScheme,
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-
-                MetadataAddress = $"{b2cAuthOptions.Value.Authority}/.well-known/openid-configuration?p={b2cAuthOptions.Value.Policy}",
-                Audience = b2cAuthOptions.Value.Audience,
-
-                Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = ctx =>
-                    {
-                        var nameClaim = ctx.Ticket.Principal.FindFirst("name");
-                        if (nameClaim != null)
-                        {
-                            var claimsIdentity = (ClaimsIdentity)ctx.Ticket.Principal.Identity;
-                            claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, nameClaim.Value)); 
-                        }
-                        return Task.FromResult(0);
-                    },
-                    OnAuthenticationFailed = ctx =>
-                    {
-                        ctx.SkipToNextMiddleware();
-                        return Task.FromResult(0);
-                    }
-                }
-            });
-
+                        
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 AuthenticationScheme = Constants.OrganizationalAuthenticationScheme,
                 AutomaticAuthenticate = true,
-                AutomaticChallenge = false,
+                AutomaticChallenge = true,
 
                 Authority = authOptions.Value.Authority,
                 Audience = authOptions.Value.Audience,

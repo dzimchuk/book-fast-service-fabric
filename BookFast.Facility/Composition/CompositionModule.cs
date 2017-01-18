@@ -14,7 +14,6 @@ namespace BookFast.Facility.Composition
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication:AzureAd"));
-            services.Configure<B2CAuthenticationOptions>(configuration.GetSection("Authentication:AzureAd:B2C"));
 
             services.AddMvc();
 
