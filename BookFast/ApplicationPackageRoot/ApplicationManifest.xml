@@ -6,22 +6,17 @@
     <Parameter Name="SearchService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebApp:ServiceFabric:InstanceCount" DefaultValue="-1" />
-    
     <Parameter Name="HttpsCertThumbprint" DefaultValue="" />
-    
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
-
     <Parameter Name="ApplicationInsights:InstrumentationKey" DefaultValue="" />
-
     <Parameter Name="Data:DefaultConnection:ConnectionString" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:ConnectionString" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:SearchIndexQueueName" DefaultValue="" />
-    
     <Parameter Name="Search:QueryKey" DefaultValue="" />
     <Parameter Name="Search:AdminKey" DefaultValue="" />
     <Parameter Name="Search:ServiceName" DefaultValue="" />
     <Parameter Name="Search:IndexName" DefaultValue="" />
-
+    <Parameter Name="Authentication:AzureAd:B2C:Audience" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:Instance" DefaultValue="https://login.microsoftonline.com/" />
     <Parameter Name="Authentication:AzureAd:B2C:TenantId" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:ClientId" DefaultValue="" />
@@ -29,18 +24,15 @@
     <Parameter Name="Authentication:AzureAd:B2C:PostLogoutRedirectUri" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:Policies:EditProfilePolicy" DefaultValue="" />
-    
     <Parameter Name="Authentication:AzureAd:ApiApp:Audience" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:ApiApp:Instance" DefaultValue="https://login.microsoftonline.com/" />
     <Parameter Name="Authentication:AzureAd:ApiApp:ValidIssuers" DefaultValue="" />
-    
     <Parameter Name="Authentication:AzureAd:WebApp:ApiResource" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:Instance" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:ValidIssuers" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:ClientId" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:ClientSecret" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:PostLogoutRedirectUri" DefaultValue="" />
-    
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -57,7 +49,7 @@
             <Parameter Name="AzureAd:B2C:Instance" Value="[Authentication:AzureAd:B2C:Instance]" />
             <Parameter Name="AzureAd:B2C:TenantId" Value="[Authentication:AzureAd:B2C:TenantId]" />
             <Parameter Name="AzureAd:B2C:Audience" Value="[Authentication:AzureAd:B2C:Audience]" />
-            <Parameter Name="AzureAd:B2C:Policy" Value="[Authentication:AzureAd:B2C:SignInOrSignUpPolicy]" />
+            <Parameter Name="AzureAd:B2C:Policy" Value="[Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy]" />
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
@@ -129,7 +121,7 @@
             <Parameter Name="AzureAd:B2C:Instance" Value="[Authentication:AzureAd:B2C:Instance]" />
             <Parameter Name="AzureAd:B2C:TenantId" Value="[Authentication:AzureAd:B2C:TenantId]" />
             <Parameter Name="AzureAd:B2C:Audience" Value="[Authentication:AzureAd:B2C:Audience]" />
-            <Parameter Name="AzureAd:B2C:Policy" Value="[Authentication:AzureAd:B2C:SignInOrSignUpPolicy]" />
+            <Parameter Name="AzureAd:B2C:Policy" Value="[Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy]" />
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
