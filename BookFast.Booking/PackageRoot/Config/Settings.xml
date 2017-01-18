@@ -1,9 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
-  <!-- Add your custom configuration sections and parameters here -->
-  <!--
-  <Section Name="MyConfigSection">
-    <Parameter Name="MyParameter" Value="Value1" />
+
+  <Section Name="Logging">
+    <Parameter Name="IncludeScopes" Value="false" />
+    <Parameter Name="LogLevel:Default" Value="Debug" />
+    <Parameter Name="LogLevel:System" Value="Information" />
+    <Parameter Name="LogLevel:Microsoft" Value="Information" />
   </Section>
-  -->
+
+  <Section Name="Data">
+    <Parameter Name="DefaultConnection:ConnectionString" Value="Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true" />
+  </Section>
+
+  <Section Name="Authentication">
+    <Parameter Name="AzureAd:B2C:Instance" Value="e.g https://login.microsoftonline.com/" />
+    <Parameter Name="AzureAd:B2C:TenantId" Value="B2C tenant ID" />
+    <Parameter Name="AzureAd:B2C:Audience" Value="B2C Application ID" />
+    <Parameter Name="AzureAd:B2C:Policy" Value="" />
+  </Section>
+
+  <Section Name="ApplicationInsights">
+    <Parameter Name="InstrumentationKey" Value="" />
+  </Section>
+
+  <Section Name="FacilityApi">
+    <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
+    <Parameter Name="ServiceApiResource" Value="" />
+  </Section>
+  
 </Settings>

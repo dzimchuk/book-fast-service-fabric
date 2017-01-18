@@ -12,25 +12,35 @@ namespace BookFast.Booking.Business
     {
         private readonly IBookingDataSource dataSource;
         private readonly ISecurityContext securityContext;
-        private readonly IAccommodationDataSource accommodationDataSource;
+        private readonly IFacilityProxy facilityProxy;
 
-        public BookingService(IBookingDataSource dataSource, ISecurityContext securityContext, IAccommodationDataSource accommodationDataSource)
+        public BookingService(IBookingDataSource dataSource, ISecurityContext securityContext, IFacilityProxy facilityProxy)
         {
             this.dataSource = dataSource;
             this.securityContext = securityContext;
-            this.accommodationDataSource = accommodationDataSource;
+            this.facilityProxy = facilityProxy;
         }
 
         public async Task<Contracts.Models.Booking> BookAsync(Guid accommodationId, Contracts.Models.BookingDetails details)
         {
-            await accommodationDataSource.CheckAccommodationAsync(accommodationId);
+            var accommodation = await facilityProxy.FindAccommodationAsync(accommodationId);
+            if (accommodation == null)
+            {
+                throw new AccommodationNotFoundException(accommodationId);
+            }
+
+            var facility = await facilityProxy.FindFacilityAsync(accommodation.FacilityId);
 
             var booking = new Contracts.Models.Booking
                           {
                               Id = Guid.NewGuid(),
                               User = securityContext.GetCurrentUser(),
                               AccommodationId = accommodationId,
-                              Details = details
+                              Details = details,
+                              AccommodationName = accommodation.Name,
+                              FacilityId = facility != null ? facility.Id : Guid.Empty,
+                              FacilityName = facility?.Name,
+                              StreetAddress = facility?.StreetAddress
                           };
 
             await dataSource.CreateAsync(booking);
