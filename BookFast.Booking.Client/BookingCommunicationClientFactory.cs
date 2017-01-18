@@ -13,13 +13,11 @@ namespace BookFast.Booking.Client
     internal class BookingCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastBookingAPI>>
     {
         private readonly IAccessTokenProvider accessTokenProvider;
-        private readonly ApiOptions apiOptions;
 
-        public BookingCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider, IOptions<ApiOptions> apiOptions)
+        public BookingCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
             this.accessTokenProvider = accessTokenProvider;
-            this.apiOptions = apiOptions.Value;
         }
 
         protected override void AbortClient(CommunicationClient<IBookFastBookingAPI> client)
@@ -28,7 +26,7 @@ namespace BookFast.Booking.Client
 
         protected override async Task<CommunicationClient<IBookFastBookingAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
         {
-            var accessToken = await accessTokenProvider.AcquireTokenAsync(apiOptions.ServiceApiResource);
+            var accessToken = await accessTokenProvider.AcquireTokenAsync();
             var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
 
             return new CommunicationClient<IBookFastBookingAPI>(new BookFastBookingAPI(new Uri(endpoint), credentials));

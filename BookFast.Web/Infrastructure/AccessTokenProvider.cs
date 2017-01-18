@@ -28,7 +28,12 @@ namespace BookFast.Web.Infrastructure
         public async Task<string> AcquireTokenAsync(string resource)
         {
             return await authorizationService.AuthorizeAsync(httpContextAccessor.HttpContext?.User, "FacilityProviderOnly") ?
-                await OrganizationalAuthentication.AcquireAccessTokenAsync(authOptions, GetUserId(), resource) : await B2CAuthentication.AcquireAccessTokenAsync(b2cAuthOptions);
+                await OrganizationalAuthentication.AcquireAccessTokenAsync(authOptions, GetUserId(), resource) : null;
+        }
+
+        public Task<string> AcquireTokenAsync()
+        {
+            return B2CAuthentication.AcquireAccessTokenAsync(b2cAuthOptions);
         }
 
         private string GetUserId()

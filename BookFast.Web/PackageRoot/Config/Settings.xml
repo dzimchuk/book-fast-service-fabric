@@ -31,10 +31,16 @@
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
 
-  <Section Name="BookFastApi">
-    <Parameter Name="FacilityService" Value="fabric:/BookFast/FacilityService" />
-    <Parameter Name="FacilityServiceApiResource" Value="App ID URI of the API app in Azure AD" />
+  <Section Name="FacilityApi">
+    <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
+    <Parameter Name="ServiceApiResource" Value="App ID URI of the API app in Azure AD" />
+  </Section>
 
-    <Parameter Name="SearchService" Value="fabric:/BookFast/SearchService" />
+  <Section Name="SearchApi">
+    <Parameter Name="ServiceUri" Value="fabric:/BookFast/SearchService" />
+  </Section>
+
+  <Section Name="BookingApi">
+    <Parameter Name="ServiceUri" Value="fabric:/BookFast/BookingService" />
   </Section>
 </Settings>
