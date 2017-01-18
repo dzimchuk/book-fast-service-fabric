@@ -1,0 +1,15 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "BookFast.Facility.Client": "1.0.0-*",
+    "BookFast.Files.Business": "1.0.0-*",
+    "WindowsAzure.Storage": "7.0.0",
+    "AutoMapper": "4.2.1",
+    "NETStandard.Library": "1.6.0"
+  },
+
+  "frameworks": {
+    "net461": {}
+  }
+}

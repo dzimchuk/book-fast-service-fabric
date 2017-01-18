@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="BookFastType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
+    <Parameter Name="Files:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="Booking:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="IndexerService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="SearchService:ServiceFabric:InstanceCount" DefaultValue="-1" />
@@ -12,6 +13,7 @@
     <Parameter Name="Data:DefaultConnection:ConnectionString" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:ConnectionString" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:SearchIndexQueueName" DefaultValue="" />
+    <Parameter Name="Data:Azure:Storage:ImageContainer" DefaultValue="" />
     <Parameter Name="Search:QueryKey" DefaultValue="" />
     <Parameter Name="Search:AdminKey" DefaultValue="" />
     <Parameter Name="Search:ServiceName" DefaultValue="" />
@@ -37,6 +39,30 @@
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="BookFast.FilesPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides>
+      <ConfigOverride Name="Config">
+        <Settings>
+          <Section Name="Data">
+            <Parameter Name="Azure:Storage:ConnectionString" Value="[Data:Azure:Storage:ConnectionString]" />
+            <Parameter Name="Azure:Storage:ImageContainer" Value="[Data:Azure:Storage:ImageContainer]" />
+          </Section>
+          <Section Name="Authentication">
+            <Parameter Name="AzureAd:Audience" Value="[Authentication:AzureAd:ApiApp:Audience]" />
+            <Parameter Name="AzureAd:Instance" Value="[Authentication:AzureAd:ApiApp:Instance]" />
+            <Parameter Name="AzureAd:ValidIssuers" Value="[Authentication:AzureAd:ApiApp:ValidIssuers]" />
+          </Section>
+          <Section Name="ApplicationInsights">
+            <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
+          </Section>
+        </Settings>
+      </ConfigOverride>
+    </ConfigOverrides>
+    <EnvironmentOverrides CodePackageRef="Code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
   <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="BookFast.BookingPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides>
@@ -118,10 +144,6 @@
             <Parameter Name="AzureAd:Audience" Value="[Authentication:AzureAd:ApiApp:Audience]" />
             <Parameter Name="AzureAd:Instance" Value="[Authentication:AzureAd:ApiApp:Instance]" />
             <Parameter Name="AzureAd:ValidIssuers" Value="[Authentication:AzureAd:ApiApp:ValidIssuers]" />
-            <Parameter Name="AzureAd:B2C:Instance" Value="[Authentication:AzureAd:B2C:Instance]" />
-            <Parameter Name="AzureAd:B2C:TenantId" Value="[Authentication:AzureAd:B2C:TenantId]" />
-            <Parameter Name="AzureAd:B2C:Audience" Value="[Authentication:AzureAd:B2C:Audience]" />
-            <Parameter Name="AzureAd:B2C:Policy" Value="[Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy]" />
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
@@ -175,6 +197,11 @@
          ServiceFabric PowerShell module.
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
+    <Service Name="FilesService">
+      <StatelessService ServiceTypeName="FilesServiceType" InstanceCount="[Files:ServiceFabric:InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
     <Service Name="BookingService">
       <StatelessService ServiceTypeName="BookingServiceType" InstanceCount="[Booking:ServiceFabric:InstanceCount]">
         <SingletonPartition />
