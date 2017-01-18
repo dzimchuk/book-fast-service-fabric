@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using AutoMapper;
 using BookFast.Web.Contracts.Models;
-using BookFast.Web.Proxy.Models;
 using System.Linq;
+using BookFast.Facility.Client.Models;
 
 namespace BookFast.Web.Proxy.Mappers
 {
@@ -15,8 +15,8 @@ namespace BookFast.Web.Proxy.Mappers
         {
             var mapperConfiguration = new MapperConfiguration(configuration =>
             {
-                configuration.CreateMap<FacilityRepresentation, Facility>()
-                             .ConvertUsing(representation => new Facility
+                configuration.CreateMap<FacilityRepresentation, Contracts.Models.Facility>()
+                             .ConvertUsing(representation => new Contracts.Models.Facility
                                                              {
                                                                  Id = representation.Id ?? Guid.Empty,
                                                                  Owner = null,
@@ -45,14 +45,14 @@ namespace BookFast.Web.Proxy.Mappers
             Mapper = mapperConfiguration.CreateMapper();
         }
 
-        public List<Facility> MapFrom(IList<FacilityRepresentation> facilities)
+        public List<Contracts.Models.Facility> MapFrom(IList<FacilityRepresentation> facilities)
         {
-            return Mapper.Map<List<Facility>>(facilities);
+            return Mapper.Map<List<Contracts.Models.Facility>>(facilities);
         }
 
-        public Facility MapFrom(FacilityRepresentation facility)
+        public Contracts.Models.Facility MapFrom(FacilityRepresentation facility)
         {
-            return Mapper.Map<Facility>(facility);
+            return Mapper.Map<Contracts.Models.Facility>(facility);
         }
 
         public FacilityData MapFrom(FacilityDetails details)

@@ -6,8 +6,8 @@ namespace BookFast.Web.Controllers
 {
     public interface IFacilityMapper
     {
-        FacilityViewModel MapFrom(Facility facility);
-        IEnumerable<FacilityViewModel> MapFrom(IEnumerable<Facility> facilities);
+        FacilityViewModel MapFrom(Contracts.Models.Facility facility);
+        IEnumerable<FacilityViewModel> MapFrom(IEnumerable<Contracts.Models.Facility> facilities);
         FacilityDetails MapFrom(FacilityViewModel viewModel);
     }
 }

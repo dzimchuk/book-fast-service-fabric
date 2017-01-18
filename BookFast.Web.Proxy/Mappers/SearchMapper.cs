@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutoMapper;
-using BookFast.Web.Proxy.Models;
+using BookFast.Search.Client.Models;
 
 namespace BookFast.Web.Proxy.Mappers
 {

@@ -14,7 +14,7 @@ namespace BookFast.Web.Mappers
         {
             var mapperConfiguration = new MapperConfiguration(configuration =>
                                                               {
-                                                                  configuration.CreateMap<Facility, FacilityViewModel>()
+                                                                  configuration.CreateMap<Contracts.Models.Facility, FacilityViewModel>()
                                                                                .ForMember(vm => vm.Name, config => config.MapFrom(m => m.Details.Name))
                                                                                .ForMember(vm => vm.Description, config => config.MapFrom(m => m.Details.Description))
                                                                                .ForMember(vm => vm.StreetAddress, config => config.MapFrom(m => m.Details.StreetAddress))
@@ -29,12 +29,12 @@ namespace BookFast.Web.Mappers
             Mapper = mapperConfiguration.CreateMapper();
         }
 
-        public FacilityViewModel MapFrom(Facility facility)
+        public FacilityViewModel MapFrom(Contracts.Models.Facility facility)
         {
             return Mapper.Map<FacilityViewModel>(facility);
         }
 
-        public IEnumerable<FacilityViewModel> MapFrom(IEnumerable<Facility> facilities)
+        public IEnumerable<FacilityViewModel> MapFrom(IEnumerable<Contracts.Models.Facility> facilities)
         {
             return Mapper.Map<IEnumerable<FacilityViewModel>>(facilities);
         }

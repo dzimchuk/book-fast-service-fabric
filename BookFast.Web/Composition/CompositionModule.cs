@@ -1,10 +1,10 @@
 ﻿using BookFast.Framework;
+using BookFast.Rest;
 using BookFast.Web.Contracts.Security;
 using BookFast.Web.Controllers;
 using BookFast.Web.Infrastructure;
 using BookFast.Web.Infrastructure.Authentication;
 using BookFast.Web.Mappers;
-using BookFast.Web.Proxy.RestClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;

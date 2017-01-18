@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AutoMapper;
 using BookFast.Web.Contracts.Models;
-using BookFast.Web.Proxy.Models;
+using BookFast.Booking.Client.Models;
 
 namespace BookFast.Web.Proxy.Mappers
 {
@@ -20,8 +20,8 @@ namespace BookFast.Web.Proxy.Mappers
                                                               FromDate = details.FromDate.UtcDateTime,
                                                               ToDate = details.ToDate.UtcDateTime
                                                           });
-                configuration.CreateMap<BookingRepresentation, Booking>()
-                             .ConvertUsing(representation => new Booking
+                configuration.CreateMap<BookingRepresentation, Contracts.Models.Booking>()
+                             .ConvertUsing(representation => new Contracts.Models.Booking
                                                              {
                                                                  Id = representation.Id ?? Guid.Empty,
                                                                  AccommodationId = representation.AccommodationId ?? Guid.Empty,
@@ -47,14 +47,14 @@ namespace BookFast.Web.Proxy.Mappers
             return Mapper.Map<BookingData>(details);
         }
 
-        public Booking MapFrom(BookingRepresentation booking)
+        public Contracts.Models.Booking MapFrom(BookingRepresentation booking)
         {
-            return Mapper.Map<Booking>(booking);
+            return Mapper.Map<Contracts.Models.Booking>(booking);
         }
 
-        public List<Booking> MapFrom(IList<BookingRepresentation> bookings)
+        public List<Contracts.Models.Booking> MapFrom(IList<BookingRepresentation> bookings)
         {
-            return Mapper.Map<List<Booking>>(bookings);
+            return Mapper.Map<List<Contracts.Models.Booking>>(bookings);
         }
     }
 }

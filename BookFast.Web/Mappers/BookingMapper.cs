@@ -15,7 +15,7 @@ namespace BookFast.Web.Mappers
             var mapperConfiguration = new MapperConfiguration(configuration =>
                                                               {
                                                                   configuration.CreateMap<CreateBookingViewModel, BookingDetails>();
-                                                                  configuration.CreateMap<Booking, BookingViewModel>()
+                                                                  configuration.CreateMap<Contracts.Models.Booking, BookingViewModel>()
                                                                                .ForMember(vm => vm.FromDate, config => config.MapFrom(m => m.Details.FromDate))
                                                                                .ForMember(vm => vm.ToDate, config => config.MapFrom(m => m.Details.ToDate));
                                                               });
@@ -29,12 +29,12 @@ namespace BookFast.Web.Mappers
             return Mapper.Map<BookingDetails>(viewModel);
         }
 
-        public IEnumerable<BookingViewModel> MapFrom(IEnumerable<Booking> bookings)
+        public IEnumerable<BookingViewModel> MapFrom(IEnumerable<Contracts.Models.Booking> bookings)
         {
             return Mapper.Map<IEnumerable<BookingViewModel>>(bookings);
         }
 
-        public BookingViewModel MapFrom(Booking booking)
+        public BookingViewModel MapFrom(Contracts.Models.Booking booking)
         {
             return Mapper.Map<BookingViewModel>(booking);
         }

@@ -1,5 +1,5 @@
-﻿using BookFast.Web.Infrastructure.Authentication;
-using BookFast.Web.Proxy.RestClient;
+﻿using BookFast.Rest;
+using BookFast.Web.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

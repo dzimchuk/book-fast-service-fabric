@@ -5,53 +5,49 @@ using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Models;
+using BookFast.ServiceFabric.Communication;
+using BookFast.Booking.Client;
 
 namespace BookFast.Web.Proxy
 {
     internal class BookingProxy : IBookingService
     {
-        private readonly IBookFastAPIFactory restClientFactory;
+        private readonly IPartitionClientFactory<CommunicationClient<IBookFastBookingAPI>> partitionClientFactory;
         private readonly IBookingMapper mapper;
 
-        public BookingProxy(IBookFastAPIFactory restClientFactory, IBookingMapper mapper)
+        public BookingProxy(IPartitionClientFactory<CommunicationClient<IBookFastBookingAPI>> partitionClientFactory, IBookingMapper mapper)
         {
-            this.restClientFactory = restClientFactory;
+            this.partitionClientFactory = partitionClientFactory;
             this.mapper = mapper;
         }
 
         public async Task BookAsync(Guid accommodationId, BookingDetails details)
         {
-            var client = await restClientFactory.CreateAsync();
-
             var data = mapper.MapFrom(details);
             data.AccommodationId = accommodationId;
 
-            var result = await client.CreateBookingWithHttpMessagesAsync(accommodationId, data);
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.CreateBookingWithHttpMessagesAsync(accommodationId, data));
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new AccommodationNotFoundException(accommodationId);
         }
 
-        public async Task<List<Booking>> ListPendingAsync()
+        public async Task<List<Contracts.Models.Booking>> ListPendingAsync()
         {
-            var client = await restClientFactory.CreateAsync();
-            var result = await client.ListBookingsWithHttpMessagesAsync();
-
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.ListBookingsWithHttpMessagesAsync());
             return mapper.MapFrom(result.Body);
         }
 
         public async Task CancelAsync(Guid id)
         {
-            var client = await restClientFactory.CreateAsync();
-            var result = await client.DeleteBookingWithHttpMessagesAsync(id);
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.DeleteBookingWithHttpMessagesAsync(id));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new BookingNotFoundException(id);
         }
 
-        public async Task<Booking> FindAsync(Guid id)
+        public async Task<Contracts.Models.Booking> FindAsync(Guid id)
         {
-            var client = await restClientFactory.CreateAsync();
-            var result = await client.FindBookingWithHttpMessagesAsync(id);
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.FindBookingWithHttpMessagesAsync(id));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new BookingNotFoundException(id);

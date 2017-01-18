@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using BookFast.Web.Contracts.Models;
-using BookFast.Web.Proxy.Models;
+using BookFast.Facility.Client.Models;
 
 namespace BookFast.Web.Proxy
 {

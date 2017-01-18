@@ -5,39 +5,32 @@ using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Models;
-using Microsoft.ServiceFabric.Services.Communication.Client;
-using BookFast.Web.Proxy.RestClient;
-using Microsoft.Extensions.Options;
+using BookFast.ServiceFabric.Communication;
+using BookFast.Facility.Client;
 
 namespace BookFast.Web.Proxy
 {
     internal class FacilityProxy : IFacilityService
     {
         private readonly IFacilityMapper mapper;
-        private readonly ICommunicationClientFactory<CommunicationClient<IBookFastFacilityAPI>> factory;
-        private readonly ApiOptions apiOptions;
+        private readonly IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory;
 
-        public FacilityProxy(IFacilityMapper mapper, 
-            ICommunicationClientFactory<CommunicationClient<IBookFastFacilityAPI>> factory, 
-            IOptions<ApiOptions> apiOptions)
+        public FacilityProxy(IFacilityMapper mapper,
+            IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory)
         {
             this.mapper = mapper;
-            this.factory = factory;
-            this.apiOptions = apiOptions.Value;
+            this.partitionClientFactory = partitionClientFactory;
         }
-
-        private ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>> PartitionClient =>
-            new ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>>(factory, new Uri(apiOptions.FacilityService));
-        
-        public async Task<List<Facility>> ListAsync()
+                
+        public async Task<List<Contracts.Models.Facility>> ListAsync()
         {
-            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.ListFacilitiesWithHttpMessagesAsync());
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.ListFacilitiesWithHttpMessagesAsync());
             return mapper.MapFrom(result.Body);
         }
 
-        public async Task<Facility> FindAsync(Guid facilityId)
+        public async Task<Contracts.Models.Facility> FindAsync(Guid facilityId)
         {
-            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.FindFacilityWithHttpMessagesAsync(facilityId));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.FindFacilityWithHttpMessagesAsync(facilityId));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new FacilityNotFoundException(facilityId);
@@ -47,12 +40,12 @@ namespace BookFast.Web.Proxy
 
         public Task CreateAsync(FacilityDetails details)
         {
-            return PartitionClient.InvokeWithRetryAsync(client => client.API.CreateFacilityWithHttpMessagesAsync(mapper.MapFrom(details)));
+            return partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.CreateFacilityWithHttpMessagesAsync(mapper.MapFrom(details)));
         }
 
         public async Task UpdateAsync(Guid facilityId, FacilityDetails details)
         {
-            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.MapFrom(details)));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.MapFrom(details)));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new FacilityNotFoundException(facilityId);
@@ -60,7 +53,7 @@ namespace BookFast.Web.Proxy
 
         public async Task DeleteAsync(Guid facilityId)
         {
-            var result = await PartitionClient.InvokeWithRetryAsync(client => client.API.DeleteFacilityWithHttpMessagesAsync(facilityId));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.DeleteFacilityWithHttpMessagesAsync(facilityId));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
                 throw new FacilityNotFoundException(facilityId);

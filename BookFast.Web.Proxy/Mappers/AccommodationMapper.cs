@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using AutoMapper;
 using BookFast.Web.Contracts.Models;
-using BookFast.Web.Proxy.Models;
 using System.Linq;
+using BookFast.Facility.Client.Models;
 
 namespace BookFast.Web.Proxy.Mappers
 {

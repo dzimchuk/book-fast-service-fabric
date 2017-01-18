@@ -7,7 +7,7 @@ namespace BookFast.Web.Controllers
     public interface IBookingMapper
     {
         BookingDetails MapFrom(CreateBookingViewModel viewModel);
-        IEnumerable<BookingViewModel> MapFrom(IEnumerable<Booking> bookings);
-        BookingViewModel MapFrom(Booking booking);
+        IEnumerable<BookingViewModel> MapFrom(IEnumerable<Contracts.Models.Booking> bookings);
+        BookingViewModel MapFrom(Contracts.Models.Booking booking);
     }
 }
