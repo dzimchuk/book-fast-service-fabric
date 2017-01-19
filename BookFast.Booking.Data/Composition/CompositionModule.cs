@@ -21,7 +21,9 @@ namespace BookFast.Booking.Data.Composition
             services.AddScoped<IBookingMapper, BookingMapper>();
             services.AddScoped<IFacilityMapper, FacilityMapper>();
 
-            services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
+            services.AddSingleton<IAccessTokenProvider, NullAccessTokenProvider>();
+
+            new Facility.Client.Composition.CompositionModule().AddServices(services, configuration);
         }
     }
 }

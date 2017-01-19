@@ -22,5 +22,10 @@
   <Section Name="ApplicationInsights">
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
+
+  <Section Name="FacilityApi">
+    <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
+    <Parameter Name="ServiceApiResource" Value="API app ID" />
+  </Section>
   
 </Settings>

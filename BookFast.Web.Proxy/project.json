@@ -8,7 +8,8 @@
     "BookFast.Framework": "1.0.0-*",
     "BookFast.Booking.Client": "1.0.0-*",
     "BookFast.Facility.Client": "1.0.0-*",
-    "BookFast.Search.Client": "1.0.0-*"
+    "BookFast.Search.Client": "1.0.0-*",
+    "BookFast.Files.Client": "1.0.0-*"
   },
 
   "frameworks": {

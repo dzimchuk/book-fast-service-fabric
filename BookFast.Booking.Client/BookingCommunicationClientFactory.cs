@@ -17,6 +17,11 @@ namespace BookFast.Booking.Client
         public BookingCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
+            if (accessTokenProvider == null)
+            {
+                throw new ArgumentNullException(nameof(accessTokenProvider));
+            }
+
             this.accessTokenProvider = accessTokenProvider;
         }
 

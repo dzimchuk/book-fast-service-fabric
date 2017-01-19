@@ -10,20 +10,20 @@ namespace BookFast.Files.Business
 {
     internal class FileAccessService : IFileAccessService
     {
-        private readonly IAccessTokenProvider tokenProvider;
-        private readonly IFacilityProxy facilityService;
+        private readonly ISASTokenProvider tokenProvider;
+        private readonly IFacilityProxy facilityProxy;
 
         private const double TokenExpirationTime = 20;
 
-        public FileAccessService(IAccessTokenProvider tokenProvider, IFacilityProxy facilityService)
+        public FileAccessService(ISASTokenProvider tokenProvider, IFacilityProxy facilityProxy)
         {
             this.tokenProvider = tokenProvider;
-            this.facilityService = facilityService;
+            this.facilityProxy = facilityProxy;
         }
 
         public async Task<FileAccessToken> IssueAccommodationImageUploadTokenAsync(Guid accommodationId, string originalFileName)
         {
-            var accommodation = await facilityService.FindAccommodationAsync(accommodationId);
+            var accommodation = await facilityProxy.FindAccommodationAsync(accommodationId);
             if (accommodation == null)
             {
                 throw new AccommodationNotFoundException(accommodationId);
@@ -36,7 +36,7 @@ namespace BookFast.Files.Business
 
         public async Task<FileAccessToken> IssueFacilityImageUploadTokenAsync(Guid facilityId, string originalFileName)
         {
-            var facility = await facilityService.FindFacilityAsync(facilityId);
+            var facility = await facilityProxy.FindFacilityAsync(facilityId);
             if (facility == null)
             {
                 throw new FacilityNotFoundException(facilityId);

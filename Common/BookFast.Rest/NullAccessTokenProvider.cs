@@ -1,9 +1,8 @@
-﻿using BookFast.Rest;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
-namespace BookFast.Booking.Data
+namespace BookFast.Rest
 {
-    internal class AccessTokenProvider : IAccessTokenProvider
+    public class NullAccessTokenProvider : IAccessTokenProvider
     {
         public Task<string> AcquireTokenAsync() => Task.FromResult<string>(null);
 

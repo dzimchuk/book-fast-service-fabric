@@ -56,6 +56,9 @@
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
           </Section>
+          <Section Name="FacilityApi">
+            <Parameter Name="ServiceApiResource" Value="[Authentication:AzureAd:WebApp:ApiResource]" />
+          </Section>
         </Settings>
       </ConfigOverride>
     </ConfigOverrides>

@@ -7,11 +7,11 @@ using BookFast.Files.Business.Data;
 
 namespace BookFast.Files.Data
 {
-    internal class AccessTokenProvider : IAccessTokenProvider
+    internal class SASTokenProvider : ISASTokenProvider
     {
         private readonly AzureStorageOptions storageOptions;
 
-        public AccessTokenProvider(IOptions<AzureStorageOptions> storageOptions)
+        public SASTokenProvider(IOptions<AzureStorageOptions> storageOptions)
         {
             this.storageOptions = storageOptions.Value;
         }

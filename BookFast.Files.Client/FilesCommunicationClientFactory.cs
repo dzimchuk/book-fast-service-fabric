@@ -8,14 +8,14 @@ using System;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Rest;
 
-namespace BookFast.Facility.Client
+namespace BookFast.Files.Client
 {
-    internal class FacilityCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastFacilityAPI>>
+    internal class FilesCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastFilesAPI>>
     {
         private readonly IAccessTokenProvider accessTokenProvider;
         private readonly ApiOptions apiOptions;
 
-        public FacilityCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider, IOptions<ApiOptions> apiOptions)
+        public FilesCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider, IOptions<ApiOptions> apiOptions)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
             if (accessTokenProvider == null)
@@ -27,13 +27,13 @@ namespace BookFast.Facility.Client
             this.apiOptions = apiOptions.Value;
         }
 
-        protected override void AbortClient(CommunicationClient<IBookFastFacilityAPI> client)
+        protected override void AbortClient(CommunicationClient<IBookFastFilesAPI> client)
         {
             // client with persistent connections should abort their connections here.
             // HTTP clients don't hold persistent connections, so no action is taken.
         }
 
-        protected override async Task<CommunicationClient<IBookFastFacilityAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
+        protected override async Task<CommunicationClient<IBookFastFilesAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
         {
             // clients that maintain persistent connections to a service should 
             // create that connection here.
@@ -42,17 +42,17 @@ namespace BookFast.Facility.Client
             var accessToken = await accessTokenProvider.AcquireTokenAsync(apiOptions.ServiceApiResource);
             var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
 
-            return new CommunicationClient<IBookFastFacilityAPI>(new BookFastFacilityAPI(new Uri(endpoint), credentials));
+            return new CommunicationClient<IBookFastFilesAPI>(new BookFastFilesAPI(new Uri(endpoint), credentials));
         }
 
-        protected override bool ValidateClient(CommunicationClient<IBookFastFacilityAPI> client)
+        protected override bool ValidateClient(CommunicationClient<IBookFastFilesAPI> client)
         {
             // client with persistent connections should be validated here.
             // HTTP clients don't hold persistent connections, so no validation needs to be done.
             return true;
         }
 
-        protected override bool ValidateClient(string endpoint, CommunicationClient<IBookFastFacilityAPI> client)
+        protected override bool ValidateClient(string endpoint, CommunicationClient<IBookFastFilesAPI> client)
         {
             // client with persistent connections should be validated here.
             // HTTP clients don't hold persistent connections, so no validation needs to be done.

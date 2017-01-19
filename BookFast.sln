@@ -70,6 +70,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files.Data", "Book
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files", "BookFast.Files\BookFast.Files.xproj", "{16CCBA5A-4176-4E38-B666-C262C71A887F}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files.Client", "BookFast.Files.Client\BookFast.Files.Client.xproj", "{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -318,6 +320,14 @@ Global
 		{16CCBA5A-4176-4E38-B666-C262C71A887F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16CCBA5A-4176-4E38-B666-C262C71A887F}.Release|x64.ActiveCfg = Release|Any CPU
 		{16CCBA5A-4176-4E38-B666-C262C71A887F}.Release|x64.Build.0 = Release|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Debug|x64.Build.0 = Debug|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Release|x64.ActiveCfg = Release|Any CPU
+		{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
