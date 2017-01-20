@@ -21,6 +21,7 @@
     "Microsoft.IdentityModel.Protocols.OpenIdConnect": "2.0.0",
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
     "AutoMapper": "4.2.1",
+    "OdeToCode.AddFeatureFolders": "1.0.4",
     "BookFast.Web.Proxy": "1.0.0-*",
     "BookFast.ServiceFabric": "1.0.0-*"
   },
@@ -47,7 +48,7 @@
   "publishOptions": {
     "include": [
       "wwwroot",
-      "**/*.cshtml"
+      "Features/**/*.cshtml"
     ]
   },
 

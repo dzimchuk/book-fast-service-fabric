@@ -2,28 +2,21 @@
 using System.ComponentModel.DataAnnotations;
 using BookFast.Framework.Validation;
 
-namespace BookFast.Booking.Models
+namespace BookFast.Web.Features.Booking.ViewModels
 {
     [DateRange(ErrorMessage = "End date should be greater than or equal to start date")]
-    public class BookingData : IDateRange
+    public class CreateBookingViewModel : IDateRange
     {
-        /// <summary>
-        /// Accommodation ID
-        /// </summary>
         public Guid AccommodationId { get; set; }
 
-        /// <summary>
-        /// Booking start date
-        /// </summary>
         [DataType(DataType.Date)]
         [FutureDate(ErrorMessage = "Start date cannot be in the past")]
+        [Display(Name = "Start date")]
         public DateTimeOffset FromDate { get; set; }
 
-        /// <summary>
-        /// Booking end date
-        /// </summary>
         [DataType(DataType.Date)]
         [FutureDate(ErrorMessage = "End date cannot be in the past")]
+        [Display(Name = "End date")]
         public DateTimeOffset ToDate { get; set; }
     }
 }

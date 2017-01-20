@@ -1,0 +1,46 @@
+﻿@model BookFast.Web.Features.Facility.ViewModels.AccommodationViewModel
+
+@{
+    ViewBag.Title = "Create a new accommodation";
+}
+
+<h2>Create a new accommodation</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-muted"></div>
+        <input type="hidden" name="FacilityId" value="@ViewBag.FacilityId"/>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-muted" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-muted" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="RoomCount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="RoomCount" class="form-control" />
+                <span asp-validation-for="RoomCount" class="text-muted" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-default" asp-controller="facility" asp-action="details" asp-route-id="@ViewBag.FacilityId">Cancel</a>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

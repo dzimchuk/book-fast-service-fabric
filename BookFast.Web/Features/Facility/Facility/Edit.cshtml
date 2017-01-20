@@ -1,0 +1,56 @@
+@model BookFast.Web.Features.Facility.ViewModels.FacilityViewModel
+
+@{
+    ViewData["Title"] = "Edit - " + Model.Name;
+}
+
+<h2>@Model.Name</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <div asp-validation-summary="ModelOnly" class="text-muted"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-muted" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-muted" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StreetAddress" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StreetAddress" class="form-control" />
+                <span asp-validation-for="StreetAddress" class="text-muted" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+                <a class="btn btn-default" asp-action="Index">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+    @await Html.PartialAsync("_ImageFieldsPartial", Model.Images)
+</form>
+
+@await Html.PartialAsync("_ImageEditListPartial", Model.Images)
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{ await Html.RenderPartialAsync("_ImageUploadScriptsPartial"); }
+    <script type="text/javascript">
+        $(function () {
+            var imageHandler = new BookFast.ImageHandler('facilities');
+            imageHandler.initialize();
+        });
+    </script>
+}

@@ -1,0 +1,46 @@
+﻿@model BookFast.Web.Features.Booking.ViewModels.BookingViewModel
+
+@{
+    ViewBag.Title = "Cancel booking at " + Model.FacilityName;
+}
+
+<h2>Booking at @Model.FacilityName</h2>
+
+<h3>Are you sure you want to cancel this booking?</h3>
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AccommodationName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AccommodationName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FacilityName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FacilityName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FromDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FromDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ToDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ToDate)
+        </dd>
+    </dl>
+
+    <form asp-action="Cancel">
+        <div class="form-actions no-color">
+            <input type="submit" value="Yes" class="btn btn-default" />
+            <a class="btn btn-primary" asp-controller="booking" asp-action="index">No</a>
+        </div>
+    </form>
+</div>

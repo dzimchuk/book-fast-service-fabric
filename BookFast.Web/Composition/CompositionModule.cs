@@ -1,12 +1,14 @@
 ﻿using BookFast.Framework;
 using BookFast.Rest;
 using BookFast.Web.Contracts.Security;
-using BookFast.Web.Controllers;
+using BookFast.Web.Features.Booking;
+using BookFast.Web.Features.Facility;
+using BookFast.Web.Features.Files;
 using BookFast.Web.Infrastructure;
 using BookFast.Web.Infrastructure.Authentication;
-using BookFast.Web.Mappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using OdeToCode.AddFeatureFolders;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace BookFast.Web.Composition
@@ -22,7 +24,8 @@ namespace BookFast.Web.Composition
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
 
-            services.AddMvc();
+            var featureOptions = new FeatureFolderOptions();
+            services.AddMvc().AddFeatureFolders(featureOptions).AddRazorOptions(o => o.ViewLocationFormats.Add(featureOptions.FeatureNamePlaceholder + "/{1}/{0}.cshtml"));
 
             RegisterAuthorizationPolicies(services);
             RegisterMappers(services);
@@ -40,10 +43,10 @@ namespace BookFast.Web.Composition
 
         private static void RegisterMappers(IServiceCollection services)
         {
-            services.AddScoped<IFacilityMapper, FacilityMapper>();
-            services.AddScoped<IAccommodationMapper, AccommodationMapper>();
-            services.AddScoped<IBookingMapper, BookingMapper>();
-            services.AddScoped<IFileAccessMapper, FileAccessMapper>();
+            services.AddSingleton<FacilityMapper>();
+            services.AddSingleton<AccommodationMapper>();
+            services.AddSingleton<BookingMapper>();
+            services.AddSingleton<FileAccessMapper>();
         }
     }
 }
