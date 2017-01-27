@@ -43,4 +43,9 @@
   <Section Name="BookingApi">
     <Parameter Name="ServiceUri" Value="fabric:/BookFast/BookingService" />
   </Section>
+
+  <Section Name="FilesApi">
+    <Parameter Name="ServiceUri" Value="fabric:/BookFast/FilesService" />
+    <Parameter Name="ServiceApiResource" Value="App ID URI of the API app in Azure AD" />
+  </Section>
 </Settings>

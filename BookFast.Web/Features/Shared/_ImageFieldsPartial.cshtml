@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<string>
 
-@if (Model != null && Model.Any())
-{
-    <div id="imageFields">
+<div id="imageFields">
+    @if (Model != null && Model.Any())
+    {
+
         @foreach (var image in Model)
         {
             <input type="hidden" value="@image" name="Images" />
         }
-    </div>
-}
+    }
+</div>

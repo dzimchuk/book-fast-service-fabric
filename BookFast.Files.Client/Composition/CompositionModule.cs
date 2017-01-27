@@ -14,7 +14,7 @@ namespace BookFast.Files.Client.Composition
     {
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<ApiOptions>(configuration.GetSection("FacilityApi"));
+            services.Configure<ApiOptions>(configuration.GetSection("FilesApi"));
 
             services.AddSingleton(new FabricClient());
 
