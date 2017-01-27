@@ -22,6 +22,7 @@
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
     "AutoMapper": "4.2.1",
     "OdeToCode.AddFeatureFolders": "1.0.4",
+    "OdeToCode.UseNodeModules": "1.0.1",
     "BookFast.Web.Proxy": "1.0.0-*",
     "BookFast.ServiceFabric": "1.0.0-*"
   },
@@ -48,12 +49,16 @@
   "publishOptions": {
     "include": [
       "wwwroot",
-      "Features/**/*.cshtml"
+      "Features/**/*.cshtml",
+      "node_modules/bootstrap",
+      "node_modules/jquery",
+      "node_modules/jquery-validation",
+      "node_modules/jquery-validation-unobtrusive"
     ]
   },
 
   "scripts": {
-    "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ],
+    "prepublish": [ "npm install", "gulp clean", "gulp min" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   }
 }

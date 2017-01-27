@@ -66,6 +66,7 @@ namespace BookFast.Web
             app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
+            app.UseNodeModules(env);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
