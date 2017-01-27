@@ -1,4 +1,5 @@
 ﻿using BookFast.Web.Contracts.Security;
+using BookFast.Web.Infrastructure.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -59,7 +60,7 @@ namespace BookFast.Web.Infrastructure.Authentication
 
             openIdConnectOptions.Scope.Add("offline_access");
 
-            app.UseOpenIdConnectAuthentication(openIdConnectOptions);
+            app.UseB2COpenIdConnectAuthentication(openIdConnectOptions);
         }
 
         private static IOpenIdConnectEvents CreateOpenIdConnectEventHandlers(B2CAuthenticationOptions authOptions, B2CPolicies policies)
