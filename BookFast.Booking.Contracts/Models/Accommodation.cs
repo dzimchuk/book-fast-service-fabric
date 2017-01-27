@@ -11,7 +11,5 @@ namespace BookFast.Booking.Contracts.Models
         public string[] Images { get; set; }
 
         public Guid FacilityId { get; set; }
-        public string FacilityName { get; set; }
-        public string FacilityAddress { get; set; }
     }
 }
