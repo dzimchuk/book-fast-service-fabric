@@ -1,5 +1,4 @@
 ﻿using BookFast.Web.Contracts.Security;
-using BookFast.Web.Infrastructure.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -60,7 +59,7 @@ namespace BookFast.Web.Infrastructure.Authentication
 
             openIdConnectOptions.Scope.Add("offline_access");
 
-            app.UseB2COpenIdConnectAuthentication(openIdConnectOptions);
+            app.UseOpenIdConnectAuthentication(openIdConnectOptions);
         }
 
         private static IOpenIdConnectEvents CreateOpenIdConnectEventHandlers(B2CAuthenticationOptions authOptions, B2CPolicies policies)
@@ -89,6 +88,19 @@ namespace BookFast.Web.Infrastructure.Authentication
                 {
                     context.HandleResponse();
                     context.Response.Redirect("/home/error");
+                    return Task.FromResult(0);
+                },
+                OnMessageReceived = context =>
+                {
+                    if (!string.IsNullOrEmpty(context.ProtocolMessage.Error) &&
+                        !string.IsNullOrEmpty(context.ProtocolMessage.ErrorDescription) &&
+                        context.ProtocolMessage.ErrorDescription.StartsWith("AADB2C90091") &&
+                        context.Properties.Items[AuthConstants.B2CPolicy] == policies.EditProfilePolicy)
+                    {
+                        context.Ticket = new Microsoft.AspNetCore.Authentication.AuthenticationTicket(context.HttpContext.User, context.Properties, AuthConstants.OpenIdConnectB2CAuthenticationScheme);
+                        context.HandleResponse();
+                    }
+
                     return Task.FromResult(0);
                 }
             };

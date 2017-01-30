@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using System;
 using BookFast.Web.Infrastructure.Authentication;
+using Microsoft.AspNetCore.Http.Features.Authentication;
 
 namespace BookFast.Web.Features.Home
 {
@@ -52,12 +53,12 @@ namespace BookFast.Web.Features.Home
         {
             if (IsB2CAuthenticated)
             {
-                return new ChallengeResult(
+                return new CustomChallengeResult(
                     AuthConstants.OpenIdConnectB2CAuthenticationScheme,
                     new AuthenticationProperties(new Dictionary<string, string> { { AuthConstants.B2CPolicy, policies.EditProfilePolicy } })
                     {
                         RedirectUri = "/"
-                    });
+                    }, ChallengeBehavior.Unauthorized);
             }
 
             return RedirectHome();
