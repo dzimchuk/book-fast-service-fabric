@@ -15,8 +15,6 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IDistributedCache distributedCache;
 
-        private const string ObjectId = "http://schemas.microsoft.com/identity/claims/objectidentifier";
-
         public AccessTokenProvider(IOptions<AuthenticationOptions> authOptions, 
             IAuthorizationService authorizationService, IHttpContextAccessor httpContextAccessor, 
             IDistributedCache distributedCache)
@@ -58,7 +56,7 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
             if (httpContextAccessor.HttpContext?.User == null)
                 return null;
 
-            return httpContextAccessor.HttpContext.User.FindFirst(ObjectId)?.Value;
+            return httpContextAccessor.HttpContext.User.FindFirst(AuthConstants.ObjectId)?.Value;
         }
     }
 }

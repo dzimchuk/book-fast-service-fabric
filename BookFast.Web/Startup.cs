@@ -3,6 +3,7 @@ using BookFast.Web.Infrastructure.Authentication.Customer;
 using BookFast.Web.Infrastructure.Authentication.Organizational;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -47,7 +48,8 @@ namespace BookFast.Web
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
             IOptions<Infrastructure.Authentication.Organizational.AuthenticationOptions> authOptions, 
-            IOptions<B2CAuthenticationOptions> b2cAuthOptions, IOptions<B2CPolicies> b2cPolicies)
+            IOptions<B2CAuthenticationOptions> b2cAuthOptions, IOptions<B2CPolicies> b2cPolicies,
+            IDistributedCache distributedCache)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -75,7 +77,7 @@ namespace BookFast.Web
             });
 
             app.UseOpenIdConnectB2CAuthentication(b2cAuthOptions.Value, b2cPolicies.Value, true);
-            app.UseOpenIdConnectOrganizationalAuthentication(authOptions.Value, false);
+            app.UseOpenIdConnectOrganizationalAuthentication(authOptions.Value, distributedCache, false);
             
             app.UseMvc(routes =>
             {

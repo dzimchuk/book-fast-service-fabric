@@ -33,7 +33,7 @@
 
   <Section Name="Redis">
     <Parameter Name="Configuration" Value="" />
-    <Parameter Name="InstanceName" Value="BookFast.Web" />
+    <Parameter Name="InstanceName" Value="BookFast.Web_" />
   </Section>
 
   <Section Name="FacilityApi">

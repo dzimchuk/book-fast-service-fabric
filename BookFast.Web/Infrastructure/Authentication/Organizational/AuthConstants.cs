@@ -5,5 +5,7 @@
         public const string OpenIdConnectOrganizationalAuthenticationScheme = "OpenID Connect";
 
         public const string OrganizationalCallbackPath = "/signin-oidc";
+
+        public const string ObjectId = "http://schemas.microsoft.com/identity/claims/objectidentifier";
     }
 }
