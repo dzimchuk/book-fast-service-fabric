@@ -14,6 +14,7 @@
     <Parameter Name="Data:Azure:Storage:ConnectionString" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:SearchIndexQueueName" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:ImageContainer" DefaultValue="" />
+    <Parameter Name="Redis:Configuration" DefaultValue="" />
     <Parameter Name="Search:QueryKey" DefaultValue="" />
     <Parameter Name="Search:AdminKey" DefaultValue="" />
     <Parameter Name="Search:ServiceName" DefaultValue="" />
@@ -177,6 +178,9 @@
             <Parameter Name="AzureAd:B2C:PostLogoutRedirectUri" Value="[Authentication:AzureAd:B2C:PostLogoutRedirectUri]" />
             <Parameter Name="AzureAd:B2C:Policies:SignInOrSignUpPolicy" Value="[Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy]" />
             <Parameter Name="AzureAd:B2C:Policies:EditProfilePolicy" Value="[Authentication:AzureAd:B2C:Policies:EditProfilePolicy]" />
+          </Section>
+          <Section Name="Redis">
+            <Parameter Name="Configuration" Value="[Redis:Configuration]" />
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />

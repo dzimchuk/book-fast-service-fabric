@@ -31,6 +31,11 @@
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
 
+  <Section Name="Redis">
+    <Parameter Name="Configuration" Value="" />
+    <Parameter Name="InstanceName" Value="BookFast.Web" />
+  </Section>
+
   <Section Name="FacilityApi">
     <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
     <Parameter Name="ServiceApiResource" Value="App ID URI of the API app in Azure AD" />

@@ -30,6 +30,8 @@ namespace BookFast.Web.Composition
 
             RegisterAuthorizationPolicies(services);
             RegisterMappers(services);
+
+            services.AddDistributedRedisCache(redisCacheOptions => configuration.GetSection("Redis"));
         }
 
         private static void RegisterAuthorizationPolicies(IServiceCollection services)
