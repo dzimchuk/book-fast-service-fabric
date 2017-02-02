@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
 using System;
-using BookFast.Web.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Http.Features.Authentication;
+using BookFast.Web.Infrastructure.Authentication.Customer;
+using BookFast.Web.Infrastructure.Authentication;
+using BookFast.Web.Infrastructure.Authentication.Organizational;
 
 namespace BookFast.Web.Features.Home
 {
@@ -39,8 +41,8 @@ namespace BookFast.Web.Features.Home
             if (!User.Identity.IsAuthenticated)
             {
                 return new ChallengeResult(
-                        AuthConstants.OpenIdConnectB2CAuthenticationScheme, 
-                        new AuthenticationProperties(new Dictionary<string, string> { { AuthConstants.B2CPolicy, policies.SignInOrSignUpPolicy } })
+                        B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme, 
+                        new AuthenticationProperties(new Dictionary<string, string> { { B2CAuthConstants.B2CPolicy, policies.SignInOrSignUpPolicy } })
                         {
                             RedirectUri = "/"
                         });
@@ -54,8 +56,8 @@ namespace BookFast.Web.Features.Home
             if (IsB2CAuthenticated)
             {
                 return new CustomChallengeResult(
-                    AuthConstants.OpenIdConnectB2CAuthenticationScheme,
-                    new AuthenticationProperties(new Dictionary<string, string> { { AuthConstants.B2CPolicy, policies.EditProfilePolicy } })
+                    B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme,
+                    new AuthenticationProperties(new Dictionary<string, string> { { B2CAuthConstants.B2CPolicy, policies.EditProfilePolicy } })
                     {
                         RedirectUri = "/"
                     }, ChallengeBehavior.Unauthorized);
@@ -72,8 +74,8 @@ namespace BookFast.Web.Features.Home
 
                 if (IsB2CAuthenticated)
                 {
-                    await HttpContext.Authentication.SignOutAsync(AuthConstants.OpenIdConnectB2CAuthenticationScheme,
-                                new AuthenticationProperties(new Dictionary<string, string> { { AuthConstants.B2CPolicy, User.FindFirst(AuthConstants.AcrClaimType).Value } })); 
+                    await HttpContext.Authentication.SignOutAsync(B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme,
+                                new AuthenticationProperties(new Dictionary<string, string> { { B2CAuthConstants.B2CPolicy, User.FindFirst(B2CAuthConstants.AcrClaimType).Value } })); 
                 }
                 else
                 {
@@ -92,7 +94,7 @@ namespace BookFast.Web.Features.Home
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    var acrClaim = User.FindFirst(AuthConstants.AcrClaimType);
+                    var acrClaim = User.FindFirst(B2CAuthConstants.AcrClaimType);
                     return acrClaim != null &&
                         (acrClaim.Value.Equals(policies.SignInOrSignUpPolicy, StringComparison.OrdinalIgnoreCase) ||
                          acrClaim.Value.Equals(policies.EditProfilePolicy, StringComparison.OrdinalIgnoreCase)

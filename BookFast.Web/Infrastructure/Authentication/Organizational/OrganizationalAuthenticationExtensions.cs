@@ -5,31 +5,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
-using System.Threading.Tasks;
 
-namespace BookFast.Web.Infrastructure.Authentication
+namespace BookFast.Web.Infrastructure.Authentication.Organizational
 {
-    internal static class OrganizationalAuthentication
+    internal static class OrganizationalAuthenticationExtensions
     {
-        public static async Task<string> AcquireAccessTokenAsync(AuthenticationOptions authOptions, string userId, string resource)
-        {
-            var clientCredential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
-            var authenticationContext = new AuthenticationContext(authOptions.Authority);
-
-            try
-            {
-                var user = !string.IsNullOrEmpty(userId) ? new UserIdentifier(userId, UserIdentifierType.UniqueId) : UserIdentifier.AnyUser;
-                var authenticationResult = await authenticationContext.AcquireTokenSilentAsync(resource,
-                    clientCredential, user);
-
-                return authenticationResult.AccessToken;
-            }
-            catch (AdalSilentTokenAcquisitionException)
-            {
-                return null;
-            }
-        }
-
         public static void UseOpenIdConnectOrganizationalAuthentication(this IApplicationBuilder app, AuthenticationOptions authOptions, bool automaticChallenge = false)
         {
             app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions

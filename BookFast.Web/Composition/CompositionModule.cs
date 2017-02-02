@@ -4,8 +4,8 @@ using BookFast.Web.Contracts.Security;
 using BookFast.Web.Features.Booking;
 using BookFast.Web.Features.Facility;
 using BookFast.Web.Features.Files;
-using BookFast.Web.Infrastructure;
-using BookFast.Web.Infrastructure.Authentication;
+using BookFast.Web.Infrastructure.Authentication.Customer;
+using BookFast.Web.Infrastructure.Authentication.Organizational;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using OdeToCode.AddFeatureFolders;
@@ -23,6 +23,7 @@ namespace BookFast.Web.Composition
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IAccessTokenProvider, AccessTokenProvider>();
+            services.AddSingleton<ICustomerAccessTokenProvider, CustomerAccessTokenProvider>();
 
             var featureOptions = new FeatureFolderOptions();
             services.AddMvc().AddFeatureFolders(featureOptions).AddRazorOptions(o => o.ViewLocationFormats.Add(featureOptions.FeatureNamePlaceholder + "/{1}/{0}.cshtml"));

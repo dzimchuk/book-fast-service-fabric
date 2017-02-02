@@ -21,7 +21,7 @@ namespace BookFast.Booking.Client.Composition
             services.AddSingleton<ICommunicationClientFactory<CommunicationClient<IBookFastBookingAPI>>>(
                 serviceProvider => new BookingCommunicationClientFactory(
                     new ServicePartitionResolver(() => serviceProvider.GetService<FabricClient>()),
-                    serviceProvider.GetService<IAccessTokenProvider>()));
+                    serviceProvider.GetService<ICustomerAccessTokenProvider>()));
 
             services.AddSingleton<IPartitionClientFactory<CommunicationClient<IBookFastBookingAPI>>, BookingPartitionClientFactory>();
         }

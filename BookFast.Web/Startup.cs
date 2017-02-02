@@ -1,6 +1,6 @@
 ﻿using BookFast.Framework;
-using BookFast.Web.Infrastructure;
-using BookFast.Web.Infrastructure.Authentication;
+using BookFast.Web.Infrastructure.Authentication.Customer;
+using BookFast.Web.Infrastructure.Authentication.Organizational;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -46,7 +46,8 @@ namespace BookFast.Web
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
-            IOptions<Infrastructure.Authentication.AuthenticationOptions> authOptions, IOptions<B2CAuthenticationOptions> b2cAuthOptions, IOptions<B2CPolicies> b2cPolicies)
+            IOptions<Infrastructure.Authentication.Organizational.AuthenticationOptions> authOptions, 
+            IOptions<B2CAuthenticationOptions> b2cAuthOptions, IOptions<B2CPolicies> b2cPolicies)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();

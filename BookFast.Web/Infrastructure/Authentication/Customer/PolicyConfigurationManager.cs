@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookFast.Web.Infrastructure.Authentication
+namespace BookFast.Web.Infrastructure.Authentication.Customer
 {
     internal class PolicyConfigurationManager : IConfigurationManager<OpenIdConnectConfiguration>
     {

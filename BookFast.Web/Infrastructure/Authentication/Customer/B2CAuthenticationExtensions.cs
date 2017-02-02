@@ -11,33 +11,18 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookFast.Web.Infrastructure.Authentication
+namespace BookFast.Web.Infrastructure.Authentication.Customer
 {
-    internal static class B2CAuthentication
+    internal static class B2CAuthenticationExtensions
     {
-        public static async Task<string> AcquireAccessTokenAsync(B2CAuthenticationOptions authOptions)
-        {
-            var credential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
-            var authenticationContext = new AuthenticationContext(authOptions.Authority);
-            try
-            {
-                var result = await authenticationContext.AcquireTokenSilentAsync(new[] { authOptions.ClientId }, credential, UserIdentifier.AnyUser);
-                return result.Token;
-            }
-            catch (AdalSilentTokenAcquisitionException)
-            {
-                return null;
-            }
-        }
-
         public static void UseOpenIdConnectB2CAuthentication(this IApplicationBuilder app, B2CAuthenticationOptions authOptions, B2CPolicies b2cPolicies, bool automaticChallenge = false)
         {
             var openIdConnectOptions = new OpenIdConnectOptions
             {
-                AuthenticationScheme = AuthConstants.OpenIdConnectB2CAuthenticationScheme,
+                AuthenticationScheme = B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme,
                 AutomaticChallenge = automaticChallenge,
 
-                CallbackPath = new PathString(AuthConstants.B2CCallbackPath),
+                CallbackPath = new PathString(B2CAuthConstants.B2CCallbackPath),
 
                 Authority = authOptions.Authority,
                 ClientId = authOptions.ClientId,
@@ -74,7 +59,7 @@ namespace BookFast.Web.Infrastructure.Authentication
                     var authenticationContext = new AuthenticationContext(authOptions.Authority);
                     var result = await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
                         new Uri(context.TokenEndpointRequest.RedirectUri, UriKind.RelativeOrAbsolute), credential,
-                        new[] { authOptions.ClientId }, context.Ticket.Principal.FindFirst(AuthConstants.AcrClaimType).Value);
+                        new[] { authOptions.ClientId }, context.Ticket.Principal.FindFirst(B2CAuthConstants.AcrClaimType).Value);
 
                     context.HandleCodeRedemption();
                 },
@@ -95,9 +80,9 @@ namespace BookFast.Web.Infrastructure.Authentication
                     if (!string.IsNullOrEmpty(context.ProtocolMessage.Error) &&
                         !string.IsNullOrEmpty(context.ProtocolMessage.ErrorDescription) &&
                         context.ProtocolMessage.ErrorDescription.StartsWith("AADB2C90091") &&
-                        context.Properties.Items[AuthConstants.B2CPolicy] == policies.EditProfilePolicy)
+                        context.Properties.Items[B2CAuthConstants.B2CPolicy] == policies.EditProfilePolicy)
                     {
-                        context.Ticket = new Microsoft.AspNetCore.Authentication.AuthenticationTicket(context.HttpContext.User, context.Properties, AuthConstants.OpenIdConnectB2CAuthenticationScheme);
+                        context.Ticket = new Microsoft.AspNetCore.Authentication.AuthenticationTicket(context.HttpContext.User, context.Properties, B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme);
                         context.HandleResponse();
                     }
 
@@ -121,7 +106,7 @@ namespace BookFast.Web.Infrastructure.Authentication
         private static async Task<OpenIdConnectConfiguration> GetOpenIdConnectConfigurationAsync(RedirectContext context, string defaultPolicy)
         {
             var manager = (PolicyConfigurationManager)context.Options.ConfigurationManager;
-            var policy = context.Properties.Items.ContainsKey(AuthConstants.B2CPolicy) ? context.Properties.Items[AuthConstants.B2CPolicy] : defaultPolicy;
+            var policy = context.Properties.Items.ContainsKey(B2CAuthConstants.B2CPolicy) ? context.Properties.Items[B2CAuthConstants.B2CPolicy] : defaultPolicy;
             var configuration = await manager.GetConfigurationByPolicyAsync(CancellationToken.None, policy);
             return configuration;
         }

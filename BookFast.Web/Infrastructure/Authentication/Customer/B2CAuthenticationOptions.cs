@@ -1,4 +1,4 @@
-﻿namespace BookFast.Web.Infrastructure.Authentication
+﻿namespace BookFast.Web.Infrastructure.Authentication.Customer
 {
     public class B2CAuthenticationOptions
     {

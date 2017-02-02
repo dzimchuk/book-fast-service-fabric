@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.Extensions.Options;
 using Microsoft.Rest;
 using System;
 using BookFast.ServiceFabric.Communication;
@@ -12,9 +11,9 @@ namespace BookFast.Booking.Client
 {
     internal class BookingCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastBookingAPI>>
     {
-        private readonly IAccessTokenProvider accessTokenProvider;
+        private readonly ICustomerAccessTokenProvider accessTokenProvider;
 
-        public BookingCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider)
+        public BookingCommunicationClientFactory(IServicePartitionResolver resolver, ICustomerAccessTokenProvider accessTokenProvider)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
             if (accessTokenProvider == null)
