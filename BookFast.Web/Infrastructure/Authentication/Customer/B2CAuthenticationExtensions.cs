@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -15,7 +16,9 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
 {
     internal static class B2CAuthenticationExtensions
     {
-        public static void UseOpenIdConnectB2CAuthentication(this IApplicationBuilder app, B2CAuthenticationOptions authOptions, B2CPolicies b2cPolicies, bool automaticChallenge = false)
+        public static void UseOpenIdConnectB2CAuthentication(this IApplicationBuilder app, 
+            B2CAuthenticationOptions authOptions, B2CPolicies b2cPolicies, IDistributedCache distributedCache,
+            bool automaticChallenge = false)
         {
             var openIdConnectOptions = new OpenIdConnectOptions
             {
@@ -31,7 +34,7 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
 
                 ConfigurationManager = new PolicyConfigurationManager(authOptions.Authority,
                                                new[] { b2cPolicies.SignInOrSignUpPolicy, b2cPolicies.EditProfilePolicy }),
-                Events = CreateOpenIdConnectEventHandlers(authOptions, b2cPolicies),
+                Events = CreateOpenIdConnectEventHandlers(authOptions, b2cPolicies, distributedCache),
 
                 ResponseType = OpenIdConnectResponseType.CodeIdToken,
                 TokenValidationParameters = new TokenValidationParameters
@@ -47,7 +50,8 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
             app.UseOpenIdConnectAuthentication(openIdConnectOptions);
         }
 
-        private static IOpenIdConnectEvents CreateOpenIdConnectEventHandlers(B2CAuthenticationOptions authOptions, B2CPolicies policies)
+        private static IOpenIdConnectEvents CreateOpenIdConnectEventHandlers(B2CAuthenticationOptions authOptions, 
+            B2CPolicies policies, IDistributedCache distributedCache)
         {
             return new OpenIdConnectEvents
             {
@@ -55,8 +59,11 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
                 OnRedirectToIdentityProviderForSignOut = context => SetIssuerAddressForSignOutAsync(context, policies.SignInOrSignUpPolicy),
                 OnAuthorizationCodeReceived = async context =>
                 {
+                    var userId = context.Ticket.Principal.FindFirst(B2CAuthConstants.ObjectId).Value;
+
                     var credential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
-                    var authenticationContext = new AuthenticationContext(authOptions.Authority);
+                    var authenticationContext = new AuthenticationContext(authOptions.Authority, new DistributedTokenCache(distributedCache, userId));
+
                     var result = await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
                         new Uri(context.TokenEndpointRequest.RedirectUri, UriKind.RelativeOrAbsolute), credential,
                         new[] { authOptions.ClientId }, context.Ticket.Principal.FindFirst(B2CAuthConstants.AcrClaimType).Value);
