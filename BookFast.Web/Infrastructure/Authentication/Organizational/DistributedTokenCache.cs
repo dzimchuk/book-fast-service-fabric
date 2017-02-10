@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json;
 using System;
 
 namespace BookFast.Web.Infrastructure.Authentication.Organizational
@@ -9,8 +8,6 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
     {
         private readonly IDistributedCache cache;
         private readonly string userId;
-
-        private UserTokenCacheItem currentCacheItem;
 
         public DistributedTokenCache(IDistributedCache cache, string userId)
         {
@@ -23,18 +20,10 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
 
         private void OnBeforeAccess(TokenCacheNotificationArgs args)
         {
-            var serializedCacheItem = cache.GetString(CacheKey);
-            if (serializedCacheItem == null)
+            var userTokenCachePayload = cache.Get(CacheKey);
+            if (userTokenCachePayload != null)
             {
-                return;
-            }
-
-            var cacheItem = JsonConvert.DeserializeObject<UserTokenCacheItem>(serializedCacheItem);
-
-            if (currentCacheItem == null || currentCacheItem.LastWrite < cacheItem.LastWrite)
-            {
-                currentCacheItem = cacheItem;
-                Deserialize(currentCacheItem.Payload);
+                Deserialize(userTokenCachePayload);
             }
         }
 
@@ -42,17 +31,12 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
         {
             if (HasStateChanged)
             {
-                var cacheItem = new UserTokenCacheItem
-                {
-                    Payload = Serialize(),
-                    LastWrite = DateTimeOffset.Now
-                };
-
                 var cacheOptions = new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(14)
                 };
-                cache.SetString(CacheKey, JsonConvert.SerializeObject(cacheItem), cacheOptions);
+
+                cache.Set(CacheKey, Serialize(), cacheOptions);
 
                 HasStateChanged = false;
             }
