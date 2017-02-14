@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Search;
@@ -20,7 +20,11 @@ namespace BookFast.Web.Proxy
         
         public async Task<IList<SearchResult>> SearchAsync(string searchText, int page)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.SearchWithHttpMessagesAsync(searchText, page));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.SearchWithHttpMessagesAsync(searchText, page);
+            });
             return mapper.MapFrom(result.Body);
         }
     }

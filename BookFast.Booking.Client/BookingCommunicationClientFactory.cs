@@ -1,4 +1,4 @@
-﻿using Microsoft.ServiceFabric.Services.Communication.Client;
+using Microsoft.ServiceFabric.Services.Communication.Client;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.ServiceFabric.Services.Client;
@@ -28,12 +28,17 @@ namespace BookFast.Booking.Client
         {
         }
 
-        protected override async Task<CommunicationClient<IBookFastBookingAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
+        protected override Task<CommunicationClient<IBookFastBookingAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
         {
-            var accessToken = await accessTokenProvider.AcquireTokenAsync();
-            var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
+            var client = new CommunicationClient<IBookFastBookingAPI>(async () =>
+            {
+                var accessToken = await accessTokenProvider.AcquireTokenAsync();
+                var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
 
-            return new CommunicationClient<IBookFastBookingAPI>(new BookFastBookingAPI(new Uri(endpoint), credentials));
+                return new BookFastBookingAPI(new Uri(endpoint), credentials);
+            });
+
+            return Task.FromResult(client);
         }
 
         protected override bool ValidateClient(CommunicationClient<IBookFastBookingAPI> client)

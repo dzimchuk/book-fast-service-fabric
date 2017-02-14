@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -26,31 +26,55 @@ namespace BookFast.Web.Proxy
             var data = mapper.MapFrom(details);
             data.AccommodationId = accommodationId;
 
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.CreateBookingWithHttpMessagesAsync(accommodationId, data));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.CreateBookingWithHttpMessagesAsync(accommodationId, data);
+            });
+            
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new AccommodationNotFoundException(accommodationId);
+            }
         }
 
         public async Task<List<Contracts.Models.Booking>> ListPendingAsync()
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.ListBookingsWithHttpMessagesAsync());
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.ListBookingsWithHttpMessagesAsync();
+            });
+
             return mapper.MapFrom(result.Body);
         }
 
         public async Task CancelAsync(Guid id)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.DeleteBookingWithHttpMessagesAsync(id));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.DeleteBookingWithHttpMessagesAsync(id);
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new BookingNotFoundException(id);
+            }
         }
 
         public async Task<Contracts.Models.Booking> FindAsync(Guid id)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.FindBookingWithHttpMessagesAsync(id));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.FindBookingWithHttpMessagesAsync(id);
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new BookingNotFoundException(id);
+            }
 
             return mapper.MapFrom(result.Body);
         }

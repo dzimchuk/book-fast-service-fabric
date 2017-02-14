@@ -1,4 +1,4 @@
-﻿using BookFast.Files.Business.Data;
+using BookFast.Files.Business.Data;
 using System;
 using System.Threading.Tasks;
 using BookFast.Files.Contracts.Models;
@@ -20,13 +20,23 @@ namespace BookFast.Files.Data
 
         public async Task<Accommodation> FindAccommodationAsync(Guid accommodationId)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.FindAccommodationWithHttpMessagesAsync(accommodationId));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.FindAccommodationWithHttpMessagesAsync(accommodationId);
+            });
+            
             return result.Response.StatusCode == System.Net.HttpStatusCode.OK ? mapper.MapFrom(result.Body) : null;
         }
 
         public async Task<Contracts.Models.Facility> FindFacilityAsync(Guid facilityId)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.FindFacilityWithHttpMessagesAsync(facilityId));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.FindFacilityWithHttpMessagesAsync(facilityId);
+            });
+            
             return result.Response.StatusCode == System.Net.HttpStatusCode.OK ? mapper.MapFrom(result.Body) : null;
         }
     }

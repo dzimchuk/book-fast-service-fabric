@@ -1,4 +1,4 @@
-﻿using BookFast.Files.Client;
+using BookFast.Files.Client;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
@@ -22,28 +22,34 @@ namespace BookFast.Web.Proxy
 
         public async Task<FileAccessToken> IssueAccommodationImageUploadTokenAsync(Guid accommodationId, string originalFileName)
         {
-            var result = await partitionClientFactory.CreatePartitionClient()
-                .InvokeWithRetryAsync(client => client.API.GetAccommodationImageUploadTokenWithHttpMessagesAsync(accommodationId, originalFileName));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.GetAccommodationImageUploadTokenWithHttpMessagesAsync(accommodationId, originalFileName);
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new AccommodationNotFoundException(accommodationId);
+            }
 
             return mapper.MapFrom(result.Body);
-
-            throw new NotImplementedException();
         }
 
         public async Task<FileAccessToken> IssueFacilityImageUploadTokenAsync(Guid facilityId, string originalFileName)
         {
-            var result = await partitionClientFactory.CreatePartitionClient()
-                .InvokeWithRetryAsync(client => client.API.GetFacilityImageUploadTokenWithHttpMessagesAsync(facilityId, originalFileName));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.GetFacilityImageUploadTokenWithHttpMessagesAsync(facilityId, originalFileName);
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new FacilityNotFoundException(facilityId);
+            }
 
             return mapper.MapFrom(result.Body);
-
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.ServiceFabric.Services.Communication.Client;
+using Microsoft.ServiceFabric.Services.Communication.Client;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
@@ -20,7 +20,7 @@ namespace BookFast.Search.Client
 
         protected override Task<CommunicationClient<IBookFastSearchAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
         {
-            return Task.FromResult(new CommunicationClient<IBookFastSearchAPI>(new BookFastSearchAPI(new Uri(endpoint))));
+            return Task.FromResult(new CommunicationClient<IBookFastSearchAPI>(() => Task.FromResult<IBookFastSearchAPI>(new BookFastSearchAPI(new Uri(endpoint)))));
         }
 
         protected override bool ValidateClient(CommunicationClient<IBookFastSearchAPI> client)

@@ -1,4 +1,4 @@
-﻿using Microsoft.ServiceFabric.Services.Communication.Client;
+using Microsoft.ServiceFabric.Services.Communication.Client;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.ServiceFabric.Services.Client;
@@ -33,16 +33,21 @@ namespace BookFast.Files.Client
             // HTTP clients don't hold persistent connections, so no action is taken.
         }
 
-        protected override async Task<CommunicationClient<IBookFastFilesAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
+        protected override Task<CommunicationClient<IBookFastFilesAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
         {
             // clients that maintain persistent connections to a service should 
             // create that connection here.
             // an HTTP client doesn't maintain a persistent connection.
 
-            var accessToken = await accessTokenProvider.AcquireTokenAsync(apiOptions.ServiceApiResource);
-            var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
+            var client = new CommunicationClient<IBookFastFilesAPI>(async () =>
+            {
+                var accessToken = await accessTokenProvider.AcquireTokenAsync(apiOptions.ServiceApiResource);
+                var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
 
-            return new CommunicationClient<IBookFastFilesAPI>(new BookFastFilesAPI(new Uri(endpoint), credentials));
+                return new BookFastFilesAPI(new Uri(endpoint), credentials);
+            });
+
+            return Task.FromResult(client);
         }
 
         protected override bool ValidateClient(CommunicationClient<IBookFastFilesAPI> client)

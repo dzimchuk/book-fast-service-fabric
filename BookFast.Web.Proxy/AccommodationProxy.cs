@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,46 +24,76 @@ namespace BookFast.Web.Proxy
 
         public async Task<List<Accommodation>> ListAsync(Guid facilityId)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.ListAccommodationsWithHttpMessagesAsync(facilityId));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.ListAccommodationsWithHttpMessagesAsync(facilityId);
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new FacilityNotFoundException(facilityId);
+            }
 
             return mapper.MapFrom(result.Body);
         }
 
         public async Task<Accommodation> FindAsync(Guid accommodationId)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.FindAccommodationWithHttpMessagesAsync(accommodationId));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.FindAccommodationWithHttpMessagesAsync(accommodationId);
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new AccommodationNotFoundException(accommodationId);
+            }
 
             return mapper.MapFrom(result.Body);
         }
 
         public async Task CreateAsync(Guid facilityId, AccommodationDetails details)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.CreateAccommodationWithHttpMessagesAsync(facilityId, mapper.MapFrom(details)));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.CreateAccommodationWithHttpMessagesAsync(facilityId, mapper.MapFrom(details));
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new FacilityNotFoundException(facilityId);
+            }
         }
 
         public async Task UpdateAsync(Guid accommodationId, AccommodationDetails details)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.UpdateAccommodationWithHttpMessagesAsync(accommodationId, mapper.MapFrom(details)));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.UpdateAccommodationWithHttpMessagesAsync(accommodationId, mapper.MapFrom(details));
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new AccommodationNotFoundException(accommodationId);
+            }
         }
 
         public async Task DeleteAsync(Guid accommodationId)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(client => client.API.DeleteAccommodationWithHttpMessagesAsync(accommodationId));
+            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+            {
+                var api = await client.CreateApiClient();
+                return await api.DeleteAccommodationWithHttpMessagesAsync(accommodationId);
+            });
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
+            {
                 throw new AccommodationNotFoundException(accommodationId);
+            }
         }
     }
 }
