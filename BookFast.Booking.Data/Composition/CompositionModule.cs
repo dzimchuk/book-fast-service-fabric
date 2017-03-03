@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.Booking.Business.Data;
 using BookFast.Booking.Data.Mappers;
+using BookFast.Rest;
 
 namespace BookFast.Booking.Data.Composition
 {
@@ -14,8 +15,10 @@ namespace BookFast.Booking.Data.Composition
             services.AddScoped<IFacilityDataSource, FacilityDataSource>();
 
             services.AddScoped<IFacilityProxy, FacilityProxy>();
-
             services.AddScoped<IFacilityMapper, FacilityMapper>();
+
+            services.AddSingleton<IAccessTokenProvider, NullAccessTokenProvider>();
+            new Facility.Client.Composition.CompositionModule().AddServices(services, configuration);
         }
     }
 }

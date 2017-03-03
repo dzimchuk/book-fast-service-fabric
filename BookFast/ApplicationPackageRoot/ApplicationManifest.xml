@@ -3,7 +3,7 @@
   <Parameters>
     <Parameter Name="Files:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="Booking:ServiceFabric:MinReplicaSetSize" DefaultValue="2" />
-    <Parameter Name="Booking:ServiceFabric:MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="Booking:ServiceFabric:TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="IndexerService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="SearchService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
@@ -211,7 +211,7 @@
       </StatelessService>
     </Service>
     <Service Name="BookingService">
-      <StatefulService ServiceTypeName="BookingServiceType" TargetReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]" MinReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]">
+      <StatefulService ServiceTypeName="BookingServiceType" TargetReplicaSetSize="[Booking:ServiceFabric:TargetReplicaSetSize]" MinReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="16" LowKey="0" HighKey="15" />
       </StatefulService>
     </Service>

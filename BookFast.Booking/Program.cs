@@ -1,6 +1,7 @@
 using BookFast.Framework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Runtime;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,14 @@ namespace BookFast.Booking
                 module.AddServices(services, configuration);
             }
 
+
+            var reliableStateManager = new ReliableStateManager(context);
+            services.AddSingleton<IReliableStateManagerReplica>(reliableStateManager);
+            services.AddSingleton<IReliableStateManager>(reliableStateManager);
             services.AddSingleton(context);
+            services.AddSingleton<BookingService>();
+
+            services.AddOptions();
 
             return services.BuildServiceProvider();
         }
