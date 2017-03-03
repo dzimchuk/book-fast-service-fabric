@@ -9,6 +9,7 @@
 <form asp-action="Create">
     <div class="form-horizontal">
         <div asp-validation-summary="ModelOnly" class="text-muted"></div>
+        <input type="hidden" value="@ViewBag.FacilityId" name="FacilityId"/>
         <input type="hidden" value="@ViewBag.AccommodationId" name="AccommodationId"/>
         <div class="form-group">
             <label asp-for="FromDate" class="col-md-2 control-label"></label>

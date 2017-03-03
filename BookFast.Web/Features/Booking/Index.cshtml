@@ -45,7 +45,7 @@
                 @Html.DisplayFor(modelItem => item.ToDate)
             </td>
             <td>
-                <a asp-action="Cancel" asp-route-id="@item.Id">Cancel</a>
+                <a asp-action="Cancel" asp-route-id="@item.Id" asp-route-facilityId="@item.FacilityId">Cancel</a>
             </td>
         </tr>
     }

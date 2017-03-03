@@ -3,8 +3,8 @@
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "Microsoft.Extensions.Configuration": "1.0.1",
-    "Microsoft.ServiceFabric.AspNetCore.Kestrel": "2.4.145-preview",
-    "Microsoft.ServiceFabric.AspNetCore.WebListener": "2.4.145-preview"
+    "Microsoft.ServiceFabric.AspNetCore.Kestrel": "2.4.164-preview",
+    "Microsoft.ServiceFabric.AspNetCore.WebListener": "2.4.164-preview"
   },
 
   "frameworks": {

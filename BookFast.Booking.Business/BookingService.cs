@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookFast.Booking.Contracts;
@@ -12,24 +12,24 @@ namespace BookFast.Booking.Business
     {
         private readonly IBookingDataSource dataSource;
         private readonly ISecurityContext securityContext;
-        private readonly IFacilityProxy facilityProxy;
+        private readonly IFacilityDataSource facilityDataSource;
 
-        public BookingService(IBookingDataSource dataSource, ISecurityContext securityContext, IFacilityProxy facilityProxy)
+        public BookingService(IBookingDataSource dataSource, ISecurityContext securityContext, IFacilityDataSource facilityDataSource)
         {
             this.dataSource = dataSource;
             this.securityContext = securityContext;
-            this.facilityProxy = facilityProxy;
+            this.facilityDataSource = facilityDataSource;
         }
 
         public async Task<Contracts.Models.Booking> BookAsync(Guid accommodationId, Contracts.Models.BookingDetails details)
         {
-            var accommodation = await facilityProxy.FindAccommodationAsync(accommodationId);
+            var accommodation = await facilityDataSource.FindAccommodationAsync(accommodationId);
             if (accommodation == null)
             {
                 throw new AccommodationNotFoundException(accommodationId);
             }
 
-            var facility = await facilityProxy.FindFacilityAsync(accommodation.FacilityId);
+            var facility = await facilityDataSource.FindFacilityAsync(accommodation.FacilityId);
 
             var booking = new Contracts.Models.Booking
                           {
@@ -56,10 +56,14 @@ namespace BookFast.Booking.Business
         {
             var booking = await dataSource.FindAsync(id);
             if (booking == null)
+            {
                 throw new BookingNotFoundException(id);
-
+            }
+            
             if (!securityContext.GetCurrentUser().Equals(booking.User, StringComparison.OrdinalIgnoreCase))
+            {
                 throw new UserMismatchException(id);
+            }
 
             booking.CanceledOn = DateTimeOffset.Now;
             await dataSource.UpdateAsync(booking);
@@ -69,7 +73,9 @@ namespace BookFast.Booking.Business
         {
             var booking = await dataSource.FindAsync(id);
             if (booking == null)
+            {
                 throw new BookingNotFoundException(id);
+            }
 
             return booking;
         }

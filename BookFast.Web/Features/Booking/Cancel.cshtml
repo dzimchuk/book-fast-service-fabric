@@ -38,6 +38,7 @@
     </dl>
 
     <form asp-action="Cancel">
+        <input type="hidden" value="@ViewBag.FacilityId" name="FacilityId" />
         <div class="form-actions no-color">
             <input type="submit" value="Yes" class="btn btn-default" />
             <a class="btn btn-primary" asp-controller="booking" asp-action="index">No</a>

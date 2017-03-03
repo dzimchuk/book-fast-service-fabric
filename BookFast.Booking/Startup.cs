@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +17,7 @@ namespace BookFast.Booking
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env, StatelessServiceContext serviceContext)
+        public Startup(IHostingEnvironment env, StatefulServiceContext serviceContext)
         {
             var builder = new ConfigurationBuilder()
                 .AddServiceFabricConfiguration(serviceContext);

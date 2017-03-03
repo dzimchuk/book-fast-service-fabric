@@ -1,46 +1,86 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookFast.Booking.Business.Data;
-using BookFast.Booking.Data.Commands;
-using BookFast.Booking.Data.Models;
-using BookFast.Booking.Data.Queries;
+using Microsoft.ServiceFabric.Data;
+using Microsoft.ServiceFabric.Data.Collections;
+using System.Linq;
 
 namespace BookFast.Booking.Data
 {
     internal class BookingDataSource : IBookingDataSource
     {
-        private readonly BookFastContext context;
-        private readonly IBookingMapper mapper;
+        private readonly IReliableStateManager stateManager;
 
-        public BookingDataSource(BookFastContext context, IBookingMapper mapper)
+        public BookingDataSource(IReliableStateManager stateManager)
         {
-            this.context = context;
-            this.mapper = mapper;
+            this.stateManager = stateManager;
         }
 
-        public Task CreateAsync(Contracts.Models.Booking booking)
+        public async Task CreateAsync(Contracts.Models.Booking booking)
         {
-            var command = new CreateBookingCommand(booking, mapper);
-            return command.ApplyAsync(context);
+            var bookingsDictionary = await stateManager.GetOrAddAsync<IReliableDictionary<Guid, Contracts.Models.Booking>>(Constants.BookingsDictionary);
+            var userBookingsDictionary = await stateManager.GetOrAddAsync<IReliableDictionary<string, List<Contracts.Models.Booking>>>(Constants.UserBookingsDictionary);
+            using (var transaction = stateManager.CreateTransaction())
+            {
+                await bookingsDictionary.AddAsync(transaction, booking.Id, booking);
+
+                var userBookings = await userBookingsDictionary.GetOrAddAsync(transaction, booking.User, new List<Contracts.Models.Booking>());
+                userBookings.Add(booking);
+
+                await userBookingsDictionary.SetAsync(transaction, booking.User, userBookings);
+
+                await transaction.CommitAsync();
+            }
         }
 
-        public Task<List<Contracts.Models.Booking>> ListPendingAsync(string user)
+        public async Task<List<Contracts.Models.Booking>> ListPendingAsync(string user)
         {
-            var query = new ListPendingBookingsByUserQuery(user);
-            return query.ExecuteAsync(context);
+            ConditionalValue<List<Contracts.Models.Booking>> result;
+
+            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<string, List<Contracts.Models.Booking>>>(Constants.UserBookingsDictionary);
+            using (var transaction = stateManager.CreateTransaction())
+            {
+                result = await dictionary.TryGetValueAsync(transaction, user);
+                await transaction.CommitAsync();
+            }
+
+            return result.HasValue 
+                ? result.Value.Where(booking => booking.CanceledOn == null && booking.CheckedInOn == null).ToList()
+                : new List<Contracts.Models.Booking>();
         }
 
-        public Task<Contracts.Models.Booking> FindAsync(Guid id)
+        public async Task<Contracts.Models.Booking> FindAsync(Guid id)
         {
-            var query = new FindBookingQuery(id);
-            return query.ExecuteAsync(context);
+            ConditionalValue<Contracts.Models.Booking> result;
+
+            var dictionary = await stateManager.GetOrAddAsync<IReliableDictionary<Guid, Contracts.Models.Booking>>(Constants.BookingsDictionary);
+            using (var transaction = stateManager.CreateTransaction())
+            {
+                result = await dictionary.TryGetValueAsync(transaction, id);
+                await transaction.CommitAsync();
+            }
+
+            return result.HasValue ? result.Value : null;
         }
 
-        public Task UpdateAsync(Contracts.Models.Booking booking)
+        public async Task UpdateAsync(Contracts.Models.Booking booking)
         {
-            var command = new UpdateBookingCommand(booking);
-            return command.ApplyAsync(context);
+            var bookingsDictionary = await stateManager.GetOrAddAsync<IReliableDictionary<Guid, Contracts.Models.Booking>>(Constants.BookingsDictionary);
+            var userBookingsDictionary = await stateManager.GetOrAddAsync<IReliableDictionary<string, List<Contracts.Models.Booking>>>(Constants.UserBookingsDictionary);
+            using (var transaction = stateManager.CreateTransaction())
+            {
+                await bookingsDictionary.SetAsync(transaction, booking.Id, booking);
+
+                var userBookings = (await userBookingsDictionary.TryGetValueAsync(transaction, booking.User, LockMode.Update)).Value;
+                var existingBooking = userBookings.First(b => b.Id == booking.Id);
+                userBookings.Remove(existingBooking);
+                userBookings.Add(booking);
+
+                await userBookingsDictionary.SetAsync(transaction, booking.User, userBookings);
+
+                await transaction.CommitAsync();
+            }
         }
     }
 }

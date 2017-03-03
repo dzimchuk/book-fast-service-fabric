@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -10,7 +10,7 @@ namespace BookFast.ServiceFabric
 {
     public static class ServiceInstanceListenerFactory
     {
-        public static ServiceInstanceListener CreateKestrelListener(Type startupType, Action<ServiceContext, string> loggingCallback)
+        public static ServiceInstanceListener CreateKestrelListener(Type startupType, Action<StatelessServiceContext, string> loggingCallback)
         {
             return new ServiceInstanceListener(serviceContext =>
             {
@@ -30,7 +30,7 @@ namespace BookFast.ServiceFabric
             });
         }
 
-        public static ServiceInstanceListener CreateHttpSysListener(Type startupType, Action<ServiceContext, string> loggingCallback)
+        public static ServiceInstanceListener CreateHttpSysListener(Type startupType, Action<StatelessServiceContext, string> loggingCallback)
         {
             return new ServiceInstanceListener(serviceContext =>
             {

@@ -1,7 +1,8 @@
-﻿using BookFast.ServiceFabric.Communication;
+using BookFast.ServiceFabric.Communication;
 using System;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using Microsoft.Extensions.Options;
+using Microsoft.ServiceFabric.Services.Client;
 
 namespace BookFast.Facility.Client
 {
@@ -18,5 +19,8 @@ namespace BookFast.Facility.Client
 
         public ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>> CreatePartitionClient() => 
             new ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>>(factory, new Uri(apiOptions.ServiceUri));
+
+        public ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>> CreatePartitionClient(ServicePartitionKey partitionKey) => 
+            new ServicePartitionClient<CommunicationClient<IBookFastFacilityAPI>>(factory, new Uri(apiOptions.ServiceUri), partitionKey);
     }
 }

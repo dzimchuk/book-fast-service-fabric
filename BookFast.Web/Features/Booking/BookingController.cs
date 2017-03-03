@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
@@ -34,6 +34,7 @@ namespace BookFast.Web.Features.Booking
             {
                 var accommodation = await accommodationService.FindAsync(id);
 
+                ViewBag.FacilityId = accommodation.FacilityId;
                 ViewBag.AccommodationId = accommodation.Id;
                 ViewBag.AccommodationName = accommodation.Details.Name;
                 return View();
@@ -53,7 +54,7 @@ namespace BookFast.Web.Features.Booking
                 if (ModelState.IsValid)
                 {
                     var details = mapper.MapFrom(booking);
-                    await bookingService.BookAsync(booking.AccommodationId, details);
+                    await bookingService.BookAsync(booking.FacilityId, booking.AccommodationId, details);
                     return RedirectToAction("Index");
                 }
 
@@ -68,11 +69,11 @@ namespace BookFast.Web.Features.Booking
             }
         }
 
-        public async Task<IActionResult> Cancel(Guid id)
+        public async Task<IActionResult> Cancel(Guid id, Guid facilityId)
         {
             try
             {
-                var booking = await bookingService.FindAsync(id);
+                var booking = await bookingService.FindAsync(facilityId, id);
                 return View(mapper.MapFrom(booking));
             }
             catch (BookingNotFoundException)
@@ -84,11 +85,11 @@ namespace BookFast.Web.Features.Booking
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Cancel")]
-        public async Task<IActionResult> CancelConfirmed(Guid id)
+        public async Task<IActionResult> CancelConfirmed(Guid id, Guid facilityId)
         {
             try
             {
-                await bookingService.CancelAsync(id);
+                await bookingService.CancelAsync(facilityId, id);
                 return RedirectToAction("Index");
             }
             catch (BookingNotFoundException)

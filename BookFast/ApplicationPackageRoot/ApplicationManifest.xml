@@ -2,7 +2,8 @@
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="BookFastType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
     <Parameter Name="Files:ServiceFabric:InstanceCount" DefaultValue="-1" />
-    <Parameter Name="Booking:ServiceFabric:InstanceCount" DefaultValue="-1" />
+    <Parameter Name="Booking:ServiceFabric:MinReplicaSetSize" DefaultValue="2" />
+    <Parameter Name="Booking:ServiceFabric:MinReplicaSetSize" DefaultValue="3" />
     <Parameter Name="IndexerService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="SearchService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
@@ -72,9 +73,6 @@
     <ConfigOverrides>
       <ConfigOverride Name="Config">
         <Settings>
-          <Section Name="Data">
-            <Parameter Name="DefaultConnection:ConnectionString" Value="[Data:DefaultConnection:ConnectionString]" />
-          </Section>
           <Section Name="Authentication">
             <Parameter Name="AzureAd:B2C:Instance" Value="[Authentication:AzureAd:B2C:Instance]" />
             <Parameter Name="AzureAd:B2C:TenantId" Value="[Authentication:AzureAd:B2C:TenantId]" />
@@ -213,9 +211,9 @@
       </StatelessService>
     </Service>
     <Service Name="BookingService">
-      <StatelessService ServiceTypeName="BookingServiceType" InstanceCount="[Booking:ServiceFabric:InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
+      <StatefulService ServiceTypeName="BookingServiceType" MinReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]" TargetReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="16" LowKey="0" HighKey="15" />
+      </StatefulService>
     </Service>
     <Service Name="SearchIndexer">
       <StatelessService ServiceTypeName="IndexerServiceType" InstanceCount="[IndexerService:ServiceFabric:InstanceCount]">

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using BookFast.Framework.Validation;
 
@@ -7,6 +7,7 @@ namespace BookFast.Web.Features.Booking.ViewModels
     [DateRange(ErrorMessage = "End date should be greater than or equal to start date")]
     public class CreateBookingViewModel : IDateRange
     {
+        public Guid FacilityId { get; set; }
         public Guid AccommodationId { get; set; }
 
         [DataType(DataType.Date)]

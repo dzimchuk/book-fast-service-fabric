@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookFast.Web.Features.Booking.ViewModels
@@ -6,6 +6,7 @@ namespace BookFast.Web.Features.Booking.ViewModels
     public class BookingViewModel
     {
         public Guid Id { get; set; }
+        public Guid FacilityId { get; set; }
 
         [Display(Name = "Accommodation")]
         public string AccommodationName { get; set; }
