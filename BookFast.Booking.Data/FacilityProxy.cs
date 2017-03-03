@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using BookFast.Booking.Contracts.Models;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Facility.Client;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace BookFast.Booking.Data
 {
@@ -18,26 +21,30 @@ namespace BookFast.Booking.Data
             this.mapper = mapper;
         }
 
-        public async Task<Accommodation> FindAccommodationAsync(Guid accommodationId)
+        public async Task<List<Contracts.Models.Facility>> ListFacilitiesAsync(CancellationToken cancellationToken)
         {
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {
                 var api = await client.CreateApiClient();
-                return await api.FindAccommodationWithHttpMessagesAsync(accommodationId);
-            });
-            
-            return result.Response.StatusCode == System.Net.HttpStatusCode.OK ? mapper.MapFrom(result.Body) : null;
+                return await api.ListFacilitiesWithHttpMessagesAsync(cancellationToken: cancellationToken);
+            }, cancellationToken);
+
+            return result.Response.StatusCode == System.Net.HttpStatusCode.OK
+                ? result.Body.Select(facility => mapper.MapFrom(facility)).ToList()
+                : new List<Contracts.Models.Facility>();
         }
 
-        public async Task<Contracts.Models.Facility> FindFacilityAsync(Guid facilityId)
+        public async Task<List<Accommodation>> ListAccommodationsAsync(Guid facilityId, CancellationToken cancellationToken)
         {
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {
                 var api = await client.CreateApiClient();
-                return await api.FindFacilityWithHttpMessagesAsync(facilityId);
-            });
-            
-            return result.Response.StatusCode == System.Net.HttpStatusCode.OK ? mapper.MapFrom(result.Body) : null;
+                return await api.ListAccommodationsWithHttpMessagesAsync(facilityId, cancellationToken: cancellationToken);
+            }, cancellationToken);
+
+            return result.Response.StatusCode == System.Net.HttpStatusCode.OK
+                ? result.Body.Select(accommodation => mapper.MapFrom(accommodation)).ToList()
+                : new List<Accommodation>();
         }
     }
 }

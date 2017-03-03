@@ -211,7 +211,7 @@
       </StatelessService>
     </Service>
     <Service Name="BookingService">
-      <StatefulService ServiceTypeName="BookingServiceType" MinReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]" TargetReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]">
+      <StatefulService ServiceTypeName="BookingServiceType" TargetReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]" MinReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="16" LowKey="0" HighKey="15" />
       </StatefulService>
     </Service>
