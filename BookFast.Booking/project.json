@@ -23,6 +23,7 @@
   },
 
   "buildOptions": {
+    "platform": "x64",
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
     "xmlDoc": true,
