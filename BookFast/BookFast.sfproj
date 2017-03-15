@@ -29,12 +29,12 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BookFast.Booking\BookFast.Booking.xproj" />
-    <ProjectReference Include="..\BookFast.Facility\BookFast.Facility.xproj" />
-    <ProjectReference Include="..\BookFast.Files\BookFast.Files.xproj" />
-    <ProjectReference Include="..\BookFast.Search.Indexer\BookFast.Search.Indexer.xproj" />
-    <ProjectReference Include="..\BookFast.Search\BookFast.Search.xproj" />
-    <ProjectReference Include="..\BookFast.Web\BookFast.Web.xproj" />
+    <ProjectReference Include="..\BookFast.Booking\BookFast.Booking.csproj" />
+    <ProjectReference Include="..\BookFast.Facility\BookFast.Facility.csproj" />
+    <ProjectReference Include="..\BookFast.Files\BookFast.Files.csproj" />
+    <ProjectReference Include="..\BookFast.Search.Indexer\BookFast.Search.Indexer.csproj" />
+    <ProjectReference Include="..\BookFast.Search\BookFast.Search.csproj" />
+    <ProjectReference Include="..\BookFast.Web\BookFast.Web.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <PropertyGroup>

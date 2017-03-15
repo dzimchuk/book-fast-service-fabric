@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>BookFast.Facility.Business</AssemblyName>
+    <PackageId>BookFast.Facility.Business</PackageId>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookFast.Facility.Contracts\BookFast.Facility.Contracts.csproj" />
+    <ProjectReference Include="..\Common\BookFast.Framework\BookFast.Framework.csproj" />
+    <ProjectReference Include="..\Common\BookFast.Security\BookFast.Security.csproj" />
+  </ItemGroup>
+
+</Project>

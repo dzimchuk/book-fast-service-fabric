@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+    <AssemblyName>BookFast.Web</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>BookFast.Web</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Update="wwwroot\**\*;Features\**\*.cshtml;node_modules\bootstrap\**\*;node_modules\jquery\**\*;node_modules\jquery-validation\**\*;node_modules\jquery-validation-unobtrusive\**\*">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookFast.Web.Proxy\BookFast.Web.Proxy.csproj" />
+    <ProjectReference Include="..\Common\BookFast.ServiceFabric\BookFast.ServiceFabric.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="1.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="1.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="1.0.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="1.0.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="3.13.5" />
+    <PackageReference Include="Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory" Version="4.0.209160138-alpha" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="2.0.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="AutoMapper" Version="4.2.1" />
+    <PackageReference Include="OdeToCode.AddFeatureFolders" Version="1.0.4" />
+    <PackageReference Include="OdeToCode.UseNodeModules" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+    <Exec Command="npm install" />
+    <Exec Command="gulp clean" />
+    <Exec Command="gulp min" />
+  </Target>
+
+</Project>

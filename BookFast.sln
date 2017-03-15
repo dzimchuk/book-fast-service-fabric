@@ -1,76 +1,73 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "BookFast", "BookFast\BookFast.sfproj", "{3457D600-9548-4E66-BFFA-318A86A76502}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Web", "BookFast.Web\BookFast.Web.xproj", "{38010D59-B0BD-4506-B1B3-83D2123A1EF1}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Web.Contracts", "BookFast.Web.Contracts\BookFast.Web.Contracts.xproj", "{99BA95FA-FB60-4860-83AD-B5B29456C275}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Web.Proxy", "BookFast.Web.Proxy\BookFast.Web.Proxy.xproj", "{FF600654-3F13-489A-AB34-A9944DAF4941}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Facility", "BookFast.Facility\BookFast.Facility.xproj", "{A0F51584-5F77-4FDA-8AC9-EBDEDDA32928}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Facility.Contracts", "BookFast.Facility.Contracts\BookFast.Facility.Contracts.xproj", "{6634BD9B-E47F-4D5D-824F-CB89953058BA}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Facility.Business", "BookFast.Facility.Business\BookFast.Facility.Business.xproj", "{F3AAB696-30B1-4CEE-A1E1-B2834C503913}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Facility.Data", "BookFast.Facility.Data\BookFast.Facility.Data.xproj", "{B517DBFB-C4E6-4ADD-8247-60977C81AB07}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B5FEFD8F-4BDB-4870-BAAB-7668F18F263D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Framework", "Common\BookFast.Framework\BookFast.Framework.xproj", "{DF0B5158-3AD8-4590-9109-FF497CFE6B9F}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Security", "Common\BookFast.Security\BookFast.Security.xproj", "{10658BFF-0BAD-4C06-B5AF-69C41D773E59}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Security.AspNetCore", "Common\BookFast.Security.AspNetCore\BookFast.Security.AspNetCore.xproj", "{D556869E-0BD1-456C-9A69-ED7ACF638457}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA6EB4E9-A511-43C3-B4E7-F74C27D02187}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.ServiceFabric", "Common\BookFast.ServiceFabric\BookFast.ServiceFabric.xproj", "{29928404-BDDE-4E4C-93C6-A426C5D35FB4}"
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "BookFast", "BookFast\BookFast.sfproj", "{3457D600-9548-4E66-BFFA-318A86A76502}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Swagger", "Common\BookFast.Swagger\BookFast.Swagger.xproj", "{E965AA12-242A-41CB-AD8C-D90E06110F3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Web", "BookFast.Web\BookFast.Web.csproj", "{38010D59-B0BD-4506-B1B3-83D2123A1EF1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Search.Contracts", "BookFast.Search.Contracts\BookFast.Search.Contracts.xproj", "{E22CBBBD-BC13-4BF1-9CB9-5A64A1BE4D56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Web.Contracts", "BookFast.Web.Contracts\BookFast.Web.Contracts.csproj", "{99BA95FA-FB60-4860-83AD-B5B29456C275}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Search.Business", "BookFast.Search.Business\BookFast.Search.Business.xproj", "{2FF4F0A1-730C-4D7B-AC93-116782647031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Web.Proxy", "BookFast.Web.Proxy\BookFast.Web.Proxy.csproj", "{FF600654-3F13-489A-AB34-A9944DAF4941}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Search.Adapter", "BookFast.Search.Adapter\BookFast.Search.Adapter.xproj", "{BE437B8D-6468-4197-828A-BE57405F3F87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility", "BookFast.Facility\BookFast.Facility.csproj", "{A0F51584-5F77-4FDA-8AC9-EBDEDDA32928}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Search", "BookFast.Search\BookFast.Search.xproj", "{79EDEC05-1B36-4631-8F2A-92F180957469}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility.Contracts", "BookFast.Facility.Contracts\BookFast.Facility.Contracts.csproj", "{6634BD9B-E47F-4D5D-824F-CB89953058BA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Search.Indexer", "BookFast.Search.Indexer\BookFast.Search.Indexer.xproj", "{DC9531CC-3B9A-472E-8499-F618E13F2978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility.Business", "BookFast.Facility.Business\BookFast.Facility.Business.csproj", "{F3AAB696-30B1-4CEE-A1E1-B2834C503913}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Booking.Contracts", "BookFast.Booking.Contracts\BookFast.Booking.Contracts.xproj", "{7FB6102E-234C-4C9B-AB3E-3710053776B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility.Data", "BookFast.Facility.Data\BookFast.Facility.Data.csproj", "{B517DBFB-C4E6-4ADD-8247-60977C81AB07}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Booking.Business", "BookFast.Booking.Business\BookFast.Booking.Business.xproj", "{4464DB22-56B7-4C37-B42E-97314DA6242B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Framework", "Common\BookFast.Framework\BookFast.Framework.csproj", "{DF0B5158-3AD8-4590-9109-FF497CFE6B9F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Booking.Data", "BookFast.Booking.Data\BookFast.Booking.Data.xproj", "{014B8DF1-AC84-4188-AAF4-3AC94B5665AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Security", "Common\BookFast.Security\BookFast.Security.csproj", "{10658BFF-0BAD-4C06-B5AF-69C41D773E59}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Booking", "BookFast.Booking\BookFast.Booking.xproj", "{511A89CD-646D-4C2A-9365-66353E1DFB3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Security.AspNetCore", "Common\BookFast.Security.AspNetCore\BookFast.Security.AspNetCore.csproj", "{D556869E-0BD1-456C-9A69-ED7ACF638457}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Facility.Client", "BookFast.Facility.Client\BookFast.Facility.Client.xproj", "{802095BD-F3EA-46D1-B22C-6ADD338DCAED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.ServiceFabric", "Common\BookFast.ServiceFabric\BookFast.ServiceFabric.csproj", "{29928404-BDDE-4E4C-93C6-A426C5D35FB4}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Rest", "Common\BookFast.Rest\BookFast.Rest.xproj", "{B25E5363-3345-47FB-80DF-382C8195A912}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Swagger", "Common\BookFast.Swagger\BookFast.Swagger.csproj", "{E965AA12-242A-41CB-AD8C-D90E06110F3D}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Search.Client", "BookFast.Search.Client\BookFast.Search.Client.xproj", "{0812E3F9-EF02-4A9E-9914-BCEECF80425F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Search.Contracts", "BookFast.Search.Contracts\BookFast.Search.Contracts.csproj", "{E22CBBBD-BC13-4BF1-9CB9-5A64A1BE4D56}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Booking.Client", "BookFast.Booking.Client\BookFast.Booking.Client.xproj", "{DE93DD26-A752-4AB2-A903-EE5C374D48B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Search.Business", "BookFast.Search.Business\BookFast.Search.Business.csproj", "{2FF4F0A1-730C-4D7B-AC93-116782647031}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files.Contracts", "BookFast.Files.Contracts\BookFast.Files.Contracts.xproj", "{BA58CA5C-62E4-43FF-A756-CA8226F51AD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Search.Adapter", "BookFast.Search.Adapter\BookFast.Search.Adapter.csproj", "{BE437B8D-6468-4197-828A-BE57405F3F87}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files.Business", "BookFast.Files.Business\BookFast.Files.Business.xproj", "{E86A33F2-E079-4F02-B8D9-99F0219AA2EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Search", "BookFast.Search\BookFast.Search.csproj", "{79EDEC05-1B36-4631-8F2A-92F180957469}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files.Data", "BookFast.Files.Data\BookFast.Files.Data.xproj", "{BFEFC944-1E14-452E-A712-FFCF31B4BDF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Search.Indexer", "BookFast.Search.Indexer\BookFast.Search.Indexer.csproj", "{DC9531CC-3B9A-472E-8499-F618E13F2978}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files", "BookFast.Files\BookFast.Files.xproj", "{16CCBA5A-4176-4E38-B666-C262C71A887F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Booking.Contracts", "BookFast.Booking.Contracts\BookFast.Booking.Contracts.csproj", "{7FB6102E-234C-4C9B-AB3E-3710053776B9}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "BookFast.Files.Client", "BookFast.Files.Client\BookFast.Files.Client.xproj", "{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Booking.Business", "BookFast.Booking.Business\BookFast.Booking.Business.csproj", "{4464DB22-56B7-4C37-B42E-97314DA6242B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Booking.Data", "BookFast.Booking.Data\BookFast.Booking.Data.csproj", "{014B8DF1-AC84-4188-AAF4-3AC94B5665AF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Booking", "BookFast.Booking\BookFast.Booking.csproj", "{511A89CD-646D-4C2A-9365-66353E1DFB3F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility.Client", "BookFast.Facility.Client\BookFast.Facility.Client.csproj", "{802095BD-F3EA-46D1-B22C-6ADD338DCAED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Rest", "Common\BookFast.Rest\BookFast.Rest.csproj", "{B25E5363-3345-47FB-80DF-382C8195A912}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Search.Client", "BookFast.Search.Client\BookFast.Search.Client.csproj", "{0812E3F9-EF02-4A9E-9914-BCEECF80425F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Booking.Client", "BookFast.Booking.Client\BookFast.Booking.Client.csproj", "{DE93DD26-A752-4AB2-A903-EE5C374D48B5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Files.Contracts", "BookFast.Files.Contracts\BookFast.Files.Contracts.csproj", "{BA58CA5C-62E4-43FF-A756-CA8226F51AD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Files.Business", "BookFast.Files.Business\BookFast.Files.Business.csproj", "{E86A33F2-E079-4F02-B8D9-99F0219AA2EA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Files.Data", "BookFast.Files.Data\BookFast.Files.Data.csproj", "{BFEFC944-1E14-452E-A712-FFCF31B4BDF6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Files", "BookFast.Files\BookFast.Files.csproj", "{16CCBA5A-4176-4E38-B666-C262C71A887F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Files.Client", "BookFast.Files.Client\BookFast.Files.Client.csproj", "{1F8C9B9E-A569-44F5-B2CE-7EE83BE90AD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

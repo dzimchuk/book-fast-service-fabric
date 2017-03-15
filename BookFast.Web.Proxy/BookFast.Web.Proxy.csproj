@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>BookFast.Web.Proxy</AssemblyName>
+    <PackageId>BookFast.Web.Proxy</PackageId>
+    <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookFast.Web.Contracts\BookFast.Web.Contracts.csproj" />
+    <ProjectReference Include="..\Common\BookFast.Framework\BookFast.Framework.csproj" />
+    <ProjectReference Include="..\BookFast.Booking.Client\BookFast.Booking.Client.csproj" />
+    <ProjectReference Include="..\BookFast.Facility.Client\BookFast.Facility.Client.csproj" />
+    <ProjectReference Include="..\BookFast.Search.Client\BookFast.Search.Client.csproj" />
+    <ProjectReference Include="..\BookFast.Files.Client\BookFast.Files.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="4.2.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+</Project>
