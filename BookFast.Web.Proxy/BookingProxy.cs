@@ -42,10 +42,18 @@ namespace BookFast.Web.Proxy
 
         public async Task<List<Contracts.Models.Booking>> ListPendingAsync()
         {
-            var result = new List<Contracts.Models.Booking>();
+            var queries = new List<Task<List<Contracts.Models.Booking>>>();
             for (var i = 0; i < 16; i++)
             {
-                result.AddRange(await ListPartitionAsync(new ServicePartitionKey(i)));
+                queries.Add(ListPartitionAsync(new ServicePartitionKey(i)));
+            }
+
+            await Task.WhenAll(queries);
+
+            var result = new List<Contracts.Models.Booking>();
+            foreach (var query in queries)
+            {
+                result.AddRange(await query);
             }
 
             return result;

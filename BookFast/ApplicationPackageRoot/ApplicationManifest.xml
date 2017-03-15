@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="BookFastType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
-    <Parameter Name="FacilitySync:ServiceFabric:InstanceCount" DefaultValue="1" />
     <Parameter Name="Files:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="Booking:ServiceFabric:MinReplicaSetSize" DefaultValue="2" />
     <Parameter Name="Booking:ServiceFabric:TargetReplicaSetSize" DefaultValue="3" />
@@ -43,13 +42,6 @@
        should match the Name and Version attributes of the ServiceManifest element defined in the 
        ServiceManifest.xml file. -->
   <ServiceManifestImport>
-    <ServiceManifestRef ServiceManifestName="BookFast.Booking.FacilitySyncPkg" ServiceManifestVersion="1.0.0" />
-    <ConfigOverrides />
-    <EnvironmentOverrides CodePackageRef="Code">
-      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[ASPNETCORE_ENVIRONMENT]" />
-    </EnvironmentOverrides>
-  </ServiceManifestImport>
-  <ServiceManifestImport>
     <ServiceManifestRef ServiceManifestName="BookFast.FilesPkg" ServiceManifestVersion="1.0.0" />
     <ConfigOverrides>
       <ConfigOverride Name="Config">
@@ -89,6 +81,9 @@
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
+          </Section>
+          <Section Name="Redis">
+            <Parameter Name="Configuration" Value="[Redis:Configuration]" />
           </Section>
         </Settings>
       </ConfigOverride>
@@ -213,11 +208,6 @@
          ServiceFabric PowerShell module.
          
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
-    <Service Name="FacilitySyncService">
-      <StatelessService ServiceTypeName="FacilitySyncServiceType" InstanceCount="[FacilitySync:ServiceFabric:InstanceCount]">
-        <SingletonPartition />
-      </StatelessService>
-    </Service>
     <Service Name="FilesService">
       <StatelessService ServiceTypeName="FilesServiceType" InstanceCount="[Files:ServiceFabric:InstanceCount]">
         <SingletonPartition />

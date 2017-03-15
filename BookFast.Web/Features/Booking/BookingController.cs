@@ -74,6 +74,7 @@ namespace BookFast.Web.Features.Booking
             try
             {
                 var booking = await bookingService.FindAsync(facilityId, id);
+                ViewBag.FacilityId = facilityId;
                 return View(mapper.MapFrom(booking));
             }
             catch (BookingNotFoundException)

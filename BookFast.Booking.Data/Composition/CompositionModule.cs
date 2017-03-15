@@ -13,8 +13,7 @@ namespace BookFast.Booking.Data.Composition
         {
             services.AddScoped<IBookingDataSource, BookingDataSource>();
             services.AddScoped<IFacilityDataSource, FacilityDataSource>();
-
-            services.AddScoped<IFacilityProxy, FacilityProxy>();
+            
             services.AddScoped<IFacilityMapper, FacilityMapper>();
 
             services.AddSingleton<IAccessTokenProvider, NullAccessTokenProvider>();

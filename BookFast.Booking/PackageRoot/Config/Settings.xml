@@ -19,6 +19,11 @@
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
 
+  <Section Name="Redis">
+    <Parameter Name="Configuration" Value="" />
+    <Parameter Name="InstanceName" Value="BookFast.Booking_" />
+  </Section>
+
   <Section Name="FacilityApi">
     <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
     <Parameter Name="ServiceApiResource" Value="" />

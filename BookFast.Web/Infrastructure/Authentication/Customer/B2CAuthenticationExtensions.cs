@@ -1,4 +1,4 @@
-﻿using BookFast.Web.Contracts.Security;
+using BookFast.Web.Contracts.Security;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -59,16 +59,23 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
                 OnRedirectToIdentityProviderForSignOut = context => SetIssuerAddressForSignOutAsync(context, policies.SignInOrSignUpPolicy),
                 OnAuthorizationCodeReceived = async context =>
                 {
-                    var userId = context.Ticket.Principal.FindFirst(B2CAuthConstants.ObjectId).Value;
+                    try
+                    {
+                        var userId = context.Ticket.Principal.FindFirst(B2CAuthConstants.ObjectId).Value;
 
-                    var credential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
-                    var authenticationContext = new AuthenticationContext(authOptions.Authority, new DistributedTokenCache(distributedCache, userId));
+                        var credential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
+                        var authenticationContext = new AuthenticationContext(authOptions.Authority, new DistributedTokenCache(distributedCache, userId));
 
-                    var result = await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
-                        new Uri(context.TokenEndpointRequest.RedirectUri, UriKind.RelativeOrAbsolute), credential,
-                        new[] { authOptions.ClientId }, context.Ticket.Principal.FindFirst(B2CAuthConstants.AcrClaimType).Value);
+                        var result = await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
+                            new Uri(context.TokenEndpointRequest.RedirectUri, UriKind.RelativeOrAbsolute), credential,
+                            new[] { authOptions.ClientId }, context.Ticket.Principal.FindFirst(B2CAuthConstants.AcrClaimType).Value);
 
-                    context.HandleCodeRedemption();
+                        context.HandleCodeRedemption();
+                    }
+                    catch
+                    {
+                        context.HandleResponse();
+                    }
                 },
                 OnTokenValidated = context =>
                 {
@@ -78,8 +85,7 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
                 },
                 OnAuthenticationFailed = context =>
                 {
-                    context.HandleResponse();
-                    context.Response.Redirect("/home/error");
+                    context.SkipToNextMiddleware();
                     return Task.FromResult(0);
                 },
                 OnMessageReceived = context =>
