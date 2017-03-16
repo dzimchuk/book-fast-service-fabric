@@ -1,5 +1,4 @@
-﻿/// <binding Clean='clean' />
-"use strict";
+﻿"use strict";
 
 var gulp = require("gulp"),
     rimraf = require("rimraf"),
@@ -43,3 +42,28 @@ gulp.task("min:css", function () {
 });
 
 gulp.task("min", ["min:js", "min:css"]);
+
+var lib = webroot + "lib/";
+
+gulp.task("copy:bootstrap", function () {
+    return gulp.src("./node_modules/bootstrap/**/*")
+        .pipe(gulp.dest(lib + "bootstrap"));
+});
+
+gulp.task("copy:jquery", function () {
+    return gulp.src("./node_modules/jquery/**/*")
+        .pipe(gulp.dest(lib + "jquery"));
+});
+
+gulp.task("copy:jquery:validation", function () {
+    return gulp.src("./node_modules/jquery-validation/**/*")
+        .pipe(gulp.dest(lib + "jquery-validation"));
+});
+
+gulp.task("copy:jquery:validation:unobtrusive", function () {
+    return gulp.src("./node_modules/jquery-validation-unobtrusive/**/*")
+        .pipe(gulp.dest(lib + "jquery-validation-unobtrusive"));
+});
+
+gulp.task("copy:node:modules", ["copy:bootstrap", "copy:jquery", "copy:jquery:validation", "copy:jquery:validation:unobtrusive"]);
+

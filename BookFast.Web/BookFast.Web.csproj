@@ -10,10 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="App.config" />
-    <None Update="wwwroot\**\*;Features\**\*.cshtml;node_modules\bootstrap\**\*;node_modules\jquery\**\*;node_modules\jquery-validation\**\*;node_modules\jquery-validation-unobtrusive\**\*">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
+    <Content Include="wwwroot\**\*" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +38,6 @@
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="1.0.0" />
     <PackageReference Include="AutoMapper" Version="4.2.1" />
     <PackageReference Include="OdeToCode.AddFeatureFolders" Version="1.0.4" />
-    <PackageReference Include="OdeToCode.UseNodeModules" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
@@ -49,10 +45,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
-  <Target Name="PrepublishScript" BeforeTargets="PrepareForPublish">
+  <Target Name="PrepublishScript" BeforeTargets="Build">
     <Exec Command="npm install" />
     <Exec Command="gulp clean" />
     <Exec Command="gulp min" />
+    <Exec Command="gulp copy:node:modules" />
   </Target>
 
 </Project>
