@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
     <AssemblyName>BookFast.Files.Data</AssemblyName>
     <PackageId>BookFast.Files.Data</PackageId>
     <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>

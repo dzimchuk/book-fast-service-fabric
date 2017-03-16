@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
     <NoWarn>$(NoWarn);ET002</NoWarn>
     <AssemblyName>BookFast.ServiceFabric</AssemblyName>
     <PackageId>BookFast.ServiceFabric</PackageId>
