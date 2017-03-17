@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.Swagger.Model;
+using System.IO;
 
 namespace BookFast.Swagger
 {
@@ -37,6 +38,11 @@ namespace BookFast.Swagger
             {
                 var platformService = PlatformServices.Default;
                 var xmlDoc = $@"{platformService.Application.ApplicationBasePath}\{xmlDocFileName}";
+
+                if (!File.Exists(xmlDoc))
+                {
+                    return; // ugly workaround as currently packaging does not pick the xml files (it used to in project.json era)
+                }
 
                 services.ConfigureSwaggerGen(options =>
                 {
