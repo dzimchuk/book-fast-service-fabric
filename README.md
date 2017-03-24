@@ -16,6 +16,8 @@ A Service Fabric based multitenant facility management and accommodation booking
 - Azure Search
 - Application Insights
 
+![BookFast Service Fabric](BookFastServiceFabric.png)
+
 ## Configuration
 
 BookFast.sfproj references `..\..\..\config\BookFast\Local.xml` that is used in local deployment profiles. This file is not included in the repository and you will need to provide your configuration overrides.
