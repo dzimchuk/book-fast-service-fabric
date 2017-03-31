@@ -23,6 +23,9 @@
     <None Include="Scripts\Deploy-FabricApplication.ps1" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\..\config\BookFast\Cloud.xml">
+      <Link>ApplicationParameters\Cloud.xml</Link>
+    </Content>
     <Content Include="..\..\..\config\BookFast\Local.xml">
       <Link>ApplicationParameters\Local.xml</Link>
     </Content>
