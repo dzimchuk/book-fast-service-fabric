@@ -14,8 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="1.0.2" />
-    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="2.4.164-preview" />
-    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.WebListener" Version="2.4.164-preview" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="2.5.216" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.WebListener" Version="2.5.216" />
     <PackageReference Include="System.Net.Http" Version="4.3.1" />
   </ItemGroup>
 

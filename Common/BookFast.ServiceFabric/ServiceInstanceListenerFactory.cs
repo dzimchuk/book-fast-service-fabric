@@ -10,11 +10,11 @@ namespace BookFast.ServiceFabric
 {
     public static class ServiceInstanceListenerFactory
     {
-        public static ServiceInstanceListener CreateKestrelListener(Type startupType, Action<StatelessServiceContext, string> loggingCallback)
+        public static ServiceInstanceListener CreateInternalListener(Type startupType, Action<StatelessServiceContext, string> loggingCallback)
         {
             return new ServiceInstanceListener(serviceContext =>
             {
-                return new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", url =>
+                return new KestrelCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
                 {
                     loggingCallback(serviceContext, $"Starting Kestrel on {url}");
 
@@ -23,6 +23,7 @@ namespace BookFast.ServiceFabric
                                     services => services
                                         .AddSingleton<StatelessServiceContext>(serviceContext))
                                 .UseContentRoot(Directory.GetCurrentDirectory())
+                                .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
                                 .UseStartup(startupType)
                                 .UseUrls(url)
                                 .Build();
@@ -30,11 +31,11 @@ namespace BookFast.ServiceFabric
             });
         }
 
-        public static ServiceInstanceListener CreateHttpSysListener(Type startupType, Action<StatelessServiceContext, string> loggingCallback)
+        public static ServiceInstanceListener CreateExternalListener(Type startupType, Action<StatelessServiceContext, string> loggingCallback)
         {
             return new ServiceInstanceListener(serviceContext =>
             {
-                return new WebListenerCommunicationListener(serviceContext, "ServiceEndpoint", url =>
+                return new WebListenerCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
                 {
                     loggingCallback(serviceContext, $"Starting WebListener on {url}");
 
@@ -43,6 +44,7 @@ namespace BookFast.ServiceFabric
                                     services => services
                                         .AddSingleton<StatelessServiceContext>(serviceContext))
                                 .UseContentRoot(Directory.GetCurrentDirectory())
+                                .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
                                 .UseStartup(startupType)
                                 .UseUrls(url)
                                 .Build();

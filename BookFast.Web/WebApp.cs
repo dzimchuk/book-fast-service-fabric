@@ -18,7 +18,7 @@ namespace BookFast.Web
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners() =>
             new ServiceInstanceListener[]
             {
-                ServiceInstanceListenerFactory.CreateHttpSysListener(typeof(Startup), (serviceContext, message) => ServiceEventSource.Current.ServiceMessage(serviceContext, message))
+                ServiceInstanceListenerFactory.CreateExternalListener(typeof(Startup), (serviceContext, message) => ServiceEventSource.Current.ServiceMessage(serviceContext, message))
             };
     }
 }

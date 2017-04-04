@@ -15,7 +15,7 @@ namespace BookFast.Search
         protected override IEnumerable<ServiceInstanceListener> CreateServiceInstanceListeners() =>
             new ServiceInstanceListener[]
             {
-                ServiceInstanceListenerFactory.CreateKestrelListener(typeof(Startup), (serviceContext, message) => ServiceEventSource.Current.ServiceMessage(serviceContext, message))
+                ServiceInstanceListenerFactory.CreateInternalListener(typeof(Startup), (serviceContext, message) => ServiceEventSource.Current.ServiceMessage(serviceContext, message))
             };
     }
 }

@@ -16,7 +16,7 @@ namespace BookFast.Booking
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners() =>
             new ServiceReplicaListener[]
             {
-                ServiceReplicaListenerFactory.CreateHttpSysListener(typeof(Startup), StateManager, (serviceContext, message) => ServiceEventSource.Current.ServiceMessage(serviceContext, message))
+                ServiceReplicaListenerFactory.CreateListener(typeof(Startup), StateManager, (serviceContext, message) => ServiceEventSource.Current.ServiceMessage(serviceContext, message))
             };
     }
 }

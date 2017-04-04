@@ -11,21 +11,22 @@ namespace BookFast.ServiceFabric
 {
     public static class ServiceReplicaListenerFactory
     {
-        public static ServiceReplicaListener CreateHttpSysListener(Type startupType, IReliableStateManager stateManager, Action<StatefulServiceContext, string> loggingCallback)
+        public static ServiceReplicaListener CreateListener(Type startupType, IReliableStateManager stateManager, Action<StatefulServiceContext, string> loggingCallback)
         {
             return new ServiceReplicaListener(serviceContext =>
             {
-                return new WebListenerCommunicationListener(serviceContext, "ServiceEndpoint", url =>
+                return new KestrelCommunicationListener(serviceContext, (url, listener) =>
                 {
-                    loggingCallback(serviceContext, $"Starting WebListener on {url}");
+                    loggingCallback(serviceContext, $"Starting Kestrel on {url}");
 
-                    return new WebHostBuilder().UseWebListener()
+                    return new WebHostBuilder().UseKestrel()
                                 .ConfigureServices(services =>
                                 {
                                     services.AddSingleton(serviceContext);
                                     services.AddSingleton(stateManager);
                                 })
                                 .UseContentRoot(Directory.GetCurrentDirectory())
+                                .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
                                 .UseStartup(startupType)
                                 .UseUrls(url)
                                 .Build();
