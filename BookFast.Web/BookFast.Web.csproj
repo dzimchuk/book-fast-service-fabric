@@ -7,6 +7,7 @@
     <AssemblyName>BookFast.Web</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>BookFast.Web</PackageId>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,6 +9,7 @@
     <AssemblyName>BookFast.Facility</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>BookFast.Facility</PackageId>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
 
   <ItemGroup>

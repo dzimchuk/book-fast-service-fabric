@@ -9,6 +9,7 @@
     <AssemblyName>BookFast.Search</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>BookFast.Search</PackageId>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
 
   <ItemGroup>

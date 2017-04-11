@@ -7,6 +7,7 @@
     <AssemblyName>BookFast.Search.Indexer</AssemblyName>
     <OutputType>Exe</OutputType>
     <PackageId>BookFast.Search.Indexer</PackageId>
+    <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
 
   <ItemGroup>
