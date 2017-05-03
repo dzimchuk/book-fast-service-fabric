@@ -20,6 +20,9 @@
                                     AzureActiveDirectory="true"
                                     ServerCertThumbprint="0123456789012345678901234567890123456789" />
   -->
-  <ClusterConnectionParameters ConnectionEndpoint="" />
-  <ApplicationParameterFile Path="..\..\..\..\config\BookFast\Cloud.xml" />
+  <ClusterConnectionParameters ConnectionEndpoint="dzimchuk.westeurope.cloudapp.azure.com:19000" AzureActiveDirectory="true" ServerCertThumbprint="F52285B5F344C8D3C0B7ADDE0B421F08CF38CB1A" />
+  <ApplicationParameterFile Path="..\ApplicationParameters\Cloud.xml" />
+  <UpgradeDeployment Mode="Monitored" Enabled="true">
+    <Parameters FailureAction="Rollback" Force="True" />
+  </UpgradeDeployment>
 </PublishProfile>
