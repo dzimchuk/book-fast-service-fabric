@@ -5,6 +5,7 @@
     <ProjectGuid>3457d600-9548-4e66-bffa-318a86a76502</ProjectGuid>
     <ProjectVersion>1.5</ProjectVersion>
     <MinToolsVersion>1.5</MinToolsVersion>
+    <AddCorrelationIds>false</AddCorrelationIds>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
