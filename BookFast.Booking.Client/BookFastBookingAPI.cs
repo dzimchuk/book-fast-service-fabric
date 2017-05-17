@@ -4,7 +4,7 @@
 
 namespace BookFast.Booking.Client
 {
-    using Microsoft.Rest;
+    using System;
     using Models;
 
     internal partial class BookFastBookingAPI : Microsoft.Rest.ServiceClient<BookFastBookingAPI>, IBookFastBookingAPI
@@ -276,7 +276,7 @@ namespace BookFast.Booking.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<BookingRepresentation>>> ListBookingsWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<BookingRepresentation>>> ListBookingsWithHttpMessagesAsync(long partitionKey, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -291,6 +291,7 @@ namespace BookFast.Booking.Client
             // Construct URL
             var _baseUrl = this.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/bookings").ToString();
+            _url = AddPartitionKey(_url, partitionKey);
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -403,7 +404,7 @@ namespace BookFast.Booking.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<BookingRepresentation>> FindBookingWithHttpMessagesAsync(System.Guid id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<BookingRepresentation>> FindBookingWithHttpMessagesAsync(System.Guid id, long partitionKey, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -420,6 +421,7 @@ namespace BookFast.Booking.Client
             var _baseUrl = this.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/bookings/{id}").ToString();
             _url = _url.Replace("{id}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(id, this.SerializationSettings).Trim('"')));
+            _url = AddPartitionKey(_url, partitionKey);
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -529,7 +531,7 @@ namespace BookFast.Booking.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteBookingWithHttpMessagesAsync(System.Guid id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteBookingWithHttpMessagesAsync(System.Guid id, long partitionKey, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // Tracing
             bool _shouldTrace = Microsoft.Rest.ServiceClientTracing.IsEnabled;
@@ -546,6 +548,7 @@ namespace BookFast.Booking.Client
             var _baseUrl = this.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/bookings/{id}").ToString();
             _url = _url.Replace("{id}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(id, this.SerializationSettings).Trim('"')));
+            _url = AddPartitionKey(_url, partitionKey);
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -643,7 +646,7 @@ namespace BookFast.Booking.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<BookingRepresentation>> CreateBookingWithHttpMessagesAsync(System.Guid accommodationId, BookingData bookingData = default(BookingData), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<BookingRepresentation>> CreateBookingWithHttpMessagesAsync(System.Guid accommodationId, BookingData bookingData, long partitionKey, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             if (bookingData != null)
             {
@@ -665,6 +668,7 @@ namespace BookFast.Booking.Client
             var _baseUrl = this.BaseUri.AbsoluteUri;
             var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "api/accommodations/{accommodationId}/bookings").ToString();
             _url = _url.Replace("{accommodationId}", System.Uri.EscapeDataString(Microsoft.Rest.Serialization.SafeJsonConvert.SerializeObject(accommodationId, this.SerializationSettings).Trim('"')));
+            _url = AddPartitionKey(_url, partitionKey);
             // Create HTTP transport objects
             System.Net.Http.HttpRequestMessage _httpRequest = new System.Net.Http.HttpRequestMessage();
             System.Net.Http.HttpResponseMessage _httpResponse = null;
@@ -762,5 +766,11 @@ namespace BookFast.Booking.Client
             return _result;
         }
 
+        private static string AddPartitionKey(string uri, long partitionKey)
+        {
+            var uriBuilder = new UriBuilder(uri);
+            uriBuilder.Query = $"PartitionKey={partitionKey}&PartitionKind=Int64Range";
+            return uriBuilder.ToString();
+        }
     }
 }

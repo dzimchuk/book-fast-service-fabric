@@ -2,29 +2,27 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Search;
-using BookFast.ServiceFabric.Communication;
 using BookFast.Search.Client;
+using BookFast.Rest;
 
 namespace BookFast.Web.Proxy
 {
     internal class SearchProxy : ISearchService
     {
-        private readonly IPartitionClientFactory<CommunicationClient<IBookFastSearchAPI>> partitionClientFactory;
         private readonly ISearchMapper mapper;
+        private readonly IApiClientFactory<IBookFastSearchAPI> apiClientFactory;
 
-        public SearchProxy(IPartitionClientFactory<CommunicationClient<IBookFastSearchAPI>> partitionClientFactory, ISearchMapper mapper)
+        public SearchProxy(ISearchMapper mapper, IApiClientFactory<IBookFastSearchAPI> apiClientFactory)
         {
             this.mapper = mapper;
-            this.partitionClientFactory = partitionClientFactory;
+            this.apiClientFactory = apiClientFactory;
         }
         
         public async Task<IList<SearchResult>> SearchAsync(string searchText, int page)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.SearchWithHttpMessagesAsync(searchText, page);
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            var result = await api.SearchWithHttpMessagesAsync(searchText, page);
+
             return mapper.MapFrom(result.Body);
         }
     }

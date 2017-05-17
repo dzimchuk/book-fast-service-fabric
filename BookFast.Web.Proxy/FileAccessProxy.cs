@@ -1,32 +1,29 @@
 using BookFast.Files.Client;
-using BookFast.ServiceFabric.Communication;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Files;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using BookFast.Rest;
 
 namespace BookFast.Web.Proxy
 {
     internal class FileAccessProxy : IFileAccessProxy
     {
         private readonly IFileAccessMapper mapper;
-        private readonly IPartitionClientFactory<CommunicationClient<IBookFastFilesAPI>> partitionClientFactory;
+        private readonly IApiClientFactory<IBookFastFilesAPI> apiClientFactory;
 
-        public FileAccessProxy(IFileAccessMapper mapper, IPartitionClientFactory<CommunicationClient<IBookFastFilesAPI>> partitionClientFactory)
+        public FileAccessProxy(IFileAccessMapper mapper, IApiClientFactory<IBookFastFilesAPI> apiClientFactory)
         {
             this.mapper = mapper;
-            this.partitionClientFactory = partitionClientFactory;
+            this.apiClientFactory = apiClientFactory;
         }
 
         public async Task<FileAccessToken> IssueAccommodationImageUploadTokenAsync(Guid accommodationId, string originalFileName)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.GetAccommodationImageUploadTokenWithHttpMessagesAsync(accommodationId, originalFileName);
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            var result = await api.GetAccommodationImageUploadTokenWithHttpMessagesAsync(accommodationId, originalFileName);
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -38,11 +35,8 @@ namespace BookFast.Web.Proxy
 
         public async Task<FileAccessToken> IssueFacilityImageUploadTokenAsync(Guid facilityId, string originalFileName)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.GetFacilityImageUploadTokenWithHttpMessagesAsync(facilityId, originalFileName);
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            var result = await api.GetFacilityImageUploadTokenWithHttpMessagesAsync(facilityId, originalFileName);
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
             {

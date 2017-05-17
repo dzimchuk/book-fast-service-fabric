@@ -4,6 +4,10 @@
 
 namespace BookFast.Booking.Client
 {
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Rest;
     using Models;
 
     /// <summary>
@@ -41,7 +45,7 @@ namespace BookFast.Booking.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<System.Collections.Generic.IList<BookingRepresentation>>> ListBookingsWithHttpMessagesAsync(System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        Task<HttpOperationResponse<IList<BookingRepresentation>>> ListBookingsWithHttpMessagesAsync(long partitionKey, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Find booking by ID
@@ -55,7 +59,7 @@ namespace BookFast.Booking.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<BookingRepresentation>> FindBookingWithHttpMessagesAsync(System.Guid id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        Task<HttpOperationResponse<BookingRepresentation>> FindBookingWithHttpMessagesAsync(System.Guid id, long partitionKey, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Cancel booking
@@ -69,7 +73,7 @@ namespace BookFast.Booking.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse> DeleteBookingWithHttpMessagesAsync(System.Guid id, System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        Task<HttpOperationResponse> DeleteBookingWithHttpMessagesAsync(System.Guid id, long partitionKey, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Book an accommodation
@@ -86,7 +90,7 @@ namespace BookFast.Booking.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        System.Threading.Tasks.Task<Microsoft.Rest.HttpOperationResponse<BookingRepresentation>> CreateBookingWithHttpMessagesAsync(System.Guid accommodationId, BookingData bookingData = default(BookingData), System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>> customHeaders = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
+        Task<HttpOperationResponse<BookingRepresentation>> CreateBookingWithHttpMessagesAsync(System.Guid accommodationId, BookingData bookingData, long partitionKey, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

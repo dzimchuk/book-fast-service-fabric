@@ -14,6 +14,7 @@
     <Parameter Name="SearchService:ServiceFabric:PlacementConstraints" DefaultValue="" />
     <Parameter Name="FacilityService:ServiceFabric:PlacementConstraints" DefaultValue="" />
     <Parameter Name="WebApp:ServiceFabric:PlacementConstraints" DefaultValue="" />
+    <Parameter Name="ServiceFabric:ReverseProxyPort" DefaultValue="" />
     <Parameter Name="HttpsCertThumbprint" DefaultValue="" />
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="ApplicationInsights:InstrumentationKey" DefaultValue="" />
@@ -43,6 +44,10 @@
     <Parameter Name="Authentication:AzureAd:WebApp:ClientId" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:ClientSecret" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:PostLogoutRedirectUri" DefaultValue="" />
+    <Parameter Name="FacilityServiceUri" DefaultValue="" />
+    <Parameter Name="FilesServiceUri" DefaultValue="" />
+    <Parameter Name="SearchServiceUri" DefaultValue="" />
+    <Parameter Name="BookingServiceUri" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -193,10 +198,18 @@
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
           </Section>
           <Section Name="FacilityApi">
+            <Parameter Name="ServiceUri" Value="[FacilityServiceUri]" />
             <Parameter Name="ServiceApiResource" Value="[Authentication:AzureAd:WebApp:ApiResource]" />
           </Section>
+          <Section Name="SearchApi">
+            <Parameter Name="ServiceUri" Value="[SearchServiceUri]" />
+          </Section>
           <Section Name="FilesApi">
+            <Parameter Name="ServiceUri" Value="[FilesServiceUri]" />
             <Parameter Name="ServiceApiResource" Value="[Authentication:AzureAd:WebApp:ApiResource]" />
+          </Section>
+          <Section Name="BookingApi">
+            <Parameter Name="ServiceUri" Value="[BookingServiceUri]" />
           </Section>
         </Settings>
       </ConfigOverride>

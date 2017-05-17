@@ -26,7 +26,9 @@
     <None Include="Scripts\Deploy-FabricApplication.ps1" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ApplicationParameters\Cloud.ReverseProxy.xml" />
     <Content Include="ApplicationParameters\Cloud.xml" />
+    <Content Include="ApplicationParameters\Local.ReverseProxy.xml" />
     <Content Include="ApplicationParameters\Local.xml" />
     <Content Include="packages.config" />
   </ItemGroup>
