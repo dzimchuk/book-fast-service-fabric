@@ -8,6 +8,12 @@
     <Parameter Name="SearchService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="FacilityService:ServiceFabric:InstanceCount" DefaultValue="-1" />
     <Parameter Name="WebApp:ServiceFabric:InstanceCount" DefaultValue="-1" />
+    <Parameter Name="Files:ServiceFabric:PlacementConstraints" DefaultValue="" />
+    <Parameter Name="Booking:ServiceFabric:PlacementConstraints" DefaultValue="" />
+    <Parameter Name="IndexerService:ServiceFabric:PlacementConstraints" DefaultValue="" />
+    <Parameter Name="SearchService:ServiceFabric:PlacementConstraints" DefaultValue="" />
+    <Parameter Name="FacilityService:ServiceFabric:PlacementConstraints" DefaultValue="" />
+    <Parameter Name="WebApp:ServiceFabric:PlacementConstraints" DefaultValue="" />
     <Parameter Name="HttpsCertThumbprint" DefaultValue="" />
     <Parameter Name="ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="ApplicationInsights:InstrumentationKey" DefaultValue="" />
@@ -211,31 +217,37 @@
     <Service Name="FilesService">
       <StatelessService ServiceTypeName="FilesServiceType" InstanceCount="[Files:ServiceFabric:InstanceCount]">
         <SingletonPartition />
+        <PlacementConstraints>[Files:ServiceFabric:PlacementConstraints]</PlacementConstraints>
       </StatelessService>
     </Service>
     <Service Name="BookingService">
       <StatefulService ServiceTypeName="BookingServiceType" TargetReplicaSetSize="[Booking:ServiceFabric:TargetReplicaSetSize]" MinReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]">
         <UniformInt64Partition PartitionCount="16" LowKey="0" HighKey="15" />
+        <PlacementConstraints>[Booking:ServiceFabric:PlacementConstraints]</PlacementConstraints>
       </StatefulService>
     </Service>
-    <Service Name="SearchIndexer">
+    <Service Name="IndexIndexer">
       <StatelessService ServiceTypeName="IndexerServiceType" InstanceCount="[IndexerService:ServiceFabric:InstanceCount]">
         <SingletonPartition />
+        <PlacementConstraints>[IndexerService:ServiceFabric:PlacementConstraints]</PlacementConstraints>
       </StatelessService>
     </Service>
     <Service Name="SearchService">
       <StatelessService ServiceTypeName="SearchServiceType" InstanceCount="[SearchService:ServiceFabric:InstanceCount]">
         <SingletonPartition />
+        <PlacementConstraints>[SearchService:ServiceFabric:PlacementConstraints]</PlacementConstraints>
       </StatelessService>
     </Service>
     <Service Name="FacilityService">
       <StatelessService ServiceTypeName="FacilityServiceType" InstanceCount="[FacilityService:ServiceFabric:InstanceCount]">
         <SingletonPartition />
+        <PlacementConstraints>[FacilityService:ServiceFabric:PlacementConstraints]</PlacementConstraints>
       </StatelessService>
     </Service>
     <Service Name="WebApp">
       <StatelessService ServiceTypeName="WebAppType" InstanceCount="[WebApp:ServiceFabric:InstanceCount]">
         <SingletonPartition />
+        <PlacementConstraints>[WebApp:ServiceFabric:PlacementConstraints]</PlacementConstraints>
       </StatelessService>
     </Service>
   </DefaultServices>
