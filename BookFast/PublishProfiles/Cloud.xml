@@ -20,7 +20,7 @@
                                     AzureActiveDirectory="true"
                                     ServerCertThumbprint="0123456789012345678901234567890123456789" />
   -->
-  <ClusterConnectionParameters ConnectionEndpoint="" />
+  <ClusterConnectionParameters ConnectionEndpoint="dzimchuk2.westeurope.cloudapp.azure.com:19000" AzureActiveDirectory="true" ServerCertThumbprint="69728F09F53B8564F3739C49E4F6BA8BC4C34DEC" />
   <ApplicationParameterFile Path="..\ApplicationParameters\Cloud.ReverseProxy.xml" />
   <UpgradeDeployment Mode="Monitored" Enabled="true">
     <Parameters FailureAction="Rollback" Force="True" />
