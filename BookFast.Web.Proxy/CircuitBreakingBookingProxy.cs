@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts;
+using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Models;
+using Microsoft.Rest;
 using Polly;
 using Polly.CircuitBreaker;
 
@@ -12,7 +14,7 @@ namespace BookFast.Web.Proxy
     {
         private readonly IBookingService innerProxy;
         private readonly CircuitBreakerPolicy breaker =
-            Policy.Handle<Exception>().CircuitBreaker(
+            Policy.Handle<HttpOperationException>().CircuitBreakerAsync(
                 exceptionsAllowedBeforeBreaking: 2,
                 durationOfBreak: TimeSpan.FromMinutes(1));
 
@@ -21,24 +23,68 @@ namespace BookFast.Web.Proxy
             this.innerProxy = innerProxy;
         }
 
-        public Task BookAsync(Guid facilityId, Guid accommodationId, BookingDetails details)
+        public async Task BookAsync(Guid facilityId, Guid accommodationId, BookingDetails details)
         {
-            return breaker.ExecuteAsync(() => innerProxy.BookAsync(facilityId, accommodationId, details));
+            try
+            {
+                await breaker.ExecuteAsync(() => innerProxy.BookAsync(facilityId, accommodationId, details));
+            }
+            catch (HttpOperationException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
+            catch (BrokenCircuitException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
         }
 
-        public Task CancelAsync(Guid facilityId, Guid id)
+        public async Task CancelAsync(Guid facilityId, Guid id)
         {
-            return breaker.ExecuteAsync(() => innerProxy.CancelAsync(facilityId, id));
+            try
+            {
+                await breaker.ExecuteAsync(() => innerProxy.CancelAsync(facilityId, id));
+            }
+            catch (HttpOperationException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
+            catch (BrokenCircuitException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
         }
 
-        public Task<Contracts.Models.Booking> FindAsync(Guid facilityId, Guid id)
+        public async Task<Contracts.Models.Booking> FindAsync(Guid facilityId, Guid id)
         {
-            return breaker.ExecuteAsync(() => innerProxy.FindAsync(facilityId, id));
+            try
+            {
+                return await breaker.ExecuteAsync(() => innerProxy.FindAsync(facilityId, id));
+            }
+            catch (HttpOperationException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
+            catch (BrokenCircuitException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
         }
 
-        public Task<List<Contracts.Models.Booking>> ListPendingAsync()
+        public async Task<List<Contracts.Models.Booking>> ListPendingAsync()
         {
-            return breaker.ExecuteAsync(() => innerProxy.ListPendingAsync());
+            try
+            {
+                return await breaker.ExecuteAsync(() => innerProxy.ListPendingAsync());
+            }
+            catch (HttpOperationException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
+            catch (BrokenCircuitException ex)
+            {
+                throw new RemoteServiceFailedException(ex.StatusCode(), ex);
+            }
         }
     }
 }

@@ -8,6 +8,8 @@ using BookFast.Booking.Contracts;
 using BookFast.Booking.Models.Representations;
 using BookFast.Booking.Contracts.Exceptions;
 using BookFast.Booking.Models;
+using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
 
 namespace BookFast.Booking.Controllers
 {
@@ -17,11 +19,13 @@ namespace BookFast.Booking.Controllers
     {
         private readonly IBookingService service;
         private readonly IBookingMapper mapper;
+        private readonly IConfiguration configuration;
 
-        public BookingController(IBookingService service, IBookingMapper mapper)
+        public BookingController(IBookingService service, IBookingMapper mapper, IConfiguration configuration)
         {
             this.service = service;
             this.mapper = mapper;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -33,6 +37,8 @@ namespace BookFast.Booking.Controllers
         [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<BookingRepresentation>))]
         public async Task<IEnumerable<BookingRepresentation>> List()
         {
+            FailRandom();
+
             var bookings = await service.ListPendingAsync();
             return mapper.MapFrom(bookings);
         }
@@ -85,6 +91,27 @@ namespace BookFast.Booking.Controllers
             catch (AccommodationNotFoundException)
             {
                 return NotFound();
+            }
+        }
+
+        private void FailRandom()
+        {
+            if (bool.Parse(configuration["Test:FailRandom"]))
+            {
+                if (GenerateRandom() < 0)
+                {
+                    throw new Exception("test");
+                }
+            }
+        }
+
+        private static int GenerateRandom()
+        {
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                var bytes = new byte[5];
+                rng.GetBytes(bytes);
+                return BitConverter.ToInt32(bytes, 0);
             }
         }
 

@@ -15,6 +15,8 @@ A Service Fabric based multitenant facility management and accommodation booking
 - OpenID Connect and OAuth2
 - Azure Search
 - Application Insights
+- ServicePartitionClient and Reverse Proxy based service clients
+- Circuit Breaker
 
 ![BookFast Service Fabric](BookFastServiceFabric.png)
 
@@ -103,3 +105,7 @@ BookFast.Search.Adapter can be run from the command line as `dotnet run provisio
 - Search:ServiceName
 - Search:AdminKey
 - Search:IndexName
+
+### Circuit Breaker
+
+[BookingProxy](/BookFast.Web.Proxy/CircuitBreakingBookingProxy.cs) (web app) implements a [Circuit Breaker](https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker) pattern. In order to test it, set `Test:FailRandom` parameter of the Booking service to `true`.

@@ -28,5 +28,9 @@
     <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
     <Parameter Name="ServiceApiResource" Value="" />
   </Section>
+
+  <Section Name="Test">
+    <Parameter Name="FailRandom" Value="false" />
+  </Section>
   
 </Settings>
