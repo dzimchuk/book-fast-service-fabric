@@ -37,6 +37,7 @@
     <Parameter Name="Authentication:AzureAd:WebApp:ClientId" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:ClientSecret" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:WebApp:PostLogoutRedirectUri" DefaultValue="" />
+    <Parameter Name="Booking:Test:FailRandom" DefaultValue="false" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -84,6 +85,9 @@
           </Section>
           <Section Name="Redis">
             <Parameter Name="Configuration" Value="[Redis:Configuration]" />
+          </Section>
+          <Section Name="Test">
+            <Parameter Name="FailRandom" Value="Booking:Test:FailRandom" />
           </Section>
         </Settings>
       </ConfigOverride>
