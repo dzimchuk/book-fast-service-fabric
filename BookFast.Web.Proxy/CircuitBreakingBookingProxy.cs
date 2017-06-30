@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts;
@@ -14,7 +14,8 @@ namespace BookFast.Web.Proxy
     {
         private readonly IBookingService innerProxy;
         private readonly CircuitBreakerPolicy breaker =
-            Policy.Handle<HttpOperationException>().CircuitBreakerAsync(
+            Policy.Handle<HttpOperationException>(ex => ex.StatusCode() >= 500 || ex.StatusCode() == 429)
+            .CircuitBreakerAsync(
                 exceptionsAllowedBeforeBreaking: 2,
                 durationOfBreak: TimeSpan.FromMinutes(1));
 
