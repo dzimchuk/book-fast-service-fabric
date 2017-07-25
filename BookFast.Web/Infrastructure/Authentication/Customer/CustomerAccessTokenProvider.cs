@@ -1,4 +1,4 @@
-﻿using BookFast.Rest;
+using BookFast.Rest;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Extensions.Caching.Distributed;
@@ -40,7 +40,7 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
             }
             catch (AdalSilentTokenAcquisitionException)
             {
-                return null;
+                throw new ReauthenticationRequiredException();
             }
         }
 

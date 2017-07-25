@@ -1,14 +1,14 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Collections.Generic;
 using Microsoft.Extensions.Options;
-using System;
 using Microsoft.AspNetCore.Http.Features.Authentication;
 using BookFast.Web.Infrastructure.Authentication.Customer;
 using BookFast.Web.Infrastructure.Authentication;
 using BookFast.Web.Infrastructure.Authentication.Organizational;
+using BookFast.Web.Infrastructure;
 
 namespace BookFast.Web.Features.Home
 {
@@ -88,22 +88,7 @@ namespace BookFast.Web.Features.Home
             return RedirectHome();
         }
 
-        private bool IsB2CAuthenticated
-        {
-            get
-            {
-                if (User.Identity.IsAuthenticated)
-                {
-                    var acrClaim = User.FindFirst(B2CAuthConstants.AcrClaimType);
-                    return acrClaim != null &&
-                        (acrClaim.Value.Equals(policies.SignInOrSignUpPolicy, StringComparison.OrdinalIgnoreCase) ||
-                         acrClaim.Value.Equals(policies.EditProfilePolicy, StringComparison.OrdinalIgnoreCase)
-                        );
-                }
-
-                return false;
-            }
-        }
+        private bool IsB2CAuthenticated => User.IsB2CAuthenticated(policies);
 
         private IActionResult RedirectHome() => RedirectToAction(nameof(HomeController.Index), "Home");
     }
