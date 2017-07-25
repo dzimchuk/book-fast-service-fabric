@@ -1,9 +1,10 @@
-﻿using BookFast.Framework;
+using BookFast.Framework;
 using BookFast.Rest;
 using BookFast.Web.Contracts.Security;
 using BookFast.Web.Features.Booking;
 using BookFast.Web.Features.Facility;
 using BookFast.Web.Features.Files;
+using BookFast.Web.Infrastructure.Authentication;
 using BookFast.Web.Infrastructure.Authentication.Customer;
 using BookFast.Web.Infrastructure.Authentication.Organizational;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,8 @@ namespace BookFast.Web.Composition
             services.AddSingleton<ICustomerAccessTokenProvider, CustomerAccessTokenProvider>();
 
             var featureOptions = new FeatureFolderOptions();
-            services.AddMvc().AddFeatureFolders(featureOptions).AddRazorOptions(o => o.ViewLocationFormats.Add(featureOptions.FeatureNamePlaceholder + "/{1}/{0}.cshtml"));
+            services.AddMvc(options => options.Filters.Add(typeof(ReauthenticationRequiredFilter)))
+                .AddFeatureFolders(featureOptions).AddRazorOptions(o => o.ViewLocationFormats.Add(featureOptions.FeatureNamePlaceholder + "/{1}/{0}.cshtml"));
 
             RegisterAuthorizationPolicies(services);
             RegisterMappers(services);
