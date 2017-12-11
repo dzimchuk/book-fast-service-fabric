@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.SwaggerGen.Annotations;
 using BookFast.Search.Contracts;
 using BookFast.Search.Contracts.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace BookFast.Search.Controllers
 {
@@ -25,9 +25,8 @@ namespace BookFast.Search.Controllers
         /// <returns></returns>
         [HttpGet]
         [SwaggerOperation("search")]
-        [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<SearchResult>))]
-        [SwaggerResponse(System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<SearchResult>))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         public async Task<IActionResult> Search([FromQuery]string searchText, [FromQuery]int page = 1)
         {
             if (string.IsNullOrWhiteSpace(searchText))
