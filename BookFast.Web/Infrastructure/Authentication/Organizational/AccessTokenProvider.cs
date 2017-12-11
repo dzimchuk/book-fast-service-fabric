@@ -56,7 +56,7 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
             if (httpContextAccessor.HttpContext?.User == null)
                 return null;
 
-            return httpContextAccessor.HttpContext.User.FindFirst(AuthConstants.ObjectId)?.Value;
+            return httpContextAccessor.HttpContext.User.FindFirst(AuthConstants.ObjectIdClaimType)?.Value;
         }
     }
 }

@@ -1,13 +1,9 @@
-﻿using BookFast.Framework;
-using BookFast.Web.Infrastructure.Authentication.Customer;
-using BookFast.Web.Infrastructure.Authentication.Organizational;
+using BookFast.Framework;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Fabric;
 
@@ -46,16 +42,11 @@ namespace BookFast.Web
             services.AddApplicationInsightsTelemetry(Configuration);
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
-            IOptions<Infrastructure.Authentication.Organizational.AuthenticationOptions> authOptions, 
-            IOptions<B2CAuthenticationOptions> b2cAuthOptions, IOptions<B2CPolicies> b2cPolicies,
-            IDistributedCache distributedCache)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
-
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -66,17 +57,9 @@ namespace BookFast.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
 
-            app.UseCookieAuthentication(new CookieAuthenticationOptions
-            {
-                AutomaticAuthenticate = true
-            });
-
-            app.UseOpenIdConnectB2CAuthentication(b2cAuthOptions.Value, b2cPolicies.Value, distributedCache, true);
-            app.UseOpenIdConnectOrganizationalAuthentication(authOptions.Value, distributedCache, false);
+            app.UseAuthentication();
             
             app.UseMvc(routes =>
             {

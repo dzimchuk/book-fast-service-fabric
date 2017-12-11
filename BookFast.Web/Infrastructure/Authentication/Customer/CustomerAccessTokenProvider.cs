@@ -1,8 +1,9 @@
 using BookFast.Rest;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Microsoft.Identity.Client;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookFast.Web.Infrastructure.Authentication.Customer
@@ -22,34 +23,27 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
 
         public async Task<string> AcquireTokenAsync()
         {
-
-            var credential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
-            var authenticationContext = new AuthenticationContext(authOptions.Authority, new DistributedTokenCache(distributedCache, GetUserId()));
-
             try
             {
-                //var userIdentifier = new UserIdentifier(GetUserId(), UserIdentifierType.UniqueId);
+                var principal = httpContextAccessor.HttpContext.User;
 
-                // AcquireTokenByAuthorizationCodeAsync of the experimental ADAL does not have an overload that accepts a user id
-                // so UniqueId in the token cache key will be null and AcquireTokenSilentAsync won't be able to find anything
-                // it basically means that the experimental ADAL is... yes experimental
-                var userIdentifier = UserIdentifier.AnyUser;
+                var tokenCache = new DistributedTokenCache(distributedCache, principal.FindFirst(B2CAuthConstants.ObjectIdClaimType).Value).GetMSALCache();
+                var client = new ConfidentialClientApplication(authOptions.ClientId,
+                                                          authOptions.GetAuthority(principal.FindFirst(B2CAuthConstants.AcrClaimType).Value),
+                                                          "https://app", // it's not really needed
+                                                          new ClientCredential(authOptions.ClientSecret),
+                                                          tokenCache,
+                                                          null);
 
-                var result = await authenticationContext.AcquireTokenSilentAsync(new[] { authOptions.ClientId }, credential, userIdentifier);
-                return result.Token;
+                var result = await client.AcquireTokenSilentAsync(new[] { $"{authOptions.ApiIdentifier}/read_values", $"{authOptions.ApiIdentifier}/update_booking" },
+                    client.Users.FirstOrDefault());
+
+                return result.AccessToken;
             }
-            catch (AdalSilentTokenAcquisitionException)
+            catch (MsalUiRequiredException)
             {
                 throw new ReauthenticationRequiredException();
             }
-        }
-
-        private string GetUserId()
-        {
-            if (httpContextAccessor.HttpContext?.User == null)
-                return null;
-
-            return httpContextAccessor.HttpContext.User.FindFirst(B2CAuthConstants.ObjectId)?.Value;
         }
     }
 }

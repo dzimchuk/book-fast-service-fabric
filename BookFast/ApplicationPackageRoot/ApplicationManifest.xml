@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="BookFastType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Parameters>
     <Parameter Name="Files:ServiceFabric:InstanceCount" DefaultValue="-1" />
@@ -26,8 +26,10 @@
     <Parameter Name="Authentication:AzureAd:B2C:ClientId" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:ClientSecret" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:PostLogoutRedirectUri" DefaultValue="" />
+    <Parameter Name="Authentication:AzureAd:B2C:ApiIdentifier" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:B2C:Policies:EditProfilePolicy" DefaultValue="" />
+    <Parameter Name="Authentication:AzureAd:B2C:Policies:ResetPasswordPolicy" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:ApiApp:Audience" DefaultValue="" />
     <Parameter Name="Authentication:AzureAd:ApiApp:Instance" DefaultValue="https://login.microsoftonline.com/" />
     <Parameter Name="Authentication:AzureAd:ApiApp:ValidIssuers" DefaultValue="" />
@@ -181,8 +183,10 @@
             <Parameter Name="AzureAd:B2C:ClientId" Value="[Authentication:AzureAd:B2C:ClientId]" />
             <Parameter Name="AzureAd:B2C:ClientSecret" Value="[Authentication:AzureAd:B2C:ClientSecret]" />
             <Parameter Name="AzureAd:B2C:PostLogoutRedirectUri" Value="[Authentication:AzureAd:B2C:PostLogoutRedirectUri]" />
+            <Parameter Name="AzureAd:B2C:ApiIdentifier" Value="[Authentication:AzureAd:B2C:ApiIdentifier]" />
             <Parameter Name="AzureAd:B2C:Policies:SignInOrSignUpPolicy" Value="[Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy]" />
             <Parameter Name="AzureAd:B2C:Policies:EditProfilePolicy" Value="[Authentication:AzureAd:B2C:Policies:EditProfilePolicy]" />
+            <Parameter Name="AzureAd:B2C:Policies:ResetPasswordPolicy" Value="[Authentication:AzureAd:B2C:Policies:ResetPasswordPolicy]" />
           </Section>
           <Section Name="Redis">
             <Parameter Name="Configuration" Value="[Redis:Configuration]" />

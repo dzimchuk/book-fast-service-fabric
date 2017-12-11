@@ -1,63 +1,52 @@
-﻿using Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
+using Microsoft.Identity.Client;
 using System;
 
 namespace BookFast.Web.Infrastructure.Authentication.Customer
 {
-    internal class DistributedTokenCache : TokenCache
+    internal class DistributedTokenCache
     {
-        private readonly IDistributedCache cache;
+        private readonly IDistributedCache distributedCache;
         private readonly string userId;
 
-        private UserTokenCacheItem currentCacheItem;
+        private readonly TokenCache tokenCache = new TokenCache();
 
         public DistributedTokenCache(IDistributedCache cache, string userId)
         {
-            this.cache = cache;
+            this.distributedCache = cache;
             this.userId = userId;
 
-            BeforeAccess = OnBeforeAccess;
-            AfterAccess = OnAfterAccess;
+            tokenCache.SetBeforeAccess(OnBeforeAccess);
+            tokenCache.SetAfterAccess(OnAfterAccess);
         }
+
+        public TokenCache GetMSALCache() => tokenCache;
 
         private void OnBeforeAccess(TokenCacheNotificationArgs args)
         {
-            var serializedCacheItem = cache.GetString(CacheKey);
-            if (serializedCacheItem == null)
+            var userTokenCachePayload = distributedCache.Get(CacheKey);
+            if (userTokenCachePayload != null)
             {
-                return;
-            }
-
-            var cacheItem = JsonConvert.DeserializeObject<UserTokenCacheItem>(serializedCacheItem);
-
-            if (currentCacheItem == null || currentCacheItem.LastWrite < cacheItem.LastWrite)
-            {
-                currentCacheItem = cacheItem;
-                Deserialize(currentCacheItem.Payload);
+                tokenCache.Deserialize(userTokenCachePayload);
             }
         }
 
         private void OnAfterAccess(TokenCacheNotificationArgs args)
         {
-            if (HasStateChanged)
+            if (tokenCache.HasStateChanged)
             {
-                var cacheItem = new UserTokenCacheItem
-                {
-                    Payload = Serialize(),
-                    LastWrite = DateTimeOffset.Now
-                };
-
                 var cacheOptions = new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(14)
                 };
-                cache.SetString(CacheKey, JsonConvert.SerializeObject(cacheItem), cacheOptions);
 
-                HasStateChanged = false;
+                distributedCache.Set(CacheKey, tokenCache.Serialize(), cacheOptions);
+
+                tokenCache.HasStateChanged = false;
             }
         }
 
         private string CacheKey => $"TokenCache_{userId}";
+
     }
 }

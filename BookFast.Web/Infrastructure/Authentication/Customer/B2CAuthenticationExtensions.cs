@@ -1,10 +1,10 @@
 using BookFast.Web.Contracts.Security;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,41 +16,41 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
 {
     internal static class B2CAuthenticationExtensions
     {
-        public static void UseOpenIdConnectB2CAuthentication(this IApplicationBuilder app, 
-            B2CAuthenticationOptions authOptions, B2CPolicies b2cPolicies, IDistributedCache distributedCache,
-            bool automaticChallenge = false)
+        public static AuthenticationBuilder AddOpenIdConnectB2CAuthentication(this AuthenticationBuilder authenticationBuilder, 
+            B2CAuthenticationOptions authOptions, B2CPolicies b2cPolicies, IDistributedCache distributedCache)
         {
-            var openIdConnectOptions = new OpenIdConnectOptions
+            authenticationBuilder.AddOpenIdConnect(B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme, options =>
             {
-                AuthenticationScheme = B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme,
-                AutomaticChallenge = automaticChallenge,
+                options.CallbackPath = new PathString(B2CAuthConstants.B2CCallbackPath);
 
-                CallbackPath = new PathString(B2CAuthConstants.B2CCallbackPath),
+                options.Authority = authOptions.Authority;
+                options.ClientId = authOptions.ClientId;
+                options.ClientSecret = authOptions.ClientSecret;
+                options.SignedOutRedirectUri = authOptions.PostLogoutRedirectUri;
 
-                Authority = authOptions.Authority,
-                ClientId = authOptions.ClientId,
-                ClientSecret = authOptions.ClientSecret,
-                PostLogoutRedirectUri = authOptions.PostLogoutRedirectUri,
+                options.ConfigurationManager = new PolicyConfigurationManager(authOptions.Authority,
+                                               new[] { b2cPolicies.SignInOrSignUpPolicy, b2cPolicies.EditProfilePolicy, b2cPolicies.ResetPasswordPolicy });
 
-                ConfigurationManager = new PolicyConfigurationManager(authOptions.Authority,
-                                               new[] { b2cPolicies.SignInOrSignUpPolicy, b2cPolicies.EditProfilePolicy }),
-                Events = CreateOpenIdConnectEventHandlers(authOptions, b2cPolicies, distributedCache),
+                options.Events = CreateOpenIdConnectEventHandlers(authOptions, b2cPolicies, distributedCache);
 
-                ResponseType = OpenIdConnectResponseType.CodeIdToken,
-                TokenValidationParameters = new TokenValidationParameters
+                options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     NameClaimType = "name"
-                },
+                };
 
-                SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme
-            };
+                // it will fall back on using DefaultSignInScheme if not set
+                //options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
-            openIdConnectOptions.Scope.Add("offline_access");
+                options.Scope.Add("offline_access");
+                options.Scope.Add($"{authOptions.ApiIdentifier}/read_booking");
+                options.Scope.Add($"{authOptions.ApiIdentifier}/update_booking");
+            });
 
-            app.UseOpenIdConnectAuthentication(openIdConnectOptions);
+            return authenticationBuilder;
         }
 
-        private static IOpenIdConnectEvents CreateOpenIdConnectEventHandlers(B2CAuthenticationOptions authOptions, 
+        private static OpenIdConnectEvents CreateOpenIdConnectEventHandlers(B2CAuthenticationOptions authOptions, 
             B2CPolicies policies, IDistributedCache distributedCache)
         {
             return new OpenIdConnectEvents
@@ -61,42 +61,52 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
                 {
                     try
                     {
-                        var userId = context.Ticket.Principal.FindFirst(B2CAuthConstants.ObjectId).Value;
+                        var principal = context.Principal;
 
-                        var credential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
-                        var authenticationContext = new AuthenticationContext(authOptions.Authority, new DistributedTokenCache(distributedCache, userId));
+                        var userTokenCache = new DistributedTokenCache(distributedCache, principal.FindFirst(B2CAuthConstants.ObjectIdClaimType).Value).GetMSALCache();
+                        var client = new ConfidentialClientApplication(authOptions.ClientId,
+                            authOptions.GetAuthority(principal.FindFirst(B2CAuthConstants.AcrClaimType).Value),
+                            "https://app", // it's not really needed
+                            new ClientCredential(authOptions.ClientSecret),
+                            userTokenCache,
+                            null);
 
-                        var result = await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
-                            new Uri(context.TokenEndpointRequest.RedirectUri, UriKind.RelativeOrAbsolute), credential,
-                            new[] { authOptions.ClientId }, context.Ticket.Principal.FindFirst(B2CAuthConstants.AcrClaimType).Value);
+                        var result = await client.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
+                            new[] { $"{authOptions.ApiIdentifier}/read_booking", $"{authOptions.ApiIdentifier}/update_booking" });
 
-                        context.HandleCodeRedemption();
+                        context.HandleCodeRedemption(result.AccessToken, result.IdToken);
                     }
-                    catch
+                    catch (Exception ex)
                     {
-                        context.HandleResponse();
+                        context.Fail(ex);
                     }
                 },
                 OnTokenValidated = context =>
                 {
-                    var claimsIdentity = (ClaimsIdentity)context.Ticket.Principal.Identity;
+                    var claimsIdentity = (ClaimsIdentity)context.Principal.Identity;
                     claimsIdentity.AddClaim(new Claim(BookFastClaimTypes.InteractorRole, InteractorRole.Customer.ToString()));
                     return Task.FromResult(0);
                 },
                 OnAuthenticationFailed = context =>
                 {
-                    context.SkipToNextMiddleware();
+                    context.Fail(context.Exception);
                     return Task.FromResult(0);
                 },
                 OnMessageReceived = context =>
                 {
                     if (!string.IsNullOrEmpty(context.ProtocolMessage.Error) &&
-                        !string.IsNullOrEmpty(context.ProtocolMessage.ErrorDescription) &&
-                        context.ProtocolMessage.ErrorDescription.StartsWith("AADB2C90091") &&
-                        context.Properties.Items[B2CAuthConstants.B2CPolicy] == policies.EditProfilePolicy)
+                        !string.IsNullOrEmpty(context.ProtocolMessage.ErrorDescription))
                     {
-                        context.Ticket = new Microsoft.AspNetCore.Authentication.AuthenticationTicket(context.HttpContext.User, context.Properties, B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme);
-                        context.HandleResponse();
+                        if (context.ProtocolMessage.ErrorDescription.StartsWith("AADB2C90091")) // cancel profile editing
+                        {
+                            context.HandleResponse();
+                            context.Response.Redirect("/");
+                        }
+                        else if (context.ProtocolMessage.ErrorDescription.StartsWith("AADB2C90118")) // forgot password
+                        {
+                            context.HandleResponse();
+                            context.Response.Redirect("/Account/ResetPassword");
+                        }
                     }
 
                     return Task.FromResult(0);
@@ -116,12 +126,12 @@ namespace BookFast.Web.Infrastructure.Authentication.Customer
             context.ProtocolMessage.IssuerAddress = configuration.EndSessionEndpoint;
         }
 
-        private static async Task<OpenIdConnectConfiguration> GetOpenIdConnectConfigurationAsync(RedirectContext context, string defaultPolicy)
+        private static Task<OpenIdConnectConfiguration> GetOpenIdConnectConfigurationAsync(RedirectContext context, string defaultPolicy)
         {
             var manager = (PolicyConfigurationManager)context.Options.ConfigurationManager;
             var policy = context.Properties.Items.ContainsKey(B2CAuthConstants.B2CPolicy) ? context.Properties.Items[B2CAuthConstants.B2CPolicy] : defaultPolicy;
-            var configuration = await manager.GetConfigurationByPolicyAsync(CancellationToken.None, policy);
-            return configuration;
+
+            return manager.GetConfigurationByPolicyAsync(CancellationToken.None, policy);
         }
     }
 }

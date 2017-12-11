@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.0.1" />
     <PackageReference Include="Microsoft.IdentityModel.Clients.ActiveDirectory" Version="3.17.2" />
-    <PackageReference Include="Microsoft.Experimental.IdentityModel.Clients.ActiveDirectory" Version="4.0.209160138-alpha" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="1.1.0-preview" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="AutoMapper" Version="4.2.1" />
     <PackageReference Include="OdeToCode.AddFeatureFolders" Version="1.0.8" />
