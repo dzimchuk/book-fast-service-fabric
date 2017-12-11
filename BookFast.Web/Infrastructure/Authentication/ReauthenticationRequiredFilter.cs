@@ -1,7 +1,7 @@
 using BookFast.Web.Infrastructure.Authentication.Customer;
 using BookFast.Web.Infrastructure.Authentication.Organizational;
-using Microsoft.AspNetCore.Http.Authentication;
-using Microsoft.AspNetCore.Http.Features.Authentication;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Options;
 using System;
@@ -24,21 +24,21 @@ namespace BookFast.Web.Infrastructure.Authentication
             {
                 if (context.HttpContext.User.IsB2CAuthenticated(policies))
                 {
-                    context.Result = new CustomChallengeResult(
+                    context.Result = new ChallengeResult(
                         B2CAuthConstants.OpenIdConnectB2CAuthenticationScheme,
                         new AuthenticationProperties(new Dictionary<string, string> { { B2CAuthConstants.B2CPolicy, policies.SignInOrSignUpPolicy } })
                         {
                             RedirectUri = context.HttpContext.Request.Path
-                        }, ChallengeBehavior.Unauthorized);
+                        });
                 }
                 else
                 {
-                    context.Result = new CustomChallengeResult(
+                    context.Result = new ChallengeResult(
                         AuthConstants.OpenIdConnectOrganizationalAuthenticationScheme,
                         new AuthenticationProperties
                         {
                             RedirectUri = context.HttpContext.Request.Path
-                        }, ChallengeBehavior.Unauthorized);
+                        });
                 }
 
                 context.ExceptionHandled = true;

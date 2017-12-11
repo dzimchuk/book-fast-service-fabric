@@ -23,7 +23,7 @@ namespace BookFast.Search.Adapter
         {
             var builder = new ConfigurationBuilder();
             builder.SetBasePath(Directory.GetCurrentDirectory());
-            builder.AddUserSecrets();
+            builder.AddUserSecrets<Program>();
 
             var configuration = builder.Build();
             var searchServiceClient = new SearchServiceClient(configuration["Search:ServiceName"], new SearchCredentials(configuration["Search:AdminKey"]));

@@ -1,7 +1,7 @@
 ﻿@if (User.Identity.IsAuthenticated)
 {
     <ul class="nav navbar-nav navbar-right">
-        @if (await AuthorizationService.AuthorizeAsync(User, "Customer"))
+        @if ((await AuthorizationService.AuthorizeAsync(User, "Customer")).Succeeded)
         {
             <li class="navbar-link"><a asp-controller="Account" asp-action="Profile">@User.Identity.Name</a></li>
         }
