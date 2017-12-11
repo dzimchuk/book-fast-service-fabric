@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
-    <PackageReference Include="Swashbuckle.SwaggerGen" Version="6.0.0-beta902" />
+    <PackageReference Include="Swashbuckle.SwaggerGen" Version="6.0.0-beta901" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
