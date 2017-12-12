@@ -8,6 +8,7 @@ using BookFast.Swagger;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using BookFast.Booking.Models;
 
 namespace BookFast.Booking.Composition
 {
@@ -22,6 +23,8 @@ namespace BookFast.Booking.Composition
             services.AddScoped<IBookingMapper, BookingMapper>();
 
             services.AddSwashbuckle("Book Fast Booking API", "v1", "BookFast.Booking.xml");
+
+            services.Configure<TestOptions>(configuration.GetSection("Test"));
         }
 
         private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -7,9 +7,9 @@ using BookFast.Booking.Contracts;
 using BookFast.Booking.Models.Representations;
 using BookFast.Booking.Contracts.Exceptions;
 using BookFast.Booking.Models;
-using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.Extensions.Options;
 
 namespace BookFast.Booking.Controllers
 {
@@ -18,13 +18,13 @@ namespace BookFast.Booking.Controllers
     {
         private readonly IBookingService service;
         private readonly IBookingMapper mapper;
-        private readonly IConfiguration configuration;
+        private readonly TestOptions testOptions;
 
-        public BookingController(IBookingService service, IBookingMapper mapper, IConfiguration configuration)
+        public BookingController(IBookingService service, IBookingMapper mapper, IOptions<TestOptions> testOptions)
         {
             this.service = service;
             this.mapper = mapper;
-            this.configuration = configuration;
+            this.testOptions = testOptions.Value;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace BookFast.Booking.Controllers
 
         private void FailRandom()
         {
-            if (bool.Parse(configuration["Test:FailRandom"]))
+            if (testOptions.FailRandom)
             {
                 if (GenerateRandom() < 0)
                 {
