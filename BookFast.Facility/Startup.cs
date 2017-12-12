@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using BookFast.Framework;
-using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Security.AspNetCore;
 using System.Fabric;
 
@@ -49,38 +45,12 @@ namespace BookFast.Facility
             services.AddApplicationInsightsTelemetry(Configuration);
         }
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
-            IOptions<Security.AspNetCore.Authentication.AuthenticationOptions> authOptions)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
-            app.UseApplicationInsightsRequestTelemetry();
-            app.UseApplicationInsightsExceptionTelemetry();
-                        
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                AuthenticationScheme = Constants.OrganizationalAuthenticationScheme,
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-
-                Authority = authOptions.Value.Authority,
-                Audience = authOptions.Value.Audience,
-
-                TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidIssuers = authOptions.Value.ValidIssuersAsArray
-                },
-
-                Events = new JwtBearerEvents
-                {
-                    OnAuthenticationFailed = ctx =>
-                    {
-                        ctx.SkipToNextMiddleware();
-                        return Task.FromResult(0);
-                    }
-                }
-            });
+            
+            app.UseAuthentication();
 
             app.UseSecurityContext();
             app.UseMvc();

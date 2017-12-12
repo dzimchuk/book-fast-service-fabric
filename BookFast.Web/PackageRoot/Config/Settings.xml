@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
   <Section Name="Environment">
     <Parameter Name="ASPNETCORE_ENVIRONMENT" Value="" />
@@ -23,8 +23,10 @@
     <Parameter Name="AzureAd:B2C:ClientId" Value="" />
     <Parameter Name="AzureAd:B2C:ClientSecret" Value="" />
     <Parameter Name="AzureAd:B2C:PostLogoutRedirectUri" Value="" />
+    <Parameter Name="AzureAd:B2C:ApiIdentifier" Value="" />
     <Parameter Name="AzureAd:B2C:Policies:SignInOrSignUpPolicy" Value="" />
     <Parameter Name="AzureAd:B2C:Policies:EditProfilePolicy" Value="" />
+    <Parameter Name="AzureAd:B2C:Policies:ResetPasswordPolicy" Value="" />
   </Section>
 
   <Section Name="ApplicationInsights">

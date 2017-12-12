@@ -17,7 +17,7 @@
     </environment>
 
     @await RenderSectionAsync("styles", required: false)
-    @Html.ApplicationInsightsJavaScript(TelemetryConfiguration)
+    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -34,11 +34,11 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        @if (await AuthorizationService.AuthorizeAsync(User, "FacilityProviderOnly"))
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "FacilityProviderOnly")).Succeeded)
                         {
                             <li><a asp-controller="Facility" asp-action="Index">Facilities</a></li>
                         }
-                        @if (await AuthorizationService.AuthorizeAsync(User, "Customer"))
+                        @if ((await AuthorizationService.AuthorizeAsync(User, "Customer")).Succeeded)
                         {
                             <li><a asp-controller="Booking" asp-action="Index">My bookings</a></li>
                         }

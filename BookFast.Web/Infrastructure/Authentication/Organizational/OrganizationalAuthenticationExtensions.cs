@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System;
@@ -11,49 +11,46 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
 {
     internal static class OrganizationalAuthenticationExtensions
     {
-        public static void UseOpenIdConnectOrganizationalAuthentication(this IApplicationBuilder app, 
-            AuthenticationOptions authOptions, IDistributedCache distributedCache, bool automaticChallenge = false)
+        public static AuthenticationBuilder AddOpenIdConnectOrganizationalAuthentication(this AuthenticationBuilder authenticationBuilder, 
+            AuthenticationOptions authOptions, IDistributedCache distributedCache)
         {
-            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            authenticationBuilder.AddOpenIdConnect(AuthConstants.OpenIdConnectOrganizationalAuthenticationScheme, options =>
             {
-                AuthenticationScheme = AuthConstants.OpenIdConnectOrganizationalAuthenticationScheme,
-                AutomaticChallenge = automaticChallenge,
+                options.CallbackPath = new PathString(AuthConstants.OrganizationalCallbackPath);
 
-                CallbackPath = new PathString(AuthConstants.OrganizationalCallbackPath),
+                options.Authority = authOptions.Authority;
+                options.ClientId = authOptions.ClientId;
+                options.ClientSecret = authOptions.ClientSecret;
+                options.SignedOutRedirectUri = authOptions.PostLogoutRedirectUri;
 
-                Authority = authOptions.Authority,
-                ClientId = authOptions.ClientId,
-                ClientSecret = authOptions.ClientSecret,
-
-                TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidIssuers = authOptions.ValidIssuersAsArray
-                },
+                };
 
-                ResponseType = OpenIdConnectResponseType.CodeIdToken,
+                options.ResponseType = OpenIdConnectResponseType.CodeIdToken;
 
-                SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme,
-                PostLogoutRedirectUri = authOptions.PostLogoutRedirectUri,
-
-                Events = CreateOpenIdConnectEventHandlers(authOptions, distributedCache)
+                options.Events = CreateOpenIdConnectEventHandlers(authOptions, distributedCache);
             });
+
+            return authenticationBuilder;
         }
 
-        private static IOpenIdConnectEvents CreateOpenIdConnectEventHandlers(AuthenticationOptions authOptions,
+        private static OpenIdConnectEvents CreateOpenIdConnectEventHandlers(AuthenticationOptions authOptions,
             IDistributedCache distributedCache)
         {
             return new OpenIdConnectEvents
             {
                 OnAuthorizationCodeReceived = async context =>
                 {
-                    var userId = context.Ticket.Principal.FindFirst(AuthConstants.ObjectId).Value;
+                    var userId = context.Principal.FindFirst(AuthConstants.ObjectIdClaimType).Value;
 
                     var clientCredential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
                     var authenticationContext = new AuthenticationContext(authOptions.Authority, new DistributedTokenCache(distributedCache, userId));
-                    await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
+                    var result = await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
                         new Uri(context.TokenEndpointRequest.RedirectUri, UriKind.RelativeOrAbsolute), clientCredential, authOptions.ApiResource);
 
-                    context.HandleCodeRedemption();
+                    context.HandleCodeRedemption(result.AccessToken, result.IdToken);
                 }
             };
         }

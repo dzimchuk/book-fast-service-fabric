@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
-using Swashbuckle.Swagger.Model;
 using System.IO;
 
 namespace BookFast.Swagger
@@ -12,7 +11,7 @@ namespace BookFast.Swagger
         {
             services.AddSwaggerGen(options =>
             {
-                options.SingleApiVersion(new Info
+                options.SwaggerDoc(version, new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = title,
                     Version = version
@@ -37,7 +36,7 @@ namespace BookFast.Swagger
             if (hostEnv.IsDevelopment())
             {
                 var platformService = PlatformServices.Default;
-                var xmlDoc = $@"{platformService.Application.ApplicationBasePath}\{xmlDocFileName}";
+                var xmlDoc = Path.Combine(platformService.Application.ApplicationBasePath, xmlDocFileName);
 
                 if (!File.Exists(xmlDoc))
                 {

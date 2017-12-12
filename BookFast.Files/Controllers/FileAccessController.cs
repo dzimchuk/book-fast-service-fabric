@@ -3,14 +3,13 @@ using BookFast.Files.Contracts.Exceptions;
 using BookFast.Files.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.SwaggerGen.Annotations;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Threading.Tasks;
 
 namespace BookFast.Files.Controllers
 {
     [Authorize(Policy = "Facility.Write")]
-    [SwaggerResponseRemoveDefaults]
     public class FileAccessController : Controller
     {
         private readonly IFileAccessService fileService;
@@ -30,9 +29,9 @@ namespace BookFast.Files.Controllers
         /// <returns></returns>
         [HttpGet("/api/facilities/{id}/image-token")]
         [SwaggerOperation("get-facility-image-upload-token")]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(FileAccessTokenRepresentation))]
-        [SwaggerResponse(System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
-        [SwaggerResponse(System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FileAccessTokenRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
         public async Task<IActionResult> GetFacilityImageUploadToken(Guid id, [FromQuery]string originalFileName)
         {
             try
@@ -61,9 +60,9 @@ namespace BookFast.Files.Controllers
         /// <returns></returns>
         [HttpGet("/api/accommodations/{id}/image-token")]
         [SwaggerOperation("get-accommodation-image-upload-token")]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(FileAccessTokenRepresentation))]
-        [SwaggerResponse(System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
-        [SwaggerResponse(System.Net.HttpStatusCode.NotFound, Description = "Accommodation not found")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FileAccessTokenRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Accommodation not found")]
         public async Task<IActionResult> GetAccommodationImageUploadToken(Guid id, [FromQuery]string originalFileName)
         {
             try

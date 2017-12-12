@@ -6,6 +6,6 @@
 
         public const string OrganizationalCallbackPath = "/signin-oidc";
 
-        public const string ObjectId = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+        public const string ObjectIdClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
     }
 }

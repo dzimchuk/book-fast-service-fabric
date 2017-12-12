@@ -5,14 +5,13 @@ using BookFast.Facility.Models;
 using BookFast.Facility.Models.Representations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.SwaggerGen.Annotations;
 using BookFast.Facility.Contracts;
 using BookFast.Facility.Contracts.Exceptions;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace BookFast.Facility.Controllers
 {
     [Authorize(Policy = "Facility.Write")]
-    [SwaggerResponseRemoveDefaults]
     public class FacilityController : Controller
     {
         private readonly IFacilityService service;
@@ -30,7 +29,7 @@ namespace BookFast.Facility.Controllers
         /// <returns></returns>
         [HttpGet("api/facilities")]
         [SwaggerOperation("list-facilities")]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<FacilityRepresentation>))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<FacilityRepresentation>))]
         public async Task<IEnumerable<FacilityRepresentation>> List()
         {
             var facilities = await service.ListAsync();
@@ -44,8 +43,8 @@ namespace BookFast.Facility.Controllers
         /// <returns></returns>
         [HttpGet("/api/facilities/{id}")]
         [SwaggerOperation("find-facility")]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(FacilityRepresentation))]
-        [SwaggerResponse(System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacilityRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
         [AllowAnonymous]
         public async Task<IActionResult> Find(Guid id)
         {
@@ -67,8 +66,8 @@ namespace BookFast.Facility.Controllers
         /// <returns></returns>
         [HttpPost("api/facilities")]
         [SwaggerOperation("create-facility")]
-        [SwaggerResponse(System.Net.HttpStatusCode.Created, Type = typeof(FacilityRepresentation))]
-        [SwaggerResponse(System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.Created, Type = typeof(FacilityRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         public async Task<IActionResult> Create([FromBody]FacilityData facilityData)
         {
             if (ModelState.IsValid)
@@ -88,9 +87,9 @@ namespace BookFast.Facility.Controllers
         /// <returns></returns>
         [HttpPut("api/facilities/{id}")]
         [SwaggerOperation("update-facility")]
-        [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(FacilityRepresentation))]
-        [SwaggerResponse(System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
-        [SwaggerResponse(System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FacilityRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
         public async Task<IActionResult> Update(Guid id, [FromBody]FacilityData facilityData)
         {
             try
@@ -116,8 +115,8 @@ namespace BookFast.Facility.Controllers
         /// <returns></returns>
         [HttpDelete("api/facilities/{id}")]
         [SwaggerOperation("delete-facility")]
-        [SwaggerResponse(System.Net.HttpStatusCode.NoContent)]
-        [SwaggerResponse(System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.NoContent)]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try

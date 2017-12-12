@@ -9,6 +9,6 @@
         public const string B2CPolicy = "b2cPolicy";
         public const string AcrClaimType = "http://schemas.microsoft.com/claims/authnclassreference";
 
-        public const string ObjectId = "http://schemas.microsoft.com/identity/claims/objectidentifier";
+        public const string ObjectIdClaimType = "http://schemas.microsoft.com/identity/claims/objectidentifier";
     }
 }

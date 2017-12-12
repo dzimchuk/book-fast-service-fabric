@@ -27,7 +27,8 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
 
         public async Task<string> AcquireTokenAsync(string resource)
         {
-            if (!await authorizationService.AuthorizeAsync(httpContextAccessor.HttpContext?.User, "FacilityProviderOnly"))
+            var authorizationResult = await authorizationService.AuthorizeAsync(httpContextAccessor.HttpContext?.User, "FacilityProviderOnly");
+            if (!authorizationResult.Succeeded)
             {
                 return null;
             }
@@ -56,7 +57,7 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
             if (httpContextAccessor.HttpContext?.User == null)
                 return null;
 
-            return httpContextAccessor.HttpContext.User.FindFirst(AuthConstants.ObjectId)?.Value;
+            return httpContextAccessor.HttpContext.User.FindFirst(AuthConstants.ObjectIdClaimType)?.Value;
         }
     }
 }
