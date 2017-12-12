@@ -89,7 +89,7 @@
             <Parameter Name="Configuration" Value="[Redis:Configuration]" />
           </Section>
           <Section Name="Test">
-            <Parameter Name="FailRandom" Value="Booking:Test:FailRandom" />
+            <Parameter Name="FailRandom" Value="[Booking:Test:FailRandom]" />
           </Section>
         </Settings>
       </ConfigOverride>
