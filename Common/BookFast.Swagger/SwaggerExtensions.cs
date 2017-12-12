@@ -11,7 +11,7 @@ namespace BookFast.Swagger
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc($"{title} {version}", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc(version, new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = title,
                     Version = version
