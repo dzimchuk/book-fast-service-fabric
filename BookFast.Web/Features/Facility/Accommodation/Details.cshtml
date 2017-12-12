@@ -33,13 +33,13 @@
 @await Html.PartialAsync("_ImageListPartial", Model.Images)
 
 <p>
-    @if (await AuthorizationService.AuthorizeAsync(User, "FacilityProviderOnly"))
+    @if ((await AuthorizationService.AuthorizeAsync(User, "FacilityProviderOnly")).Succeeded)
     {
         <a class="btn btn-default" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
     }
     <a class="btn btn-default" asp-controller="facility" asp-action="details" asp-route-id="@Model.FacilityId">Facility Details</a>
 
-    @if (await AuthorizationService.AuthorizeAsync(User, "Customer") || !User.Identity.IsAuthenticated)
+    @if ((await AuthorizationService.AuthorizeAsync(User, "Customer")).Succeeded || !User.Identity.IsAuthenticated)
     {
         <a class="btn btn-success" asp-controller="booking" asp-action="create" asp-route-id="@Model.Id">Book it!</a>
     }

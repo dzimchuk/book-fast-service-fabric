@@ -47,10 +47,10 @@ namespace BookFast.Web.Infrastructure.Authentication.Organizational
 
                     var clientCredential = new ClientCredential(authOptions.ClientId, authOptions.ClientSecret);
                     var authenticationContext = new AuthenticationContext(authOptions.Authority, new DistributedTokenCache(distributedCache, userId));
-                    await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
+                    var result = await authenticationContext.AcquireTokenByAuthorizationCodeAsync(context.TokenEndpointRequest.Code,
                         new Uri(context.TokenEndpointRequest.RedirectUri, UriKind.RelativeOrAbsolute), clientCredential, authOptions.ApiResource);
 
-                    context.HandleCodeRedemption();
+                    context.HandleCodeRedemption(result.AccessToken, result.IdToken);
                 }
             };
         }

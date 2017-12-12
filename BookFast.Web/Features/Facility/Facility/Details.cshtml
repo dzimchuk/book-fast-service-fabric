@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Details - " + Model.Facility.Name;
-    var isFacilityProvider = await AuthorizationService.AuthorizeAsync(User, "FacilityProviderOnly");
+    var isFacilityProvider = (await AuthorizationService.AuthorizeAsync(User, "FacilityProviderOnly")).Succeeded;
 }
 
 <h2>@Model.Facility.Name</h2>

@@ -35,11 +35,11 @@ namespace BookFast.ServiceFabric
         {
             return new ServiceInstanceListener(serviceContext =>
             {
-                return new WebListenerCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
+                return new HttpSysCommunicationListener(serviceContext, "ServiceEndpoint", (url, listener) =>
                 {
-                    loggingCallback(serviceContext, $"Starting WebListener on {url}");
+                    loggingCallback(serviceContext, $"Starting HttpSys listener on {url}");
 
-                    return new WebHostBuilder().UseWebListener()
+                    return new WebHostBuilder().UseHttpSys()
                                 .ConfigureServices(
                                     services => services
                                         .AddSingleton<StatelessServiceContext>(serviceContext))
