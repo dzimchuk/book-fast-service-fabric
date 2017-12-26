@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BookFast.Facility.Data.Migrations
 {
@@ -18,7 +18,7 @@ namespace BookFast.Facility.Data.Migrations
                     Images = table.Column<string>(nullable: true),
                     Latitude = table.Column<double>(nullable: true),
                     Longitude = table.Column<double>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 320, nullable: false),
                     Owner = table.Column<string>(nullable: true),
                     StreetAddress = table.Column<string>(nullable: true)
                 },
@@ -35,7 +35,7 @@ namespace BookFast.Facility.Data.Migrations
                     Description = table.Column<string>(nullable: true),
                     FacilityId = table.Column<Guid>(nullable: false),
                     Images = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 320, nullable: false),
                     RoomCount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>

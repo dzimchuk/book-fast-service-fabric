@@ -1,33 +1,46 @@
-﻿using Microsoft.EntityFrameworkCore;
+using BookFast.Facility.Data.Models.Configurations;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace BookFast.Facility.Data.Models
 {
     internal class BookFastContext : DbContext
     {
-        public BookFastContext(DbContextOptions options) : base(options)
+        public BookFastContext(DbContextOptions<BookFastContext> options) : base(options)
         {
         }
 
-        public BookFastContext()
-        {
-        }
+        // needed for tooling, alternatively one can implement IDesignTimeDbContextFactory<TContext>
+        //public BookFastContext()
+        //{
+        //}
 
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<Accommodation> Accommodations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Facility>()
-                        .HasMany(facility => facility.Accommodations)
-                        .WithOne(acc => acc.Facility);
+            modelBuilder.ApplyConfiguration(new FacilityConfiguration());
+            modelBuilder.ApplyConfiguration(new AccommodationConfiguration());
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true");
+        //    }
+        //}
+    }
+
+    internal class BookFastContextDesignFactory : IDesignTimeDbContextFactory<BookFastContext>
+    {
+        public BookFastContext CreateDbContext(string[] args)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true");
-            }
+            var optionsBuilder = new DbContextOptionsBuilder<BookFastContext>()
+                .UseSqlServer("Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true");
+
+            return new BookFastContext(optionsBuilder.Options);
         }
     }
 }
