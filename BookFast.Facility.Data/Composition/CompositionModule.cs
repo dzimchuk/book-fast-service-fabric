@@ -1,10 +1,12 @@
-﻿using BookFast.Facility.Business;
+using BookFast.Facility.Business;
 using BookFast.Facility.Business.Data;
 using BookFast.Facility.Data.Mappers;
 using BookFast.Facility.Data.Models;
 using BookFast.Framework;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace BookFast.Facility.Data.Composition
@@ -13,7 +15,11 @@ namespace BookFast.Facility.Data.Composition
     {
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BookFastContext>(options => options.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"]));
+            services.AddDbContext<BookFastContext>(options => options.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"], sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null); // see also https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
+            })
+            .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))); // disable client side evaluation, see https://docs.microsoft.com/en-us/ef/core/querying/client-eval
 
             services.AddScoped<IFacilityDataSource, FacilityDataSource>();
             services.AddScoped<IAccommodationDataSource, AccommodationDataSource>();
