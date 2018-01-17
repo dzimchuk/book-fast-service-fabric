@@ -22,7 +22,7 @@ namespace BookFast.Facility.Data.Queries
         public async Task<List<Contracts.Models.Facility>> ExecuteAsync(BookFastContext model)
         {
             var facilities = await (from f in model.Facilities
-                                    where f.Owner.Equals(owner, StringComparison.OrdinalIgnoreCase)
+                                    where f.Owner == owner
                                     select f).ToListAsync();
 
             return mapper.MapFrom(facilities).ToList();

@@ -2,8 +2,6 @@ using Microsoft.ServiceFabric.Services.Communication.Client;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.Extensions.Options;
-using Microsoft.Rest;
 using System;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Rest;
@@ -12,19 +10,12 @@ namespace BookFast.Facility.Client
 {
     internal class FacilityCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastFacilityAPI>>
     {
-        private readonly IAccessTokenProvider accessTokenProvider;
-        private readonly ApiOptions apiOptions;
+        private readonly IApiClientFactory<IBookFastFacilityAPI> apiClientFactory;
 
-        public FacilityCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider, IOptions<ApiOptions> apiOptions)
+        public FacilityCommunicationClientFactory(IServicePartitionResolver resolver, IApiClientFactory<IBookFastFacilityAPI> apiClientFactory)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
-            if (accessTokenProvider == null)
-            {
-                throw new ArgumentNullException(nameof(accessTokenProvider));
-            }
-
-            this.accessTokenProvider = accessTokenProvider;
-            this.apiOptions = apiOptions.Value;
+            this.apiClientFactory = apiClientFactory;
         }
 
         protected override void AbortClient(CommunicationClient<IBookFastFacilityAPI> client)
@@ -39,12 +30,9 @@ namespace BookFast.Facility.Client
             // create that connection here.
             // an HTTP client doesn't maintain a persistent connection.
 
-            var client = new CommunicationClient<IBookFastFacilityAPI>(async () =>
+            var client = new CommunicationClient<IBookFastFacilityAPI>(() =>
             {
-                var accessToken = await accessTokenProvider.AcquireTokenAsync(apiOptions.ServiceApiResource);
-                var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
-
-                return new BookFastFacilityAPI(new Uri(endpoint), credentials);
+                return apiClientFactory.CreateApiClientAsync(new Uri(endpoint));
             });
 
             return Task.FromResult(client);

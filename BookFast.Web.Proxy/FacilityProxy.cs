@@ -5,41 +5,35 @@ using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Models;
-using BookFast.ServiceFabric.Communication;
 using BookFast.Facility.Client;
+using BookFast.Rest;
 
 namespace BookFast.Web.Proxy
 {
     internal class FacilityProxy : IFacilityService
     {
         private readonly IFacilityMapper mapper;
-        private readonly IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory;
+        private readonly IApiClientFactory<IBookFastFacilityAPI> apiClientFactory;
 
         public FacilityProxy(IFacilityMapper mapper,
-            IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory)
+            IApiClientFactory<IBookFastFacilityAPI> apiClientFactory)
         {
             this.mapper = mapper;
-            this.partitionClientFactory = partitionClientFactory;
+            this.apiClientFactory = apiClientFactory;
         }
                 
         public async Task<List<Contracts.Models.Facility>> ListAsync()
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.ListFacilitiesWithHttpMessagesAsync();
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            var result = await api.ListFacilitiesWithHttpMessagesAsync();
 
             return mapper.MapFrom(result.Body);
         }
 
         public async Task<Contracts.Models.Facility> FindAsync(Guid facilityId)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.FindFacilityWithHttpMessagesAsync(facilityId);
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            var result = await api.FindFacilityWithHttpMessagesAsync(facilityId);
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -49,22 +43,16 @@ namespace BookFast.Web.Proxy
             return mapper.MapFrom(result.Body);
         }
 
-        public Task CreateAsync(FacilityDetails details)
+        public async Task CreateAsync(FacilityDetails details)
         {
-            return partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.CreateFacilityWithHttpMessagesAsync(mapper.MapFrom(details));
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            await api.CreateFacilityWithHttpMessagesAsync(mapper.MapFrom(details));
         }
 
         public async Task UpdateAsync(Guid facilityId, FacilityDetails details)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.MapFrom(details));
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            var result = await api.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.MapFrom(details));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -74,11 +62,8 @@ namespace BookFast.Web.Proxy
 
         public async Task DeleteAsync(Guid facilityId)
         {
-            var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
-            {
-                var api = await client.CreateApiClient();
-                return await api.DeleteFacilityWithHttpMessagesAsync(facilityId);
-            });
+            var api = await apiClientFactory.CreateApiClientAsync();
+            var result = await api.DeleteFacilityWithHttpMessagesAsync(facilityId);
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
             {
