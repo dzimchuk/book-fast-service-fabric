@@ -2,8 +2,6 @@ using Microsoft.ServiceFabric.Services.Communication.Client;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.Extensions.Options;
-using Microsoft.Rest;
 using System;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Rest;
@@ -12,19 +10,12 @@ namespace BookFast.Files.Client
 {
     internal class FilesCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastFilesAPI>>
     {
-        private readonly IAccessTokenProvider accessTokenProvider;
-        private readonly ApiOptions apiOptions;
+        private readonly IApiClientFactory<IBookFastFilesAPI> apiClientFactory;
 
-        public FilesCommunicationClientFactory(IServicePartitionResolver resolver, IAccessTokenProvider accessTokenProvider, IOptions<ApiOptions> apiOptions)
+        public FilesCommunicationClientFactory(IServicePartitionResolver resolver, IApiClientFactory<IBookFastFilesAPI> apiClientFactory)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
-            if (accessTokenProvider == null)
-            {
-                throw new ArgumentNullException(nameof(accessTokenProvider));
-            }
-
-            this.accessTokenProvider = accessTokenProvider;
-            this.apiOptions = apiOptions.Value;
+            this.apiClientFactory = apiClientFactory;
         }
 
         protected override void AbortClient(CommunicationClient<IBookFastFilesAPI> client)
@@ -39,12 +30,9 @@ namespace BookFast.Files.Client
             // create that connection here.
             // an HTTP client doesn't maintain a persistent connection.
 
-            var client = new CommunicationClient<IBookFastFilesAPI>(async () =>
+            var client = new CommunicationClient<IBookFastFilesAPI>(() =>
             {
-                var accessToken = await accessTokenProvider.AcquireTokenAsync(apiOptions.ServiceApiResource);
-                var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
-
-                return new BookFastFilesAPI(new Uri(endpoint), credentials);
+                return apiClientFactory.CreateApiClientAsync(new Uri(endpoint));
             });
 
             return Task.FromResult(client);

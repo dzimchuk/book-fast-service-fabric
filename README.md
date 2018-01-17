@@ -15,7 +15,7 @@ A Service Fabric based multitenant facility management and accommodation booking
 - OpenID Connect and OAuth2
 - Azure Search
 - Application Insights
-- ServicePartitionClient based service clients
+- ServicePartitionClient and Reverse Proxy based service clients
 - Circuit Breaker
 
 ![BookFast Service Fabric](BookFastServiceFabric.png)
@@ -109,3 +109,81 @@ BookFast.Search.Adapter can be run from the command line as `dotnet run provisio
 ### Circuit Breaker
 
 [BookingProxy](/BookFast.Web.Proxy/CircuitBreakingBookingProxy.cs) (web app) implements a [Circuit Breaker](https://docs.microsoft.com/en-us/azure/architecture/patterns/circuit-breaker) pattern. In order to test it, set `Test:FailRandom` parameter of the Booking service to `true`.
+
+### Service clients
+
+Each service provides a client library that makes it easier to consumers to communicate with them. The client libraries also implement necessary components for service endpoint resolution.
+
+#### Using ServicePartitionClient
+
+```
+internal class FacilityProxy : IFacilityService
+{
+    private readonly IFacilityMapper mapper;
+    private readonly IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory;
+
+    public FacilityProxy(IFacilityMapper mapper,
+        IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory)
+    {
+        this.mapper = mapper;
+        this.partitionClientFactory = partitionClientFactory;
+    }
+
+    public async Task<Contracts.Models.Facility> FindAsync(Guid facilityId)
+    {
+        var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
+        {
+            var api = await client.CreateApiClient();
+            return await api.FindFacilityWithHttpMessagesAsync(facilityId);
+        });
+
+        if (result.Response.StatusCode == HttpStatusCode.NotFound)
+        {
+            throw new FacilityNotFoundException(facilityId);
+        }
+
+        return mapper.MapFrom(result.Body);
+    }
+}
+```
+
+A consuming service should provide the following configuration section for the target service:
+
+```
+<Section Name="FacilityApi">
+  <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
+  <Parameter Name="ServiceApiResource" Value="App ID URI of the API app in Azure AD" />
+</Section>
+```
+
+#### Using Reverse Proxy
+
+```
+internal class FacilityProxy : IFacilityService
+{
+    private readonly IFacilityMapper mapper;
+    private readonly IApiClientFactory<IBookFastFacilityAPI> apiClientFactory;
+
+    public FacilityProxy(IFacilityMapper mapper,
+        IApiClientFactory<IBookFastFacilityAPI> apiClientFactory)
+    {
+        this.mapper = mapper;
+        this.apiClientFactory = apiClientFactory;
+    }
+
+    public async Task<Contracts.Models.Facility> FindAsync(Guid facilityId)
+    {
+        var api = await apiClientFactory.CreateApiClientAsync();
+        var result = await api.FindFacilityWithHttpMessagesAsync(facilityId);
+
+        if (result.Response.StatusCode == HttpStatusCode.NotFound)
+        {
+            throw new FacilityNotFoundException(facilityId);
+        }
+
+        return mapper.MapFrom(result.Body);
+    }
+}
+```
+
+The `ServiceUri` setting in this case points to the Reverse Proxy, e.g. `http://localhost:19081/BookFast/FacilityService/`.

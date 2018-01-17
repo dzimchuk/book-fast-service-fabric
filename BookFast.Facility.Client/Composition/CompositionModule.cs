@@ -1,9 +1,8 @@
-﻿using BookFast.Framework;
+using BookFast.Framework;
 using BookFast.Rest;
 using BookFast.ServiceFabric.Communication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using System.Fabric;
@@ -21,10 +20,10 @@ namespace BookFast.Facility.Client.Composition
             services.AddSingleton<ICommunicationClientFactory<CommunicationClient<IBookFastFacilityAPI>>>(
                 serviceProvider => new FacilityCommunicationClientFactory(
                     new ServicePartitionResolver(() => serviceProvider.GetService<FabricClient>()),
-                    serviceProvider.GetService<IAccessTokenProvider>(),
-                    serviceProvider.GetService<IOptions<ApiOptions>>()));
+                    serviceProvider.GetService<IApiClientFactory<IBookFastFacilityAPI>>()));
 
             services.AddSingleton<IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>>, FacilityPartitionClientFactory>();
+            services.AddSingleton<IApiClientFactory<IBookFastFacilityAPI>, FacilityApiClientFactory>();
         }
     }
 }

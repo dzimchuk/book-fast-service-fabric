@@ -2,7 +2,6 @@ using Microsoft.ServiceFabric.Services.Communication.Client;
 using System.Threading.Tasks;
 using System.Threading;
 using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.Rest;
 using System;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Rest;
@@ -11,17 +10,12 @@ namespace BookFast.Booking.Client
 {
     internal class BookingCommunicationClientFactory : CommunicationClientFactoryBase<CommunicationClient<IBookFastBookingAPI>>
     {
-        private readonly ICustomerAccessTokenProvider accessTokenProvider;
+        private readonly IApiClientFactory<IBookFastBookingAPI> apiClientFactory;
 
-        public BookingCommunicationClientFactory(IServicePartitionResolver resolver, ICustomerAccessTokenProvider accessTokenProvider)
+        public BookingCommunicationClientFactory(IServicePartitionResolver resolver, IApiClientFactory<IBookFastBookingAPI> apiClientFactory)
             : base(resolver, new[] { new HttpExceptionHandler() })
         {
-            if (accessTokenProvider == null)
-            {
-                throw new ArgumentNullException(nameof(accessTokenProvider));
-            }
-
-            this.accessTokenProvider = accessTokenProvider;
+            this.apiClientFactory = apiClientFactory;
         }
 
         protected override void AbortClient(CommunicationClient<IBookFastBookingAPI> client)
@@ -30,12 +24,9 @@ namespace BookFast.Booking.Client
 
         protected override Task<CommunicationClient<IBookFastBookingAPI>> CreateClientAsync(string endpoint, CancellationToken cancellationToken)
         {
-            var client = new CommunicationClient<IBookFastBookingAPI>(async () =>
+            var client = new CommunicationClient<IBookFastBookingAPI>(() =>
             {
-                var accessToken = await accessTokenProvider.AcquireTokenAsync();
-                var credentials = string.IsNullOrEmpty(accessToken) ? (ServiceClientCredentials)new EmptyCredentials() : new TokenCredentials(accessToken);
-
-                return new BookFastBookingAPI(new Uri(endpoint), credentials);
+                return apiClientFactory.CreateApiClientAsync(new Uri(endpoint));
             });
 
             return Task.FromResult(client);

@@ -1,10 +1,11 @@
-﻿using BookFast.Framework;
+using BookFast.Framework;
 using BookFast.ServiceFabric.Communication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Communication.Client;
 using System.Fabric;
+using BookFast.Rest;
 
 namespace BookFast.Search.Client.Composition
 {
@@ -18,9 +19,11 @@ namespace BookFast.Search.Client.Composition
 
             services.AddSingleton<ICommunicationClientFactory<CommunicationClient<IBookFastSearchAPI>>>(
                 serviceProvider => new SearchCommunicationClientFactory(
-                    new ServicePartitionResolver(() => serviceProvider.GetService<FabricClient>())));
+                    new ServicePartitionResolver(() => serviceProvider.GetService<FabricClient>()),
+                    serviceProvider.GetService<IApiClientFactory<IBookFastSearchAPI>>()));
 
             services.AddSingleton<IPartitionClientFactory<CommunicationClient<IBookFastSearchAPI>>, SearchPartitionClientFactory>();
+            services.AddSingleton<IApiClientFactory<IBookFastSearchAPI>, SearchApiClientFactory>();
         }
     }
 }
