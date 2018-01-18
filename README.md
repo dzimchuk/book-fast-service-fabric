@@ -33,6 +33,11 @@ Here's a short description of configuration parameters:
     <Parameter Name="HttpsCertThumbprint" Value="Thumbprint of an SSL certificate installed in the local store" />
     
     <Parameter Name="ASPNETCORE_ENVIRONMENT" Value="Standard APS.NET Core environment setting, e.g. Development" />
+    
+    <Parameter Name="FacilityServiceUri" Value="http://localhost:19081/BookFast/FacilityService/" />
+    <Parameter Name="FilesServiceUri" Value="fabric:/BookFast/FilesService" />
+    <Parameter Name="SearchServiceUri" Value="fabric:/BookFast/SearchService" />
+    <Parameter Name="BookingServiceUri" Value="fabric:/BookFast/BookingService" />
 
     <Parameter Name="Data:DefaultConnection:ConnectionString" Value="Connection string to a SQL database" />
     <Parameter Name="Data:Azure:Storage:ConnectionString" Value="Connection string to an Azure storage account" />
@@ -48,14 +53,19 @@ Here's a short description of configuration parameters:
 
     <Parameter Name="Redis:Configuration" Value="Redis connection string" />
 
-    <Parameter Name="Authentication:AzureAd:B2C:Audience" Value="Your Azure AD B2C app client ID" />
+    <!-- API side setting -->
+    <Parameter Name="Authentication:AzureAd:B2C:Audience" Value="Your Azure AD B2C API app client ID" />
+    
+    <!-- API and client side settings -->
     <Parameter Name="Authentication:AzureAd:B2C:Instance" Value="Your Azure AD B2C instance, e.g. https://login.microsoftonline.com/" />
     <Parameter Name="Authentication:AzureAd:B2C:TenantId" Value="Your Azure AD B2C tenant, e.g. devunleashedb2c.onmicrosoft.com" />
     <Parameter Name="Authentication:AzureAd:B2C:ClientId" Value="Your Azure AD B2C app client ID" />
     <Parameter Name="Authentication:AzureAd:B2C:ClientSecret" Value="Your Azure AD B2C app client secret" />
     <Parameter Name="Authentication:AzureAd:B2C:PostLogoutRedirectUri" Value="e.g. https://localhost:8686/" />
+    <Parameter Name="Authentication:AzureAd:B2C:ApiIdentifier" Value="Your Azure AD B2C API app identifer" />
     <Parameter Name="Authentication:AzureAd:B2C:Policies:SignInOrSignUpPolicy" Value="B2C_1_TestSignUpAndSignInPolicy" />
     <Parameter Name="Authentication:AzureAd:B2C:Policies:EditProfilePolicy" Value="B2C_1_TestProfileEditPolicy" />
+    <Parameter Name="Authentication:AzureAd:B2C:Policies:ResetPasswordPolicy" Value="B2C_1_TestPasswordReset" />
 
     <Parameter Name="Authentication:AzureAd:ApiApp:Instance" Value="Your Azure AD instance, e.g. https://login.microsoftonline.com/" />
     <Parameter Name="Authentication:AzureAd:ApiApp:Audience" Value="BookFast API AppId in Azure AD, e.g. https://devunleashed.onmicrosoft.com/book-fast-api" />
