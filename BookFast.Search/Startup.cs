@@ -1,4 +1,4 @@
-using BookFast.Framework;
+using BookFast.SeedWork;
 using BookFast.ServiceFabric;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

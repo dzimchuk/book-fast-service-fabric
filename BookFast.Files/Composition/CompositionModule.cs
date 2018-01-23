@@ -1,6 +1,6 @@
 using BookFast.Files.Controllers;
 using BookFast.Files.Mappers;
-using BookFast.Framework;
+using BookFast.SeedWork;
 using BookFast.Security;
 using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Swagger;

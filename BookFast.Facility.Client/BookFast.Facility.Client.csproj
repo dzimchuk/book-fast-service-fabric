@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\BookFast.Framework\BookFast.Framework.csproj" />
+    <ProjectReference Include="..\Common\BookFast.SeedWork\BookFast.SeedWork.csproj" />
     <ProjectReference Include="..\Common\BookFast.Rest\BookFast.Rest.csproj" />
     <ProjectReference Include="..\Common\BookFast.ServiceFabric\BookFast.ServiceFabric.csproj" />
   </ItemGroup>

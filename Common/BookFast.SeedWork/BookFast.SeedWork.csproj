@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>BookFast.Framework</AssemblyName>
-    <PackageId>BookFast.Framework</PackageId>
+    <AssemblyName>BookFast.SeedWork</AssemblyName>
+    <PackageId>BookFast.SeedWork</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>

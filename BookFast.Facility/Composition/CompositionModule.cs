@@ -2,7 +2,7 @@ using BookFast.Facility.Controllers;
 using BookFast.Facility.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BookFast.Framework;
+using BookFast.SeedWork;
 using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Security;
 using BookFast.Swagger;

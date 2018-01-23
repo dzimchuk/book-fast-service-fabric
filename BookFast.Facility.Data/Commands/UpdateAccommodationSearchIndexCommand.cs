@@ -1,5 +1,5 @@
 ﻿using BookFast.Facility.Contracts.Models;
-using BookFast.Framework;
+using BookFast.SeedWork;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Newtonsoft.Json;
 using System.Collections.Generic;

@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookFast.Booking.Contracts\BookFast.Booking.Contracts.csproj" />
-    <ProjectReference Include="..\Common\BookFast.Framework\BookFast.Framework.csproj" />
+    <ProjectReference Include="..\Common\BookFast.SeedWork\BookFast.SeedWork.csproj" />
     <ProjectReference Include="..\Common\BookFast.Security\BookFast.Security.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace BookFast.Framework
+namespace BookFast.SeedWork
 {
     public static class Extensions
     {

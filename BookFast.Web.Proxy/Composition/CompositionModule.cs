@@ -1,4 +1,4 @@
-﻿using BookFast.Framework;
+﻿using BookFast.SeedWork;
 using BookFast.Web.Contracts;
 using BookFast.Web.Proxy.Mappers;
 using Microsoft.Extensions.Configuration;

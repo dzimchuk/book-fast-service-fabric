@@ -1,4 +1,4 @@
-using BookFast.Framework;
+using BookFast.SeedWork;
 using BookFast.Rest;
 using BookFast.ServiceFabric.Communication;
 using Microsoft.Extensions.Configuration;

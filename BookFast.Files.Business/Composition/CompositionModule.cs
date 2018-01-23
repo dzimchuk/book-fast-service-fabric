@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.Files.Contracts;
-using BookFast.Framework;
+using BookFast.SeedWork;
 
 namespace BookFast.Files.Business.Composition
 {

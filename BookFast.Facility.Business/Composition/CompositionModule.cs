@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.Facility.Contracts;
-using BookFast.Framework;
+using BookFast.SeedWork;
 
 namespace BookFast.Facility.Business.Composition
 {

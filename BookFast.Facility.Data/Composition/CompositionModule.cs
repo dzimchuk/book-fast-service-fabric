@@ -2,7 +2,7 @@ using BookFast.Facility.Business;
 using BookFast.Facility.Business.Data;
 using BookFast.Facility.Data.Mappers;
 using BookFast.Facility.Data.Models;
-using BookFast.Framework;
+using BookFast.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookFast.Web.Contracts\BookFast.Web.Contracts.csproj" />
-    <ProjectReference Include="..\Common\BookFast.Framework\BookFast.Framework.csproj" />
+    <ProjectReference Include="..\Common\BookFast.SeedWork\BookFast.SeedWork.csproj" />
     <ProjectReference Include="..\BookFast.Booking.Client\BookFast.Booking.Client.csproj" />
     <ProjectReference Include="..\BookFast.Facility.Client\BookFast.Facility.Client.csproj" />
     <ProjectReference Include="..\BookFast.Search.Client\BookFast.Search.Client.csproj" />

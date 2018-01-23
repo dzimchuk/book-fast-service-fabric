@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BookFast.Framework.Validation
+namespace BookFast.SeedWork.Validation
 {
     public class DateRangeAttribute : ValidationAttribute
     {

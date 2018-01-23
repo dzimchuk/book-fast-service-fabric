@@ -5,7 +5,7 @@ using BookFast.Facility.Data.Models;
 using Accommodation = BookFast.Facility.Contracts.Models.Accommodation;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using BookFast.Framework;
+using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Queries
 {

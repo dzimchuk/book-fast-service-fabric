@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\BookFast.Framework\BookFast.Framework.csproj" />
+    <ProjectReference Include="..\Common\BookFast.SeedWork\BookFast.SeedWork.csproj" />
     <ProjectReference Include="..\BookFast.Search.Contracts\BookFast.Search.Contracts.csproj" />
   </ItemGroup>
 

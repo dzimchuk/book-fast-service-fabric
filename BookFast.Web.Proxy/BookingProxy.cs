@@ -7,7 +7,7 @@ using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Models;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Booking.Client;
-using BookFast.Framework;
+using BookFast.SeedWork;
 using Microsoft.ServiceFabric.Services.Client;
 
 namespace BookFast.Web.Proxy

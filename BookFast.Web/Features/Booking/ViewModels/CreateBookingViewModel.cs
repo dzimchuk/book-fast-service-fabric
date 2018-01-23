@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using BookFast.Framework.Validation;
+using BookFast.SeedWork.Validation;
 
 namespace BookFast.Web.Features.Booking.ViewModels
 {

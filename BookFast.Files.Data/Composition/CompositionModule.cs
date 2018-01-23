@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.Files.Business.Data;
-using BookFast.Framework;
+using BookFast.SeedWork;
 using BookFast.Files.Data.Mappers;
 using BookFast.Rest;
 

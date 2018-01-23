@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using BookFast.Facility.Data.Models;
 using Accommodation = BookFast.Facility.Contracts.Models.Accommodation;
 using Microsoft.EntityFrameworkCore;
-using BookFast.Framework;
+using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Queries
 {

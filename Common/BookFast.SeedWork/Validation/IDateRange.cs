@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookFast.Framework.Validation
+namespace BookFast.SeedWork.Validation
 {
     public interface IDateRange
     {

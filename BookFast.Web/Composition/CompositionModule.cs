@@ -1,4 +1,4 @@
-using BookFast.Framework;
+using BookFast.SeedWork;
 using BookFast.Rest;
 using BookFast.Web.Contracts.Security;
 using BookFast.Web.Features.Booking;

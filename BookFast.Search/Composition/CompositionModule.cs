@@ -1,4 +1,4 @@
-﻿using BookFast.Framework;
+﻿using BookFast.SeedWork;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.Swagger;
