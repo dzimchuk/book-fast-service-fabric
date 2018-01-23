@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -22,6 +23,10 @@ namespace BookFast.ServiceFabric
                                 .ConfigureServices(
                                     services => services
                                         .AddSingleton<StatelessServiceContext>(serviceContext))
+                                .ConfigureAppConfiguration((hostingContext, config) =>
+                                {
+                                    config.AddServiceFabricConfiguration(serviceContext);
+                                })
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
                                 .UseStartup(startupType)
@@ -43,6 +48,10 @@ namespace BookFast.ServiceFabric
                                 .ConfigureServices(
                                     services => services
                                         .AddSingleton<StatelessServiceContext>(serviceContext))
+                                .ConfigureAppConfiguration((hostingContext, config) =>
+                                {
+                                    config.AddServiceFabricConfiguration(serviceContext);
+                                })
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)
                                 .UseStartup(startupType)

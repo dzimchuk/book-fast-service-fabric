@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
@@ -24,6 +25,10 @@ namespace BookFast.ServiceFabric
                                 {
                                     services.AddSingleton(serviceContext);
                                     services.AddSingleton(stateManager);
+                                })
+                                .ConfigureAppConfiguration((hostingContext, config) =>
+                                {
+                                    config.AddServiceFabricConfiguration(serviceContext);
                                 })
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
