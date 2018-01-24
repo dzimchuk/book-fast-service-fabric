@@ -23,7 +23,7 @@ namespace BookFast.Web.Proxy
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {
                 var api = await client.CreateApiClient();
-                return await api.SearchWithHttpMessagesAsync(searchText, page);
+                return await api.SearchWithHttpMessagesAsync(page, searchText);
             });
             return mapper.MapFrom(result.Body);
         }
