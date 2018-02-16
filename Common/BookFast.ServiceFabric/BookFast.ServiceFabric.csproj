@@ -1,32 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <NoWarn>$(NoWarn);ET002</NoWarn>
-    <AssemblyName>BookFast.ServiceFabric</AssemblyName>
-    <PackageId>BookFast.ServiceFabric</PackageId>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
-    <PackageReference Include="Microsoft.ServiceFabric" Version="6.0.232" />
-    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="2.8.232" />
-    <PackageReference Include="Microsoft.ServiceFabric.Diagnostics.Internal" Version="2.8.232" />
-    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="2.8.232" />
-    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="2.8.232" />
-    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.HttpSys" Version="2.8.232" />
+    <PackageReference Include="Microsoft.ServiceFabric" Version="6.1.456" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="3.0.456" />
+    <PackageReference Include="Microsoft.ServiceFabric.Diagnostics.Internal" Version="3.0.456" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="3.0.456" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="3.0.456" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.HttpSys" Version="3.0.456" />
     <PackageReference Include="System.Net.Http" Version="4.3.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.ServiceFabric.Native" Version="2.0.1-beta1" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 
 </Project>

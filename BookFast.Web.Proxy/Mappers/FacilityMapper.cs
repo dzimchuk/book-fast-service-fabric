@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using AutoMapper;
 using BookFast.Web.Contracts.Models;
@@ -38,7 +38,7 @@ namespace BookFast.Web.Proxy.Mappers
                              .ForMember(d => d.Latitude, config => config.Ignore())
                              .ForMember(d => d.Longitude, config => config.Ignore())
                              .ForMember(d => d.Images, 
-                                config => config.ResolveUsing<ArrayToListResolver>().FromMember(d => d.Images));
+                                config => config.ResolveUsing<ArrayToListResolver>());
             });
 
             mapperConfiguration.AssertConfigurationIsValid();
@@ -58,6 +58,14 @@ namespace BookFast.Web.Proxy.Mappers
         public FacilityData MapFrom(FacilityDetails details)
         {
             return Mapper.Map<FacilityData>(details);
+        }
+
+        private class ArrayToListResolver : IValueResolver<FacilityDetails, FacilityData, IList<string>>
+        {
+            public IList<string> Resolve(FacilityDetails source, FacilityData destination, IList<string> destMember, ResolutionContext context)
+            {
+                return source.Images?.ToList();
+            }
         }
     }
 }

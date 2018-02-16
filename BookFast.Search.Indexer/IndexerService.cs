@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace BookFast.Search.Indexer
             var queueClient = storageAccount.CreateCloudQueueClient();
 
             queue = queueClient.GetQueueReference(options.Value.SearchIndexQueueName);
-            queue.CreateIfNotExists();
+            queue.CreateIfNotExistsAsync().Wait();
         }
 
         protected override async Task RunAsync(CancellationToken cancellationToken)
@@ -35,7 +35,7 @@ namespace BookFast.Search.Indexer
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var message = await queue.GetMessageAsync(cancellationToken);
+                var message = await queue.GetMessageAsync();
                 if (message != null)
                 {
                     ServiceEventSource.Current.ServiceMessage(Context, "Processing message {0}.", message.Id);

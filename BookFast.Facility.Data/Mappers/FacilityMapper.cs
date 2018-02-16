@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using AutoMapper;
-using BookFast.Facility.Data.Mappers.Resolvers;
 using Newtonsoft.Json;
 using BookFast.Facility.Contracts.Models;
 
@@ -21,7 +20,7 @@ namespace BookFast.Facility.Data.Mappers
                                                                         .ForMember(dm => dm.Latitude, c => c.MapFrom(m => m.Location.Latitude))
                                                                         .ForMember(dm => dm.Longitude, c => c.MapFrom(m => m.Location.Longitude))
                                                                         .ForMember(dm => dm.Accommodations, c => c.Ignore())
-                                                                        .ForMember(dm => dm.Images, c => c.ResolveUsing<ArrayToStringResolver>().FromMember(m => m.Details.Images))
+                                                                        .ForMember(dm => dm.Images, c => c.ResolveUsing<ArrayToStringResolver>())
                                                                         .ReverseMap()
                                                                         .ConvertUsing(dm => new Contracts.Models.Facility
                                                                         {
@@ -60,6 +59,14 @@ namespace BookFast.Facility.Data.Mappers
         public Models.Facility MapFrom(Contracts.Models.Facility facility)
         {
             return Mapper.Map<Models.Facility>(facility);
+        }
+
+        private class ArrayToStringResolver : IValueResolver<Contracts.Models.Facility, Models.Facility, string>
+        {
+            public string Resolve(Contracts.Models.Facility source, Models.Facility destination, string destMember, ResolutionContext context)
+            {
+                return source.Details.Images == null ? null : JsonConvert.SerializeObject(source.Details.Images);
+            }
         }
     }
 }
