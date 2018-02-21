@@ -1,4 +1,5 @@
 using BookFast.SeedWork;
+using BookFast.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +11,9 @@ namespace BookFast.Search
 {
     public class Startup
     {
+        private const string apiTitle = "Book Fast Search API";
+        private const string apiVersion = "v1";
+
         private readonly IConfiguration configuration;
 
         public Startup(IConfiguration configuration)
@@ -30,6 +34,8 @@ namespace BookFast.Search
             {
                 module.AddServices(services, configuration);
             }
+
+            services.AddSwashbuckle(configuration, apiTitle, apiVersion, "BookFast.Search.xml");
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -38,7 +44,7 @@ namespace BookFast.Search
                         
             app.UseMvc();
 
-            app.UseSwagger();
+            app.UseSwagger(apiTitle, apiVersion);
         }
     }
 }

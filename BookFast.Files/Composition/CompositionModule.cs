@@ -3,7 +3,6 @@ using BookFast.Files.Mappers;
 using BookFast.SeedWork;
 using BookFast.Security;
 using BookFast.Security.AspNetCore.Authentication;
-using BookFast.Swagger;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -21,8 +20,6 @@ namespace BookFast.Files.Composition
             RegisterAuthorizationPolicies(services);
 
             services.AddScoped<IFileAccessMapper, FileAccessMapper>();
-
-            services.AddSwashbuckle("Book Fast Files API", "v1", "BookFast.Files.xml");
         }
 
         private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)

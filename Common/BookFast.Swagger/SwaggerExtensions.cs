@@ -1,25 +1,34 @@
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
+using Swashbuckle.AspNetCore.Swagger;
+using System;
 using System.IO;
 
 namespace BookFast.Swagger
 {
     public static class SwaggerExtensions
     {
-        public static void AddSwashbuckle(this IServiceCollection services, string title, string version, string xmlDocFileName)
+        public static void AddSwashbuckle(this IServiceCollection services, IConfiguration configuration, string title, string version, string xmlDocFileName = null)
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc(version, new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc(version, new Info
                 {
                     Title = title,
                     Version = version
                 });
 
                 options.OperationFilter<DefaultContentTypeOperationFilter>();
+                options.OperationFilter<SecurityRequirementsOperationFilter>();
 
                 options.DescribeAllEnumsAsStrings();
+
+                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                {
+                    Flow = "password",
+                    TokenUrl = configuration["Authentication:TokenEndpoint"]
+                });
             });
 
             if (!string.IsNullOrWhiteSpace(xmlDocFileName))
@@ -28,26 +37,33 @@ namespace BookFast.Swagger
             }
         }
 
+        public static void UseSwagger(this IApplicationBuilder app, string title, string version)
+        {
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = "api-docs/{documentName}/swagger.json";
+            });
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint($"/api-docs/{version}/swagger.json", $"{title} {version}");
+                options.RoutePrefix = "api-docs";
+            });
+        }
+
         private static void AddXmlComments(IServiceCollection services, string xmlDocFileName)
         {
-            var serviceProvider = services.BuildServiceProvider();
-            var hostEnv = serviceProvider.GetService<IHostingEnvironment>();
+            var xmlDoc = Path.Combine(AppContext.BaseDirectory, xmlDocFileName);
 
-            if (hostEnv.IsDevelopment())
+            if (!File.Exists(xmlDoc))
             {
-                var platformService = PlatformServices.Default;
-                var xmlDoc = Path.Combine(platformService.Application.ApplicationBasePath, xmlDocFileName);
-
-                if (!File.Exists(xmlDoc))
-                {
-                    return; // ugly workaround as currently packaging does not pick the xml files (it used to in project.json era)
-                }
-
-                services.ConfigureSwaggerGen(options =>
-                {
-                    options.IncludeXmlComments(xmlDoc);
-                });
+                return;
             }
+
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.IncludeXmlComments(xmlDoc);
+            });
         }
     }
 }

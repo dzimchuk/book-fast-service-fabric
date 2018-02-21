@@ -1,5 +1,6 @@
 using BookFast.SeedWork;
 using BookFast.Security.AspNetCore;
+using BookFast.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +12,9 @@ namespace BookFast.Files
 {
     public class Startup
     {
+        private const string apiTitle = "Book Fast Files API";
+        private const string apiVersion = "v1";
+
         private readonly IConfiguration configuration;
 
         public Startup(IConfiguration configuration)
@@ -32,6 +36,8 @@ namespace BookFast.Files
             {
                 module.AddServices(services, configuration);
             }
+
+            services.AddSwashbuckle(configuration, apiTitle, apiVersion, "BookFast.Files.xml");
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -43,7 +49,7 @@ namespace BookFast.Files
             app.UseSecurityContext();
             app.UseMvc();
 
-            app.UseSwagger();
+            app.UseSwagger(apiTitle, apiVersion);
         }
     }
 }
