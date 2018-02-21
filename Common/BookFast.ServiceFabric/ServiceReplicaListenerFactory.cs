@@ -1,3 +1,5 @@
+using BookFast.ServiceFabric.AppInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,10 +23,13 @@ namespace BookFast.ServiceFabric
                     loggingCallback(serviceContext, $"Starting Kestrel on {url}");
 
                     return new WebHostBuilder().UseKestrel()
-                                .ConfigureServices(services =>
+                                .ConfigureServices((hostingContext, services) =>
                                 {
                                     services.AddSingleton(serviceContext);
                                     services.AddSingleton(stateManager);
+
+                                    services.AddApplicationInsightsTelemetry(hostingContext.Configuration);
+                                    services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer(serviceContext));
                                 })
                                 .ConfigureAppConfiguration((hostingContext, config) =>
                                 {
