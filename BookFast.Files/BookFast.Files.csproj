@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win7-x64</RuntimeIdentifier>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <IsServiceFabricServiceProject>True</IsServiceFabricServiceProject>
   </PropertyGroup>
