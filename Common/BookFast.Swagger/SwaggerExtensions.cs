@@ -24,11 +24,11 @@ namespace BookFast.Swagger
 
                 options.DescribeAllEnumsAsStrings();
 
-                options.AddSecurityDefinition("oauth2", new OAuth2Scheme
-                {
-                    Flow = "password",
-                    TokenUrl = configuration["Authentication:TokenEndpoint"]
-                });
+                //options.AddSecurityDefinition("oauth2", new OAuth2Scheme
+                //{
+                //    Flow = "implicit",
+                //    AuthorizationUrl = "https://login.microsoftonline.com/common/oauth2/authorize"
+                //});
             });
 
             if (!string.IsNullOrWhiteSpace(xmlDocFileName))
@@ -44,11 +44,11 @@ namespace BookFast.Swagger
                 options.RouteTemplate = "api-docs/{documentName}/swagger.json";
             });
 
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint($"/api-docs/{version}/swagger.json", $"{title} {version}");
-                options.RoutePrefix = "api-docs";
-            });
+            //app.UseSwaggerUI(options =>
+            //{
+            //    options.SwaggerEndpoint($"/api-docs/{version}/swagger.json", $"{title} {version}");
+            //    options.RoutePrefix = "api-docs";
+            //});
         }
 
         private static void AddXmlComments(IServiceCollection services, string xmlDocFileName)
