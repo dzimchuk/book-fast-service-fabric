@@ -51,6 +51,9 @@
     <Parameter Name="SearchServiceUri" DefaultValue="" />
     <Parameter Name="BookingServiceUri" DefaultValue="" />
     <Parameter Name="Booking:Test:FailRandom" DefaultValue="false" />
+    <Parameter Name="Logging:IncludeScopes" DefaultValue="" />
+    <Parameter Name="Logging:LogLevel:Default" DefaultValue="" />
+    <Parameter Name="Logging:Debug:LogLevel:Default" DefaultValue="" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -60,6 +63,11 @@
     <ConfigOverrides>
       <ConfigOverride Name="Config">
         <Settings>
+          <Section Name="Logging">
+            <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
+            <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
+            <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
+          </Section>
           <Section Name="Data">
             <Parameter Name="Azure:Storage:ConnectionString" Value="[Data:Azure:Storage:ConnectionString]" />
             <Parameter Name="Azure:Storage:ImageContainer" Value="[Data:Azure:Storage:ImageContainer]" />
@@ -87,6 +95,11 @@
     <ConfigOverrides>
       <ConfigOverride Name="Config">
         <Settings>
+          <Section Name="Logging">
+            <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
+            <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
+            <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
+          </Section>
           <Section Name="Authentication">
             <Parameter Name="AzureAd:B2C:Instance" Value="[Authentication:AzureAd:B2C:Instance]" />
             <Parameter Name="AzureAd:B2C:TenantId" Value="[Authentication:AzureAd:B2C:TenantId]" />
@@ -145,6 +158,11 @@
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
           </Section>
+          <Section Name="Logging">
+            <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
+            <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
+            <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
+          </Section>
         </Settings>
       </ConfigOverride>
     </ConfigOverrides>
@@ -169,6 +187,11 @@
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
+          </Section>
+          <Section Name="Logging">
+            <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
+            <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
+            <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
           </Section>
         </Settings>
       </ConfigOverride>
@@ -204,6 +227,11 @@
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
+          </Section>
+          <Section Name="Logging">
+            <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
+            <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
+            <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
           </Section>
           <Section Name="FacilityApi">
             <Parameter Name="ServiceUri" Value="[FacilityServiceUri]" />

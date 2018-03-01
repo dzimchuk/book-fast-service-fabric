@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.0" />
     <PackageReference Include="Microsoft.ServiceFabric" Version="6.1.456" />
     <PackageReference Include="Microsoft.ServiceFabric.Services" Version="3.0.456" />
     <PackageReference Include="Microsoft.ServiceFabric.Diagnostics.Internal" Version="3.0.456" />

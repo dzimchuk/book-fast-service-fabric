@@ -3,6 +3,7 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -34,6 +35,11 @@ namespace BookFast.ServiceFabric
                                 .ConfigureAppConfiguration((hostingContext, config) =>
                                 {
                                     config.AddServiceFabricConfiguration(serviceContext);
+                                })
+                                .ConfigureLogging((hostingContext, logging) =>
+                                {
+                                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                                    logging.AddDebug();
                                 })
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
