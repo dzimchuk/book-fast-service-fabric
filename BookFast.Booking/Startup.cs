@@ -1,24 +1,24 @@
 using BookFast.SeedWork;
 using BookFast.Security.AspNetCore;
-using BookFast.ServiceFabric;
+using BookFast.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Fabric;
 
 namespace BookFast.Booking
 {
     public class Startup
     {
-        private readonly IConfiguration configuration;
-        private readonly StatefulServiceContext serviceContext;
+        private const string apiTitle = "Book Fast Booking API";
+        private const string apiVersion = "v1";
 
-        public Startup(IConfiguration configuration, StatefulServiceContext serviceContext)
+        private readonly IConfiguration configuration;
+
+        public Startup(IConfiguration configuration)
         {
-            this.serviceContext = serviceContext;
             this.configuration = configuration;
         }
 
@@ -37,7 +37,7 @@ namespace BookFast.Booking
                 module.AddServices(services, configuration);
             }
 
-            services.AddAppInsights(configuration, serviceContext);
+            services.AddSwashbuckle(configuration, apiTitle, apiVersion, "BookFast.Booking.xml");
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -49,7 +49,7 @@ namespace BookFast.Booking
             app.UseSecurityContext();
             app.UseMvc();
 
-            app.UseSwagger();
+            app.UseSwagger(apiTitle, apiVersion);
         }
     }
 }

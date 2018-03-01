@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using BookFast.Booking.Controllers;
 using BookFast.Booking.Mappers;
 using BookFast.Security.AspNetCore.Authentication;
-using BookFast.Swagger;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Security.Claims;
@@ -21,8 +20,6 @@ namespace BookFast.Booking.Composition
             services.AddMvc();
 
             services.AddScoped<IBookingMapper, BookingMapper>();
-
-            services.AddSwashbuckle("Book Fast Booking API", "v1", "BookFast.Booking.xml");
 
             services.Configure<TestOptions>(configuration.GetSection("Test"));
         }

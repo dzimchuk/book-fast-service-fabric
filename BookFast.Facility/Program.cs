@@ -1,4 +1,5 @@
-﻿using Microsoft.ServiceFabric.Services.Runtime;
+using Microsoft.Diagnostics.EventFlow.ServiceFabric;
+using Microsoft.ServiceFabric.Services.Runtime;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -11,17 +12,43 @@ namespace BookFast.Facility
         {
             try
             {
-                ServiceRuntime.RegisterServiceAsync("FacilityServiceType",
-                    context => new FacilityService(context)).GetAwaiter().GetResult();
+                using (var terminationEvent = new ManualResetEvent(initialState: false))
+                {
+                    using (var diagnosticsPipeline = ServiceFabricDiagnosticPipelineFactory.CreatePipeline("BookFast-Facility-DiagnosticsPipeline"))
+                    {
+                        Console.CancelKeyPress += (sender, eventArgs) => Shutdown(diagnosticsPipeline, terminationEvent);
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(FacilityService).Name);
+                        AppDomain.CurrentDomain.UnhandledException += (sender, unhandledExceptionArgs) =>
+                        {
+                            ServiceEventSource.Current.UnhandledException(unhandledExceptionArgs.ExceptionObject?.ToString() ?? "(no exception information)");
+                            Shutdown(diagnosticsPipeline, terminationEvent);
+                        };
 
-                Thread.Sleep(Timeout.Infinite);
+                        ServiceRuntime.RegisterServiceAsync("FacilityServiceType",
+                                    context => new FacilityService(context)).GetAwaiter().GetResult();
+
+                        ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(FacilityService).Name);
+
+                        terminationEvent.WaitOne();
+                    } 
+                }
             }
             catch (Exception e)
             {
                 ServiceEventSource.Current.ServiceHostInitializationFailed(e.ToString());
                 throw;
+            }
+        }
+
+        private static void Shutdown(IDisposable disposable, ManualResetEvent terminationEvent)
+        {
+            try
+            {
+                disposable.Dispose();
+            }
+            finally
+            {
+                terminationEvent.Set();
             }
         }
     }

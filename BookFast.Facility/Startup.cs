@@ -1,25 +1,25 @@
 using BookFast.SeedWork;
 using BookFast.Security.AspNetCore;
-using BookFast.ServiceFabric;
+using BookFast.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using System.Fabric;
 
 namespace BookFast.Facility
 {
     public class Startup
     {
-        private readonly IConfiguration configuration;
-        private readonly StatelessServiceContext serviceContext;
+        private const string apiTitle = "Book Fast Facility API";
+        private const string apiVersion = "v1";
 
-        public Startup(IConfiguration configuration, StatelessServiceContext serviceContext)
+        private readonly IConfiguration configuration;
+
+        public Startup(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.serviceContext = serviceContext;
         }
         
         public void ConfigureServices(IServiceCollection services)
@@ -37,7 +37,7 @@ namespace BookFast.Facility
                 module.AddServices(services, configuration);
             }
 
-            services.AddAppInsights(configuration, serviceContext);
+            services.AddSwashbuckle(configuration, apiTitle, apiVersion, "BookFast.Facility.xml");
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -49,7 +49,7 @@ namespace BookFast.Facility
             app.UseSecurityContext();
             app.UseMvc();
 
-            app.UseSwagger();
+            app.UseSwagger(apiTitle, apiVersion);
         }
     }
 }

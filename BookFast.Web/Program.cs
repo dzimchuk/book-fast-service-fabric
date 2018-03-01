@@ -1,4 +1,5 @@
-﻿using Microsoft.ServiceFabric.Services.Runtime;
+using Microsoft.Diagnostics.EventFlow.ServiceFabric;
+using Microsoft.ServiceFabric.Services.Runtime;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -7,30 +8,47 @@ namespace BookFast.Web
 {
     internal static class Program
     {
-        /// <summary>
-        /// This is the entry point of the service host process.
-        /// </summary>
         private static void Main()
         {
             try
             {
-                // The ServiceManifest.XML file defines one or more service type names.
-                // Registering a service maps a service type name to a .NET type.
-                // When Service Fabric creates an instance of this service type,
-                // an instance of the class is created in this host process.
+                using (var terminationEvent = new ManualResetEvent(initialState: false))
+                {
+                    using (var diagnosticsPipeline = ServiceFabricDiagnosticPipelineFactory.CreatePipeline("BookFast-Web-DiagnosticsPipeline"))
+                    {
+                        Console.CancelKeyPress += (sender, eventArgs) => Shutdown(diagnosticsPipeline, terminationEvent);
 
-                ServiceRuntime.RegisterServiceAsync("WebAppType",
-                    context => new WebApp(context)).GetAwaiter().GetResult();
+                        AppDomain.CurrentDomain.UnhandledException += (sender, unhandledExceptionArgs) =>
+                        {
+                            ServiceEventSource.Current.UnhandledException(unhandledExceptionArgs.ExceptionObject?.ToString() ?? "(no exception information)");
+                            Shutdown(diagnosticsPipeline, terminationEvent);
+                        };
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(WebApp).Name);
+                        ServiceRuntime.RegisterServiceAsync("WebAppType",
+                                    context => new WebApp(context)).GetAwaiter().GetResult();
 
-                // Prevents this host process from terminating so services keeps running. 
-                Thread.Sleep(Timeout.Infinite);
+                        ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(WebApp).Name);
+
+                        terminationEvent.WaitOne();
+                    } 
+                }
             }
             catch (Exception e)
             {
                 ServiceEventSource.Current.ServiceHostInitializationFailed(e.ToString());
                 throw;
+            }
+        }
+
+        private static void Shutdown(IDisposable disposable, ManualResetEvent terminationEvent)
+        {
+            try
+            {
+                disposable.Dispose();
+            }
+            finally
+            {
+                terminationEvent.Set();
             }
         }
     }

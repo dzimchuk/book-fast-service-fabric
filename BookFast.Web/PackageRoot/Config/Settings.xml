@@ -5,10 +5,9 @@
   </Section>
 
   <Section Name="Logging">
-    <Parameter Name="IncludeScopes" Value="false" />
-    <Parameter Name="LogLevel:Default" Value="Debug" />
-    <Parameter Name="LogLevel:System" Value="Information" />
-    <Parameter Name="LogLevel:Microsoft" Value="Information" />
+    <Parameter Name="IncludeScopes" Value="" />
+    <Parameter Name="LogLevel:Default" Value="" />
+    <Parameter Name="Debug:LogLevel:Default" Value="" />
   </Section>
 
   <Section Name="Authentication">

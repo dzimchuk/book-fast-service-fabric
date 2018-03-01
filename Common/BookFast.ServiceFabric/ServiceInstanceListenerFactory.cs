@@ -1,6 +1,9 @@
+using BookFast.ServiceFabric.AppInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using System;
@@ -20,12 +23,21 @@ namespace BookFast.ServiceFabric
                     loggingCallback(serviceContext, $"Starting Kestrel on {url}");
 
                     return new WebHostBuilder().UseKestrel()
-                                .ConfigureServices(
-                                    services => services
-                                        .AddSingleton<StatelessServiceContext>(serviceContext))
+                                .ConfigureServices((hostingContext, services) =>
+                                {
+                                    services.AddSingleton<StatelessServiceContext>(serviceContext);
+
+                                    services.AddApplicationInsightsTelemetry(hostingContext.Configuration);
+                                    services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer(serviceContext));
+                                })
                                 .ConfigureAppConfiguration((hostingContext, config) =>
                                 {
                                     config.AddServiceFabricConfiguration(serviceContext);
+                                })
+                                .ConfigureLogging((hostingContext, logging) =>
+                                {
+                                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                                    logging.AddDebug();
                                 })
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.UseUniqueServiceUrl)
@@ -45,12 +57,21 @@ namespace BookFast.ServiceFabric
                     loggingCallback(serviceContext, $"Starting HttpSys listener on {url}");
 
                     return new WebHostBuilder().UseHttpSys()
-                                .ConfigureServices(
-                                    services => services
-                                        .AddSingleton<StatelessServiceContext>(serviceContext))
+                                .ConfigureServices((hostingContext, services) =>
+                                {
+                                    services.AddSingleton<StatelessServiceContext>(serviceContext);
+
+                                    services.AddApplicationInsightsTelemetry(hostingContext.Configuration);
+                                    services.AddSingleton<ITelemetryInitializer>((serviceProvider) => new FabricTelemetryInitializer(serviceContext));
+                                })
                                 .ConfigureAppConfiguration((hostingContext, config) =>
                                 {
                                     config.AddServiceFabricConfiguration(serviceContext);
+                                })
+                                .ConfigureLogging((hostingContext, logging) =>
+                                {
+                                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                                    logging.AddDebug();
                                 })
                                 .UseContentRoot(Directory.GetCurrentDirectory())
                                 .UseServiceFabricIntegration(listener, ServiceFabricIntegrationOptions.None)

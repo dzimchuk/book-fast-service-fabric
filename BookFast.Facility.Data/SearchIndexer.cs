@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.Business;
+using BookFast.Facility.Business;
 using System;
 using System.Threading.Tasks;
 using BookFast.Facility.Contracts.Models;
@@ -19,7 +19,7 @@ namespace BookFast.Facility.Data
             var queueClient = storageAccount.CreateCloudQueueClient();
 
             queue = queueClient.GetQueueReference(options.Value.SearchIndexQueueName);
-            queue.CreateIfNotExists();
+            queue.CreateIfNotExistsAsync().Wait(); // todo: move resource initialization to service startup
         }
 
         public Task DeleteAccommodationIndexAsync(Guid accommodationId)
