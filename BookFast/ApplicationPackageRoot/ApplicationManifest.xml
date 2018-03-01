@@ -51,9 +51,9 @@
     <Parameter Name="SearchServiceUri" DefaultValue="" />
     <Parameter Name="BookingServiceUri" DefaultValue="" />
     <Parameter Name="Booking:Test:FailRandom" DefaultValue="false" />
-    <Parameter Name="Logging:IncludeScopes" DefaultValue="" />
-    <Parameter Name="Logging:LogLevel:Default" DefaultValue="" />
-    <Parameter Name="Logging:Debug:LogLevel:Default" DefaultValue="" />
+    <Parameter Name="Logging:IncludeScopes" DefaultValue="false" />
+    <Parameter Name="Logging:LogLevel:Default" DefaultValue="Warning" />
+    <Parameter Name="Logging:Debug:LogLevel:Default" DefaultValue="Information" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
