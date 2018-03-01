@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Fabric;
@@ -152,6 +152,13 @@ namespace BookFast.Files
         public void ServiceRequestStop(string requestTypeName, string exception = "")
         {
             WriteEvent(ServiceRequestStopEventId, requestTypeName, exception);
+        }
+
+        private const int UnhandledExceptionEventId = 7;
+        [Event(UnhandledExceptionEventId, Level = EventLevel.Error, Message = "An unhandled exception has occurred")]
+        public void UnhandledException(string exception)
+        {
+            WriteEvent(UnhandledExceptionEventId, exception);
         }
         #endregion
 

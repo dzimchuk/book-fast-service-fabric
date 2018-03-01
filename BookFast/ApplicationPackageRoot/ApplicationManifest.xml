@@ -137,6 +137,9 @@
             <Parameter Name="ServiceName" Value="[Search:ServiceName]" />
             <Parameter Name="IndexName" Value="[Search:IndexName]" />
           </Section>
+          <Section Name="ApplicationInsights">
+            <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
+          </Section>
         </Settings>
       </ConfigOverride>
     </ConfigOverrides>
