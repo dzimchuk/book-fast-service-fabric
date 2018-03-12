@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Linq;
 
-namespace BookFast.SeedWork
+namespace BookFast.Web.Proxy
 {
-    public static class Extensions
+    internal static class PartitionExtensions
     {
         public static long ToPartitionKey(this Guid id)
         {
