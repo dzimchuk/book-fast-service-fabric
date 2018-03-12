@@ -3,7 +3,7 @@ using System;
 
 namespace BookFast.SeedWork.Modeling
 {
-    public class Event : INotification
+    public abstract class Event : INotification
     {
         public DateTimeOffset OccurredAt { get; }
 
