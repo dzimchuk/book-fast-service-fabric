@@ -17,14 +17,19 @@ namespace BookFast.Facility.Domain.Models
         public Location Location { get; private set; }
 
         public int AccommodationCount { get; private set; }
-        
+
+        private Facility()
+        {
+        }
+
         public static Facility FromStorage(int id,
             string owner,
             string name,
             string description,
             string streetAddress,
+            double? latitude,
+            double? longitude,
             string[] images,
-            Location location,
             int accommodationCount)
         {
             return new Facility
@@ -34,8 +39,8 @@ namespace BookFast.Facility.Domain.Models
                 Name = name,
                 Description = description,
                 StreetAddress = streetAddress,
+                Location = (latitude != null && longitude != null) ? new Location(latitude.Value, longitude.Value) : null,
                 Images = images,
-                Location = location,
                 AccommodationCount = accommodationCount
             };
         }
@@ -43,14 +48,19 @@ namespace BookFast.Facility.Domain.Models
         public static Facility NewFacility(string owner,
             string name,
             string description,
-            string streetAddress)
+            string streetAddress,
+            double? latitude,
+            double? longitude,
+            string[] images)
         {
             var facility = new Facility
             {
                 Owner = owner ?? throw new ArgumentNullException(nameof(owner)),
                 Name = name ?? throw new ArgumentNullException(nameof(name)),
                 Description = description,
-                StreetAddress = streetAddress ?? throw new ArgumentNullException(streetAddress)
+                StreetAddress = streetAddress ?? throw new ArgumentNullException(streetAddress),
+                Location = (latitude != null && longitude != null) ? new Location(latitude.Value, longitude.Value) : null,
+                Images = ImagePathHelper.CleanUp(images)
             };
 
             facility.AddEvent(new FacilityCreatedEvent(facility));
@@ -62,12 +72,15 @@ namespace BookFast.Facility.Domain.Models
             string name,
             string description,
             string streetAddress,
+            double? latitude,
+            double? longitude,
             string[] images)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
             StreetAddress = streetAddress ?? throw new ArgumentNullException(streetAddress);
-            Images = images;
+            Location = (latitude != null && longitude != null) ? new Location(latitude.Value, longitude.Value) : null;
+            Images = ImagePathHelper.Merge(Images, images);
 
             AddEvent(new FacilityUpdatedEvent(this));
         }

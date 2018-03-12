@@ -10,17 +10,13 @@ namespace BookFast.SeedWork.Modeling
     {
         private TIdentity id = default(TIdentity);
         private List<Event> events;
-
-        protected Entity()
-        {
-        }
-
+                
         public TIdentity Id
         {
             get { return id; }
             set
             {
-                if (id.Equals(default(TIdentity)))
+                if (!id.Equals(default(TIdentity)))
                 {
                     throw new InvalidOperationException("Entity ID cannot be changed");
                 }

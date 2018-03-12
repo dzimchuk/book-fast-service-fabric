@@ -5,9 +5,9 @@ namespace BookFast.Facility.Domain.Exceptions
 {
     public class FacilityNotFoundException : FormattedException
     {
-        public Guid FacilityId { get; }
+        public int FacilityId { get; }
 
-        public FacilityNotFoundException(Guid facilityId)
+        public FacilityNotFoundException(int facilityId)
             : base(ErrorCodes.FacilityNotFound, $"Facility {facilityId} not found.")
         {
             FacilityId = facilityId;
