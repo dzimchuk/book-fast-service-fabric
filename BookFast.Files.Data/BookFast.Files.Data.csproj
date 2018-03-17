@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="WindowsAzure.Storage" Version="9.0.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.1.0" />
     <PackageReference Include="AutoMapper" Version="6.2.2" />
   </ItemGroup>
 
