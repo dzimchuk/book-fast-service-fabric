@@ -6,7 +6,7 @@ using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Commands
 {
-    internal class UpdateAccommodationCommand : ICommand<BookFastContext>
+    internal class UpdateAccommodationCommand : ICommand<FacilityContext>
     {
         private readonly Accommodation accommodation;
         private readonly IAccommodationMapper mapper;
@@ -17,7 +17,7 @@ namespace BookFast.Facility.Data.Commands
             this.mapper = mapper;
         }
 
-        public async Task ApplyAsync(BookFastContext model)
+        public async Task ApplyAsync(FacilityContext model)
         {
             var existingAccommodation = await model.Accommodations.FirstOrDefaultAsync(a => a.Id == accommodation.Id);
             if (existingAccommodation != null)

@@ -6,7 +6,7 @@ using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Commands
 {
-    internal class DeleteAccommodationCommand : ICommand<BookFastContext>
+    internal class DeleteAccommodationCommand : ICommand<FacilityContext>
     {
         private readonly Guid accommodationId;
 
@@ -15,7 +15,7 @@ namespace BookFast.Facility.Data.Commands
             this.accommodationId = accommodationId;
         }
 
-        public async Task ApplyAsync(BookFastContext model)
+        public async Task ApplyAsync(FacilityContext model)
         {
             var accommodation = await model.Accommodations.FirstOrDefaultAsync(a => a.Id == accommodationId);
             if (accommodation != null)

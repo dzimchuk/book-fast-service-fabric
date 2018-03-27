@@ -5,7 +5,7 @@ using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Commands
 {
-    internal class CreateAccommodationCommand : ICommand<BookFastContext>
+    internal class CreateAccommodationCommand : ICommand<FacilityContext>
     {
         private readonly Accommodation accommodation;
         private readonly IAccommodationMapper mapper;
@@ -16,7 +16,7 @@ namespace BookFast.Facility.Data.Commands
             this.mapper = mapper;
         }
 
-        public Task ApplyAsync(BookFastContext model)
+        public Task ApplyAsync(FacilityContext model)
         {
             model.Accommodations.Add(mapper.MapFrom(accommodation));
             return model.SaveChangesAsync();

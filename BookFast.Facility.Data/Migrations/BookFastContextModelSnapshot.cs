@@ -10,7 +10,7 @@ using System;
 
 namespace BookFast.Facility.Data.Migrations
 {
-    [DbContext(typeof(BookFastContext))]
+    [DbContext(typeof(FacilityContext))]
     partial class BookFastContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

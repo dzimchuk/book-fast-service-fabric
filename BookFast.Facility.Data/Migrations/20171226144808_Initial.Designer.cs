@@ -10,7 +10,7 @@ using System;
 
 namespace BookFast.Facility.Data.Migrations
 {
-    [DbContext(typeof(BookFastContext))]
+    [DbContext(typeof(FacilityContext))]
     [Migration("20171226144808_Initial")]
     partial class Initial
     {

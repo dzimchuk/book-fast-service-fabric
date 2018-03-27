@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.Domain.Events;
+using BookFast.Facility.Domain.Events;
 using BookFast.Facility.Domain.Exceptions;
 using BookFast.SeedWork.Modeling;
 using System;
@@ -93,19 +93,6 @@ namespace BookFast.Facility.Domain.Models
             }
 
             AddEvent(new FacilityDeletedEvent(Id));
-        }
-
-        public void IncrementAccommodationCount()
-        {
-            AccommodationCount++;
-        }
-
-        public void DecrementAccommodationCound()
-        {
-            if (AccommodationCount > 0)
-            {
-                AccommodationCount--;
-            }
         }
     }
 }

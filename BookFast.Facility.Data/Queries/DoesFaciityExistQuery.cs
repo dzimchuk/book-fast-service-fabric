@@ -6,7 +6,7 @@ using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Queries
 {
-    internal class DoesFaciityExistQuery : IQuery<BookFastContext, bool>
+    internal class DoesFaciityExistQuery : IQuery<FacilityContext, bool>
     {
         private readonly Guid facilityId;
 
@@ -15,7 +15,7 @@ namespace BookFast.Facility.Data.Queries
             this.facilityId = facilityId;
         }
 
-        public Task<bool> ExecuteAsync(BookFastContext model)
+        public Task<bool> ExecuteAsync(FacilityContext model)
         {
             return model.Facilities.AnyAsync(f => f.Id == facilityId);
         }

@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.Domain.Events;
+using BookFast.Facility.Domain.Events;
 using BookFast.SeedWork.Modeling;
 using System;
 
@@ -36,14 +36,16 @@ namespace BookFast.Facility.Domain.Models
             int facilityId,
             string name,
             string description,
-            int roomCount)
+            int roomCount,
+            string[] images)
         {
             var accommodation = new Accommodation
             {
                 FacilityId = facilityId,
                 Name = name ?? throw new ArgumentNullException(nameof(name)),
                 Description = description,
-                RoomCount = roomCount
+                RoomCount = roomCount,
+                Images = ImagePathHelper.CleanUp(images)
             };
 
             accommodation.AddEvent(new AccommodationCreatedEvent(accommodation));
@@ -60,7 +62,7 @@ namespace BookFast.Facility.Domain.Models
             Name = name ?? throw new ArgumentNullException(nameof(name));
             Description = description;
             RoomCount = roomCount;
-            Images = images;
+            Images = ImagePathHelper.Merge(Images, images);
 
             AddEvent(new AccommodationUpdatedEvent(this));
         }

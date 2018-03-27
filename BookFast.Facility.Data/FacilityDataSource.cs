@@ -10,10 +10,10 @@ namespace BookFast.Facility.Data
 {
     internal class FacilityDataSource : IFacilityDataSource
     {
-        private readonly BookFastContext context;
+        private readonly FacilityContext context;
         private readonly IFacilityMapper mapper;
 
-        public FacilityDataSource(BookFastContext context, IFacilityMapper mapper)
+        public FacilityDataSource(FacilityContext context, IFacilityMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

@@ -8,7 +8,7 @@ using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Queries
 {
-    internal class ListFacilitiesByOwnerQuery : IQuery<BookFastContext, List<Contracts.Models.Facility>>
+    internal class ListFacilitiesByOwnerQuery : IQuery<FacilityContext, List<Contracts.Models.Facility>>
     {
         private readonly string owner;
         private readonly IFacilityMapper mapper;
@@ -19,7 +19,7 @@ namespace BookFast.Facility.Data.Queries
             this.mapper = mapper;
         }
 
-        public async Task<List<Contracts.Models.Facility>> ExecuteAsync(BookFastContext model)
+        public async Task<List<Contracts.Models.Facility>> ExecuteAsync(FacilityContext model)
         {
             var facilities = await (from f in model.Facilities
                                     where f.Owner == owner

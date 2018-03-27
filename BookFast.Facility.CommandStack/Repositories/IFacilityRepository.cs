@@ -1,4 +1,4 @@
-﻿using BookFast.SeedWork.Modeling;
+using BookFast.SeedWork.Modeling;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.CommandStack.Repositories

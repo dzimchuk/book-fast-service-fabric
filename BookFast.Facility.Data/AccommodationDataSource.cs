@@ -11,10 +11,10 @@ namespace BookFast.Facility.Data
 {
     internal class AccommodationDataSource : IAccommodationDataSource
     {
-        private readonly BookFastContext context;
+        private readonly FacilityContext context;
         private readonly IAccommodationMapper mapper;
 
-        public AccommodationDataSource(BookFastContext context, IAccommodationMapper mapper)
+        public AccommodationDataSource(FacilityContext context, IAccommodationMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;

@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.CommandStack.Commands;
+using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Security;
 using MediatR;
@@ -13,10 +13,11 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
         private readonly IMediator mediator;
         private readonly ISecurityContext securityContext;
 
-        public CreateFacilityCommandHandler(IFacilityRepository repository, IMediator mediator)
+        public CreateFacilityCommandHandler(IFacilityRepository repository, IMediator mediator, ISecurityContext securityContext)
         {
             this.repository = repository;
             this.mediator = mediator;
+            this.securityContext = securityContext;
         }
 
         public async Task<int> Handle(CreateFacilityCommand request, CancellationToken cancellationToken)

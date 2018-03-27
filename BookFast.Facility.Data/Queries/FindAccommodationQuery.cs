@@ -7,7 +7,7 @@ using BookFast.SeedWork;
 
 namespace BookFast.Facility.Data.Queries
 {
-    internal class FindAccommodationQuery : IQuery<BookFastContext, Accommodation>
+    internal class FindAccommodationQuery : IQuery<FacilityContext, Accommodation>
     {
         private readonly Guid accommodationId;
         private readonly IAccommodationMapper mapper;
@@ -18,7 +18,7 @@ namespace BookFast.Facility.Data.Queries
             this.mapper = mapper;
         }
 
-        public async Task<Accommodation> ExecuteAsync(BookFastContext model)
+        public async Task<Accommodation> ExecuteAsync(FacilityContext model)
         {
             var accommodation = await model.Accommodations.FirstOrDefaultAsync(a => a.Id == accommodationId);
             return accommodation != null ? mapper.MapFrom(accommodation) : null;

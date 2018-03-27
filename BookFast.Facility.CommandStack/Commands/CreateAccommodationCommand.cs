@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookFast.Facility.CommandStack.Commands
@@ -16,5 +16,7 @@ namespace BookFast.Facility.CommandStack.Commands
 
         [Range(0, 20)]
         public int RoomCount { get; set; }
+
+        public string[] Images { get; set; }
     }
 }
