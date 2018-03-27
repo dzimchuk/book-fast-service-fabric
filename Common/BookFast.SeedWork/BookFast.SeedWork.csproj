@@ -12,6 +12,7 @@
     <PackageReference Include="LightInject.Microsoft.DependencyInjection" Version="2.0.5" />
     <PackageReference Include="LightInject" Version="5.1.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
   </ItemGroup>
 
   <ItemGroup>

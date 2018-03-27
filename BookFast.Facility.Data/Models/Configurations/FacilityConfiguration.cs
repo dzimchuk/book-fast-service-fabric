@@ -7,18 +7,16 @@ namespace BookFast.Facility.Data.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<Facility> builder)
         {
-            builder.ToTable("Facilities");
+            builder.ToTable("Facilities", "fm");
 
             builder.HasKey(facility => facility.Id);
             builder.Property(facility => facility.Name).IsRequired(true).HasMaxLength(320);
             builder.Property(facility => facility.Description).IsRequired(false);
-            builder.Property(facility => facility.Owner).IsRequired(false);
+            builder.Property(facility => facility.Owner).IsRequired(true);
             builder.Property(facility => facility.StreetAddress).IsRequired(false);
             builder.Property(facility => facility.Latitude).IsRequired(false);
             builder.Property(facility => facility.Longitude).IsRequired(false);
             builder.Property(facility => facility.Images).IsRequired(false);
-
-            builder.Property(facility => facility.AccommodationCount).IsRequired(true);
         }
     }
 }

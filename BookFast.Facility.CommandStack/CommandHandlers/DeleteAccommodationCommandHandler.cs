@@ -27,7 +27,7 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
             }
 
             accommodation.Delete();
-            await repository.DeleteAsync(accommodation);
+            await repository.DeleteAsync(accommodation.Id);
 
             await accommodation.RaiseEventsAsync(mediator);
         }

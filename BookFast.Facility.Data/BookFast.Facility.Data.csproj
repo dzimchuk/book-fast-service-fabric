@@ -10,17 +10,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.0" />
-    <PackageReference Include="AutoMapper" Version="6.2.2" />
-    <PackageReference Include="WindowsAzure.Storage" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
