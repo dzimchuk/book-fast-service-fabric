@@ -7,7 +7,7 @@ using BookFast.Search.Client;
 
 namespace BookFast.Web.Proxy
 {
-    internal class SearchProxy : ISearchService
+    internal class SearchProxy : ISearchProxy
     {
         private readonly IPartitionClientFactory<CommunicationClient<IBookFastSearchAPI>> partitionClientFactory;
         private readonly ISearchMapper mapper;

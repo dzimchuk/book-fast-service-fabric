@@ -11,7 +11,7 @@ using Microsoft.ServiceFabric.Services.Client;
 
 namespace BookFast.Web.Proxy
 {
-    internal class BookingProxy : IBookingService
+    internal class BookingProxy : IBookingProxy
     {
         private readonly IPartitionClientFactory<CommunicationClient<IBookFastBookingAPI>> partitionClientFactory;
         private readonly IBookingMapper mapper;

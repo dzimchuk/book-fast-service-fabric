@@ -5,7 +5,7 @@ using BookFast.Web.Contracts.Models;
 
 namespace BookFast.Web.Contracts
 {
-    public interface IBookingService
+    public interface IBookingProxy
     {
         Task BookAsync(Guid facilityId, Guid accommodationId, BookingDetails details);
         Task<List<Booking>> ListPendingAsync();

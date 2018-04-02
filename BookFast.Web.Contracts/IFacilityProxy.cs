@@ -5,7 +5,7 @@ using BookFast.Web.Contracts.Models;
 
 namespace BookFast.Web.Contracts
 {
-    public interface IFacilityService
+    public interface IFacilityProxy
     {
         Task<List<Facility>> ListAsync();
         Task<Facility> FindAsync(Guid facilityId);

@@ -11,11 +11,11 @@ namespace BookFast.Web.Features.Booking
     [Authorize(Policy = "Customer")]
     public class BookingController : Controller
     {
-        private readonly IBookingService bookingService;
+        private readonly IBookingProxy bookingService;
         private readonly BookingMapper mapper;
-        private readonly IAccommodationService accommodationService;
+        private readonly IAccommodationProxy accommodationService;
 
-        public BookingController(IBookingService bookingService, BookingMapper mapper, IAccommodationService accommodationService)
+        public BookingController(IBookingProxy bookingService, BookingMapper mapper, IAccommodationProxy accommodationService)
         {
             this.bookingService = bookingService;
             this.mapper = mapper;

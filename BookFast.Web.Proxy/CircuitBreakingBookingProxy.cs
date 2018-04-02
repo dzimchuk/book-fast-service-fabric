@@ -10,16 +10,16 @@ using Polly.CircuitBreaker;
 
 namespace BookFast.Web.Proxy
 {
-    internal class CircuitBreakingBookingProxy : IBookingService
+    internal class CircuitBreakingBookingProxy : IBookingProxy
     {
-        private readonly IBookingService innerProxy;
+        private readonly IBookingProxy innerProxy;
         private readonly CircuitBreakerPolicy breaker =
             Policy.Handle<HttpOperationException>(ex => ex.StatusCode() >= 500 || ex.StatusCode() == 429)
             .CircuitBreakerAsync(
                 exceptionsAllowedBeforeBreaking: 2,
                 durationOfBreak: TimeSpan.FromMinutes(1));
 
-        public CircuitBreakingBookingProxy(IBookingService innerProxy)
+        public CircuitBreakingBookingProxy(IBookingProxy innerProxy)
         {
             this.innerProxy = innerProxy;
         }

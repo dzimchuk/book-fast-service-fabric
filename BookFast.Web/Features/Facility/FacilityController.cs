@@ -11,14 +11,14 @@ namespace BookFast.Web.Features.Facility
     [Authorize(Policy = "FacilityProviderOnly")]
     public class FacilityController : Controller
     {
-        private readonly IFacilityService facilityService;
+        private readonly IFacilityProxy facilityService;
         private readonly FacilityMapper facilityMapper;
 
-        private readonly IAccommodationService accommodationService;
+        private readonly IAccommodationProxy accommodationService;
         private readonly AccommodationMapper accommodationMapper;
 
-        public FacilityController(IFacilityService facilityService, FacilityMapper facilityMapper, 
-            IAccommodationService accommodationService, AccommodationMapper accommodationMapper)
+        public FacilityController(IFacilityProxy facilityService, FacilityMapper facilityMapper, 
+            IAccommodationProxy accommodationService, AccommodationMapper accommodationMapper)
         {
             this.facilityService = facilityService;
             this.facilityMapper = facilityMapper;

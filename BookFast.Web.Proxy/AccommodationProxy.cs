@@ -10,7 +10,7 @@ using BookFast.Rest;
 
 namespace BookFast.Web.Proxy
 {
-    internal class AccommodationProxy : IAccommodationService
+    internal class AccommodationProxy : IAccommodationProxy
     {
         private readonly IAccommodationMapper mapper;
         private readonly IApiClientFactory<IBookFastFacilityAPI> apiClientFactory;
