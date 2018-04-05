@@ -1,5 +1,6 @@
-﻿using BookFast.Facility.QueryStack;
+using BookFast.Facility.QueryStack;
 using BookFast.Facility.QueryStack.Representations;
+using BookFast.Security;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace BookFast.Facility.Data.Queries
     internal class FacilityQueryDataSource : IFacilityQueryDataSource
     {
         private readonly FacilityContext context;
+        private readonly ISecurityContext securityContext;
 
-        public FacilityQueryDataSource(FacilityContext context)
+        public FacilityQueryDataSource(FacilityContext context, ISecurityContext securityContext)
         {
             this.context = context;
+            this.securityContext = securityContext;
         }
 
         public async Task<FacilityRepresentation> FindAsync(int id)
@@ -50,6 +53,7 @@ namespace BookFast.Facility.Data.Queries
         public async Task<IEnumerable<FacilityRepresentation>> ListAsync()
         {
             var facilities = await (from item in context.Facilities.AsNoTracking()
+                                    where item.Owner == securityContext.GetCurrentTenant()
                                     select new
                                     {
                                         item.Id,
