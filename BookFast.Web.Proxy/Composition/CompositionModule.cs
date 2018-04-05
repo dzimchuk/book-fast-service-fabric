@@ -11,14 +11,14 @@ namespace BookFast.Web.Proxy.Composition
     {
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IFacilityService, FacilityProxy>();
-            services.AddScoped<IAccommodationService, AccommodationProxy>();
+            services.AddScoped<IFacilityProxy, FacilityProxy>();
+            services.AddScoped<IAccommodationProxy, AccommodationProxy>();
 
             services.AddSingleton<BookingProxy>();
-            services.AddSingleton<IBookingService, CircuitBreakingBookingProxy>(serviceProvider =>
+            services.AddSingleton<IBookingProxy, CircuitBreakingBookingProxy>(serviceProvider =>
                 new CircuitBreakingBookingProxy(serviceProvider.GetService<BookingProxy>()));
 
-            services.AddScoped<ISearchService, SearchProxy>();
+            services.AddScoped<ISearchProxy, SearchProxy>();
             services.AddScoped<IFileAccessProxy, FileAccessProxy>();
             
             services.AddScoped<IFacilityMapper, FacilityMapper>();

@@ -7,12 +7,11 @@ using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Models;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Booking.Client;
-using BookFast.SeedWork;
 using Microsoft.ServiceFabric.Services.Client;
 
 namespace BookFast.Web.Proxy
 {
-    internal class BookingProxy : IBookingService
+    internal class BookingProxy : IBookingProxy
     {
         private readonly IPartitionClientFactory<CommunicationClient<IBookFastBookingAPI>> partitionClientFactory;
         private readonly IBookingMapper mapper;

@@ -1,13 +1,13 @@
-using BookFast.Facility.Business;
-using BookFast.Facility.Business.Data;
-using BookFast.Facility.Data.Mappers;
-using BookFast.Facility.Data.Models;
+using BookFast.Facility.CommandStack.Repositories;
+using BookFast.Facility.Data.Queries;
+using BookFast.Facility.Data.Repositories;
+using BookFast.Facility.QueryStack;
 using BookFast.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace BookFast.Facility.Data.Composition
 {
@@ -15,20 +15,17 @@ namespace BookFast.Facility.Data.Composition
     {
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BookFastContext>(options => options.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"], sqlOptions =>
+            services.AddDbContext<FacilityContext>(options => options.UseSqlServer(configuration["Data:DefaultConnection:ConnectionString"], sqlOptions =>
             {
                 sqlOptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null); // see also https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
             })
             .ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))); // disable client side evaluation, see https://docs.microsoft.com/en-us/ef/core/querying/client-eval
 
-            services.AddScoped<IFacilityDataSource, FacilityDataSource>();
-            services.AddScoped<IAccommodationDataSource, AccommodationDataSource>();
+            services.AddTransient<IFacilityQueryDataSource, FacilityQueryDataSource>();
+            services.AddTransient<IAccommodationQueryDataSource, AccommodationQueryDataSource>();
 
-            services.AddScoped<IFacilityMapper, FacilityMapper>();
-            services.AddScoped<IAccommodationMapper, AccommodationMapper>();
-
-            services.Configure<SearchQueueOptions>(configuration.GetSection("Data:Azure:Storage"));
-            services.AddSingleton<ISearchIndexer, SearchIndexer>();
+            services.AddTransient<IFacilityRepository, FacilityRepository>();
+            services.AddTransient<IAccommodationRepository, AccommodationRepository>();
         }
     }
 }

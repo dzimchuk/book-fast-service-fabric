@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using BookFast.Facility.Models;
-using BookFast.Facility.Models.Representations;
+﻿using BookFast.Facility.CommandStack.Commands;
+using BookFast.Facility.Domain.Exceptions;
+using BookFast.Facility.QueryStack;
+using BookFast.Facility.QueryStack.Representations;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BookFast.Facility.Contracts;
-using BookFast.Facility.Contracts.Exceptions;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BookFast.Facility.Controllers
 {
     [Authorize(Policy = "Facility.Write")]
     public class AccommodationController : Controller
     {
-        private readonly IAccommodationService service;
-        private readonly IAccommodationMapper mapper;
+        private readonly IAccommodationQueryDataSource queryDataSource;
+        private readonly IMediator mediator;
 
-        public AccommodationController(IAccommodationService service, IAccommodationMapper mapper)
+        public AccommodationController(IAccommodationQueryDataSource queryDataSource, IMediator mediator)
         {
-            this.service = service;
-            this.mapper = mapper;
+            this.queryDataSource = queryDataSource;
+            this.mediator = mediator;
         }
 
         /// <summary>
@@ -33,12 +34,12 @@ namespace BookFast.Facility.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<AccommodationRepresentation>))]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
         [AllowAnonymous]
-        public async Task<IActionResult> List(Guid facilityId)
+        public async Task<IActionResult> List(int facilityId)
         {
             try
             {
-                var accommodations = await service.ListAsync(facilityId);
-                return Ok(mapper.MapFrom(accommodations));
+                var accommodations = await queryDataSource.ListAsync(facilityId);
+                return Ok(accommodations);
             }
             catch (FacilityNotFoundException)
             {
@@ -56,12 +57,17 @@ namespace BookFast.Facility.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(AccommodationRepresentation))]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Accommodation not found")]
         [AllowAnonymous]
-        public async Task<IActionResult> Find(Guid id)
+        public async Task<IActionResult> Find(int id)
         {
             try
             {
-                var accommodation = await service.FindAsync(id);
-                return Ok(mapper.MapFrom(accommodation));
+                var accommodation = await queryDataSource.FindAsync(id);
+                if (accommodation == null)
+                {
+                    throw new AccommodationNotFoundException(id);
+                }
+
+                return Ok(accommodation);
             }
             catch (AccommodationNotFoundException)
             {
@@ -77,17 +83,17 @@ namespace BookFast.Facility.Controllers
         /// <returns></returns>
         [HttpPost("api/facilities/{facilityId}/accommodations")]
         [SwaggerOperation("create-accommodation")]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.Created, Type = typeof(AccommodationRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.Created)]
         [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
-        public async Task<IActionResult> Create([FromRoute]Guid facilityId, [FromBody]AccommodationData accommodationData)
+        public async Task<IActionResult> Create([FromRoute]Guid facilityId, [FromBody]CreateAccommodationCommand accommodationData)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var accommodation = await service.CreateAsync(facilityId, mapper.MapFrom(accommodationData));
-                    return CreatedAtAction("Find", new { id = accommodation.Id }, mapper.MapFrom(accommodation));
+                    var accommodationId = await mediator.Send(accommodationData);
+                    return CreatedAtAction("Find", new { id = accommodationId });
                 }
 
                 return BadRequest();
@@ -106,17 +112,18 @@ namespace BookFast.Facility.Controllers
         /// <returns></returns>
         [HttpPut("api/accommodations/{id}")]
         [SwaggerOperation("update-accommodation")]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(AccommodationRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.NoContent)]
         [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found, Accommodation not found")]
-        public async Task<IActionResult> Update(Guid id, [FromBody]AccommodationData accommodationData)
+        public async Task<IActionResult> Update(int id, [FromBody]UpdateAccommodationCommand accommodationData)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var accommodation = await service.UpdateAsync(id, mapper.MapFrom(accommodationData));
-                    return Ok(mapper.MapFrom(accommodation));
+                    accommodationData.AccommodationId = id;
+                    await mediator.Send(accommodationData);
+                    return NoContent();
                 }
 
                 return BadRequest();
@@ -140,12 +147,12 @@ namespace BookFast.Facility.Controllers
         [SwaggerOperation("delete-accommodation")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NoContent)]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Accommodation not found")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await service.DeleteAsync(id);
-                return new NoContentResult();
+                await mediator.Send(new DeleteAccommodationCommand { AccommodationId = id });
+                return NoContent();
             }
             catch (AccommodationNotFoundException)
             {

@@ -13,12 +13,12 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.1" />
-    <PackageReference Include="Microsoft.ServiceFabric" Version="6.1.472" />
-    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="3.0.472" />
-    <PackageReference Include="Microsoft.ServiceFabric.Diagnostics.Internal" Version="3.0.472" />
-    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="3.0.472" />
-    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="3.0.472" />
-    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.HttpSys" Version="3.0.472" />
+    <PackageReference Include="Microsoft.ServiceFabric" Version="6.1.480" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services" Version="3.0.480" />
+    <PackageReference Include="Microsoft.ServiceFabric.Diagnostics.Internal" Version="3.0.480" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="3.0.480" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="3.0.480" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.HttpSys" Version="3.0.480" />
     <PackageReference Include="System.Net.Http" Version="4.3.3" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />
   </ItemGroup>

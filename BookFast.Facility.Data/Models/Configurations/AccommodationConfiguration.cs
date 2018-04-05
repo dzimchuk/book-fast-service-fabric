@@ -7,7 +7,7 @@ namespace BookFast.Facility.Data.Models.Configurations
     {
         public void Configure(EntityTypeBuilder<Accommodation> builder)
         {
-            builder.ToTable("Accommodations");
+            builder.ToTable("Accommodations", "fm");
 
             builder.HasKey(accommodation => accommodation.Id);
             builder.Property(accommodation => accommodation.Name).IsRequired(true).HasMaxLength(320);

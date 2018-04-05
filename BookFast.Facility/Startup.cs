@@ -28,7 +28,7 @@ namespace BookFast.Facility
                           {
                               new Composition.CompositionModule(),
                               new Security.AspNetCore.Composition.CompositionModule(),
-                              new Business.Composition.CompositionModule(),
+                              new CommandStack.Composition.CompositionModule(),
                               new Data.Composition.CompositionModule()
                           };
 

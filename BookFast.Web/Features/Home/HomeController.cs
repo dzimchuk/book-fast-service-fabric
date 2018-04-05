@@ -6,9 +6,9 @@ namespace BookFast.Web.Features.Home
 {
     public class HomeController : Controller
     {
-        private readonly ISearchService searchService;
+        private readonly ISearchProxy searchService;
 
-        public HomeController(ISearchService searchService)
+        public HomeController(ISearchProxy searchService)
         {
             this.searchService = searchService;
         }

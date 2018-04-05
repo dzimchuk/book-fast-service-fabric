@@ -1,5 +1,3 @@
-using BookFast.Facility.Controllers;
-using BookFast.Facility.Mappers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.SeedWork;
@@ -18,7 +16,6 @@ namespace BookFast.Facility.Composition
             services.AddMvc();
 
             RegisterAuthorizationPolicies(services);
-            RegisterMappers(services);
         }
 
         private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
@@ -50,12 +47,6 @@ namespace BookFast.Facility.Composition
                                                             config.RequireRole(InteractorRole.FacilityProvider.ToString(), InteractorRole.ImporterProcess.ToString());
                                                         });
                 });
-        }
-
-        private static void RegisterMappers(IServiceCollection services)
-        {
-            services.AddScoped<IFacilityMapper, FacilityMapper>();
-            services.AddScoped<IAccommodationMapper, AccommodationMapper>();
         }
     }
 }

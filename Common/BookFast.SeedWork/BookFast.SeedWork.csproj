@@ -7,7 +7,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="4.0.0" />
+    <PackageReference Include="MediatR" Version="4.0.1" />
+    <PackageReference Include="LightInject.Microsoft.DependencyInjection" Version="2.0.5" />
+    <PackageReference Include="LightInject" Version="5.1.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Modeling\" />
   </ItemGroup>
 
 </Project>

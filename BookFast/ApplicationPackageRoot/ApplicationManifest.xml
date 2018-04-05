@@ -274,7 +274,7 @@
     </Service>
     <Service Name="BookingService">
       <StatefulService ServiceTypeName="BookingServiceType" TargetReplicaSetSize="[Booking:ServiceFabric:TargetReplicaSetSize]" MinReplicaSetSize="[Booking:ServiceFabric:MinReplicaSetSize]">
-        <UniformInt64Partition PartitionCount="16" LowKey="0" HighKey="15" />
+        <UniformInt64Partition PartitionCount="3" LowKey="0" HighKey="2" />
         <PlacementConstraints>[Booking:ServiceFabric:PlacementConstraints]</PlacementConstraints>
       </StatefulService>
     </Service>
