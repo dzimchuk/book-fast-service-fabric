@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.CommandStack.Repositories;
+using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Facility.Domain.Models;
 using System.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace BookFast.Facility.Data.Repositories
             this.context = context;
         }
 
-        public async Task<int> CreateAsync(Accommodation accommodation)
+        public async Task<int> AddAsync(Accommodation accommodation)
         {
             var dataModel = new Models.Accommodation
             {
@@ -24,9 +24,7 @@ namespace BookFast.Facility.Data.Repositories
                 Images = accommodation.Images.ToJson()
             };
 
-            context.Accommodations.Add(dataModel);
-
-            await context.SaveChangesAsync();
+            await context.Accommodations.AddAsync(dataModel);
 
             return dataModel.Id;
         }
@@ -34,10 +32,7 @@ namespace BookFast.Facility.Data.Repositories
         public async Task DeleteAsync(int id)
         {
             var trackedAccommodation = await context.Accommodations.FindAsync(id);
-
             context.Accommodations.Remove(trackedAccommodation);
-
-            await context.SaveChangesAsync();
         }
 
         public async Task<Accommodation> FindAsync(int id)
@@ -54,6 +49,11 @@ namespace BookFast.Facility.Data.Repositories
                 : null;
         }
 
+        public Task SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(Accommodation accommodation)
         {
             var trackedAccommodation = await context.Accommodations.FindAsync(accommodation.Id);
@@ -62,8 +62,6 @@ namespace BookFast.Facility.Data.Repositories
             trackedAccommodation.Description = accommodation.Description;
             trackedAccommodation.RoomCount = accommodation.RoomCount;
             trackedAccommodation.Images = accommodation.Images.ToJson();
-
-            await context.SaveChangesAsync();
         }
     }
 }

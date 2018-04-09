@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.CommandStack.Commands;
+using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Facility.Domain.Exceptions;
 using MediatR;
@@ -33,6 +33,7 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 message.Images);
 
             await repository.UpdateAsync(accommodation);
+            await repository.SaveChangesAsync();
 
             await accommodation.RaiseEventsAsync(mediator);
         }

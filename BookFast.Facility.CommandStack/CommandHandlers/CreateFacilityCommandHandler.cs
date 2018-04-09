@@ -31,7 +31,8 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 request.Longitude,
                 request.Images);
 
-            facility.Id = await repository.CreateAsync(facility);
+            facility.Id = await repository.AddAsync(facility);
+            await repository.SaveChangesAsync();
 
             await facility.RaiseEventsAsync(mediator);
 

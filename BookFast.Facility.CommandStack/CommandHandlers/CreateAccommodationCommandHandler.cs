@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.CommandStack.Commands;
+using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.CommandStack.Repositories;
 using MediatR;
 using System.Threading;
@@ -26,7 +26,8 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 request.RoomCount,
                 request.Images);
 
-            accommodation.Id = await repository.CreateAsync(accommodation);
+            accommodation.Id = await repository.AddAsync(accommodation);
+            await repository.SaveChangesAsync();
 
             await accommodation.RaiseEventsAsync(mediator);
 

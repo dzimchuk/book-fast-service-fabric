@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.CommandStack.Commands;
+using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Facility.Domain.Exceptions;
 using MediatR;
@@ -28,6 +28,7 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
 
             accommodation.Delete();
             await repository.DeleteAsync(accommodation.Id);
+            await repository.SaveChangesAsync();
 
             await accommodation.RaiseEventsAsync(mediator);
         }
