@@ -93,7 +93,7 @@ namespace BookFast.Facility.Controllers
                 {
                     accommodationData.FacilityId = facilityId;
                     var accommodationId = await mediator.Send(accommodationData);
-                    return CreatedAtAction("Find", new { id = accommodationId });
+                    return CreatedAtAction("Find", new { id = accommodationId }, null);
                 }
 
                 return BadRequest();
