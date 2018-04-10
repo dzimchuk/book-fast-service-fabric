@@ -24,13 +24,13 @@ namespace BookFast.Booking.Client.Models
         /// </summary>
         /// <param name="id">Booking ID</param>
         /// <param name="accommodationId">Accommodation ID</param>
-        /// <param name="accommodationName">Accommodation name</param>
         /// <param name="facilityId">Facility ID</param>
-        /// <param name="facilityName">Facility name</param>
-        /// <param name="streetAddress">Facility street address</param>
         /// <param name="fromDate">Booking start date</param>
         /// <param name="toDate">Booking end date</param>
-        public BookingRepresentation(System.Guid? id = default(System.Guid?), System.Guid? accommodationId = default(System.Guid?), string accommodationName = default(string), System.Guid? facilityId = default(System.Guid?), string facilityName = default(string), string streetAddress = default(string), System.DateTime? fromDate = default(System.DateTime?), System.DateTime? toDate = default(System.DateTime?))
+        /// <param name="accommodationName">Accommodation name</param>
+        /// <param name="facilityName">Facility name</param>
+        /// <param name="streetAddress">Facility street address</param>
+        public BookingRepresentation(System.Guid id, int accommodationId, int facilityId, System.DateTime fromDate, System.DateTime toDate, string accommodationName = default(string), string facilityName = default(string), string streetAddress = default(string))
         {
             Id = id;
             AccommodationId = accommodationId;
@@ -52,13 +52,13 @@ namespace BookFast.Booking.Client.Models
         /// Gets or sets booking ID
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public System.Guid? Id { get; set; }
+        public System.Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets accommodation ID
         /// </summary>
         [JsonProperty(PropertyName = "accommodationId")]
-        public System.Guid? AccommodationId { get; set; }
+        public int AccommodationId { get; set; }
 
         /// <summary>
         /// Gets or sets accommodation name
@@ -70,7 +70,7 @@ namespace BookFast.Booking.Client.Models
         /// Gets or sets facility ID
         /// </summary>
         [JsonProperty(PropertyName = "facilityId")]
-        public System.Guid? FacilityId { get; set; }
+        public int FacilityId { get; set; }
 
         /// <summary>
         /// Gets or sets facility name
@@ -88,13 +88,23 @@ namespace BookFast.Booking.Client.Models
         /// Gets or sets booking start date
         /// </summary>
         [JsonProperty(PropertyName = "fromDate")]
-        public System.DateTime? FromDate { get; set; }
+        public System.DateTime FromDate { get; set; }
 
         /// <summary>
         /// Gets or sets booking end date
         /// </summary>
         [JsonProperty(PropertyName = "toDate")]
-        public System.DateTime? ToDate { get; set; }
+        public System.DateTime ToDate { get; set; }
 
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="Microsoft.Rest.ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            //Nothing to validate
+        }
     }
 }

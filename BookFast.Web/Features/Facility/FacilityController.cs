@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
@@ -33,7 +32,7 @@ namespace BookFast.Web.Features.Facility
         }
         
         [AllowAnonymous]
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -75,7 +74,7 @@ namespace BookFast.Web.Features.Facility
             return View(facilityViewModel);
         }
         
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -116,7 +115,7 @@ namespace BookFast.Web.Features.Facility
         }
         
         [ActionName("Delete")]
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -136,7 +135,7 @@ namespace BookFast.Web.Features.Facility
         
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {

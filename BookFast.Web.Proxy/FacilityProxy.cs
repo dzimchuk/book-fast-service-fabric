@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -30,7 +29,7 @@ namespace BookFast.Web.Proxy
             return mapper.MapFrom(result.Body);
         }
 
-        public async Task<Contracts.Models.Facility> FindAsync(Guid facilityId)
+        public async Task<Contracts.Models.Facility> FindAsync(int facilityId)
         {
             var api = await apiClientFactory.CreateApiClientAsync();
             var result = await api.FindFacilityWithHttpMessagesAsync(facilityId);
@@ -46,13 +45,13 @@ namespace BookFast.Web.Proxy
         public async Task CreateAsync(FacilityDetails details)
         {
             var api = await apiClientFactory.CreateApiClientAsync();
-            await api.CreateFacilityWithHttpMessagesAsync(mapper.MapFrom(details));
+            await api.CreateFacilityWithHttpMessagesAsync(mapper.ToCreateCommand(details));
         }
 
-        public async Task UpdateAsync(Guid facilityId, FacilityDetails details)
+        public async Task UpdateAsync(int facilityId, FacilityDetails details)
         {
             var api = await apiClientFactory.CreateApiClientAsync();
-            var result = await api.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.MapFrom(details));
+            var result = await api.UpdateFacilityWithHttpMessagesAsync(facilityId, mapper.ToUpdateCommand(details));
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -60,7 +59,7 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task DeleteAsync(Guid facilityId)
+        public async Task DeleteAsync(int facilityId)
         {
             var api = await apiClientFactory.CreateApiClientAsync();
             var result = await api.DeleteFacilityWithHttpMessagesAsync(facilityId);

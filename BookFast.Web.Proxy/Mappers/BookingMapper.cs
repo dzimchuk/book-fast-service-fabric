@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
 using BookFast.Web.Contracts.Models;
@@ -20,23 +19,23 @@ namespace BookFast.Web.Proxy.Mappers
                                                               FromDate = details.FromDate.UtcDateTime,
                                                               ToDate = details.ToDate.UtcDateTime
                                                           });
-                configuration.CreateMap<BookingRepresentation, Contracts.Models.Booking>()
-                             .ConvertUsing(representation => new Contracts.Models.Booking
-                                                             {
-                                                                 Id = representation.Id ?? Guid.Empty,
-                                                                 AccommodationId = representation.AccommodationId ?? Guid.Empty,
-                                                                 AccommodationName = representation.AccommodationName,
-                                                                 FacilityId = representation.FacilityId ?? Guid.Empty,
-                                                                 FacilityName = representation.FacilityName,
-                                                                 StreetAddress = representation.StreetAddress,
-                                                                 User = null,
-                                                                 Details = new BookingDetails
-                                                                           {
-                                                                               FromDate = representation.FromDate.Value,
-                                                                               ToDate = representation.ToDate.Value
-                                                                           }
-                                                             });
-            });
+                    configuration.CreateMap<BookingRepresentation, Contracts.Models.Booking>()
+                                 .ConvertUsing(representation => new Contracts.Models.Booking
+                                 {
+                                     Id = representation.Id,
+                                     AccommodationId = representation.AccommodationId,
+                                     AccommodationName = representation.AccommodationName,
+                                     FacilityId = representation.FacilityId,
+                                     FacilityName = representation.FacilityName,
+                                     StreetAddress = representation.StreetAddress,
+                                     User = null,
+                                     Details = new BookingDetails
+                                     {
+                                         FromDate = representation.FromDate,
+                                         ToDate = representation.ToDate
+                                     }
+                                 });
+                });
 
             mapperConfiguration.AssertConfigurationIsValid();
             Mapper = mapperConfiguration.CreateMapper();

@@ -1,4 +1,3 @@
-﻿using System;
 using System.Linq;
 using BookFast.Booking.Contracts.Models;
 using BookFast.Facility.Client.Models;
@@ -17,11 +16,11 @@ namespace BookFast.Booking.Data.Mappers
                 configuration.CreateMap<AccommodationRepresentation, Accommodation>()
                 .ConstructUsing(representation => new Accommodation
                 {
-                    Id = representation.Id ?? Guid.Empty,
-                    FacilityId = representation.FacilityId ?? Guid.Empty,
+                    Id = representation.Id,
+                    FacilityId = representation.FacilityId,
                     Name = representation.Name,
                     Description = representation.Description,
-                    RoomCount = representation.RoomCount ?? 0,
+                    RoomCount = representation.RoomCount,
                     Images = representation.Images != null ? representation.Images.ToArray() : null
                 });
 

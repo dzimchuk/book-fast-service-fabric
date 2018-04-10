@@ -23,6 +23,17 @@ namespace BookFast.Booking.Client
             /// <param name='operations'>
             /// The operations group for this extension method.
             /// </param>
+            public static IList<BookingRepresentation> ListBookings(this IBookFastBookingAPI operations)
+            {
+                return operations.ListBookingsAsync().GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// List bookings by customer
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -32,6 +43,20 @@ namespace BookFast.Booking.Client
                 {
                     return _result.Body;
                 }
+            }
+
+            /// <summary>
+            /// Find booking by ID
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Booking ID
+            /// </param>
+            public static BookingRepresentation FindBooking(this IBookFastBookingAPI operations, System.Guid id)
+            {
+                return operations.FindBookingAsync(id).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -63,6 +88,20 @@ namespace BookFast.Booking.Client
             /// <param name='id'>
             /// Booking ID
             /// </param>
+            public static void DeleteBooking(this IBookFastBookingAPI operations, System.Guid id)
+            {
+                operations.DeleteBookingAsync(id).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Cancel booking
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Booking ID
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
@@ -83,10 +122,27 @@ namespace BookFast.Booking.Client
             /// <param name='bookingData'>
             /// Booking details
             /// </param>
+            public static BookingRepresentation CreateBooking(this IBookFastBookingAPI operations, int accommodationId, BookingData bookingData = default(BookingData))
+            {
+                return operations.CreateBookingAsync(accommodationId, bookingData).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Book an accommodation
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='accommodationId'>
+            /// Accommodation ID
+            /// </param>
+            /// <param name='bookingData'>
+            /// Booking details
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<BookingRepresentation> CreateBookingAsync(this IBookFastBookingAPI operations, System.Guid accommodationId, BookingData bookingData = default(BookingData), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<BookingRepresentation> CreateBookingAsync(this IBookFastBookingAPI operations, int accommodationId, BookingData bookingData = default(BookingData), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.CreateBookingWithHttpMessagesAsync(accommodationId, bookingData, null, cancellationToken).ConfigureAwait(false))
                 {

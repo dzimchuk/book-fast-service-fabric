@@ -52,7 +52,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<IList<AccommodationRepresentation>>> ListAccommodationsWithHttpMessagesAsync(System.Guid facilityId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<IList<AccommodationRepresentation>>> ListAccommodationsWithHttpMessagesAsync(int facilityId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Create new accommodation
@@ -69,7 +69,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<AccommodationRepresentation>> CreateAccommodationWithHttpMessagesAsync(System.Guid facilityId, AccommodationData accommodationData = default(AccommodationData), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> CreateAccommodationWithHttpMessagesAsync(int facilityId, CreateAccommodationCommand accommodationData = default(CreateAccommodationCommand), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Find accommodation by ID
@@ -83,7 +83,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<AccommodationRepresentation>> FindAccommodationWithHttpMessagesAsync(System.Guid id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<AccommodationRepresentation>> FindAccommodationWithHttpMessagesAsync(int id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Update accommodation
@@ -100,7 +100,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<AccommodationRepresentation>> UpdateAccommodationWithHttpMessagesAsync(System.Guid id, AccommodationData accommodationData = default(AccommodationData), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> UpdateAccommodationWithHttpMessagesAsync(int id, UpdateAccommodationCommand accommodationData = default(UpdateAccommodationCommand), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Delete accommodation
@@ -114,7 +114,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> DeleteAccommodationWithHttpMessagesAsync(System.Guid id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> DeleteAccommodationWithHttpMessagesAsync(int id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// List facilities by owner
@@ -139,7 +139,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<FacilityRepresentation>> CreateFacilityWithHttpMessagesAsync(FacilityData facilityData = default(FacilityData), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> CreateFacilityWithHttpMessagesAsync(CreateFacilityCommand facilityData = default(CreateFacilityCommand), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Find facility by ID
@@ -153,7 +153,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<FacilityRepresentation>> FindFacilityWithHttpMessagesAsync(System.Guid id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<FacilityRepresentation>> FindFacilityWithHttpMessagesAsync(int id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Update facility
@@ -170,7 +170,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<FacilityRepresentation>> UpdateFacilityWithHttpMessagesAsync(System.Guid id, FacilityData facilityData = default(FacilityData), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> UpdateFacilityWithHttpMessagesAsync(int id, UpdateFacilityCommand facilityData = default(UpdateFacilityCommand), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Delete facility
@@ -184,7 +184,7 @@ namespace BookFast.Facility.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse> DeleteFacilityWithHttpMessagesAsync(System.Guid id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> DeleteFacilityWithHttpMessagesAsync(int id, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

@@ -3,7 +3,6 @@ using BookFast.ServiceFabric.Communication;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
 using BookFast.Web.Contracts.Files;
-using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace BookFast.Web.Proxy
             this.partitionClientFactory = partitionClientFactory;
         }
 
-        public async Task<FileAccessToken> IssueAccommodationImageUploadTokenAsync(Guid accommodationId, string originalFileName)
+        public async Task<FileAccessToken> IssueAccommodationImageUploadTokenAsync(int accommodationId, string originalFileName)
         {
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {
@@ -36,7 +35,7 @@ namespace BookFast.Web.Proxy
             return mapper.MapFrom(result.Body);
         }
 
-        public async Task<FileAccessToken> IssueFacilityImageUploadTokenAsync(Guid facilityId, string originalFileName)
+        public async Task<FileAccessToken> IssueFacilityImageUploadTokenAsync(int facilityId, string originalFileName)
         {
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {

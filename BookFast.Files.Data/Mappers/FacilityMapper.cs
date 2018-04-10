@@ -1,4 +1,3 @@
-﻿using System;
 using BookFast.Facility.Client.Models;
 using BookFast.Files.Contracts.Models;
 using AutoMapper;
@@ -16,14 +15,14 @@ namespace BookFast.Files.Data.Mappers
                 configuration.CreateMap<AccommodationRepresentation, Accommodation>()
                 .ConstructUsing(representation => new Accommodation
                 {
-                    Id = representation.Id ?? Guid.Empty,
-                    FacilityId = representation.FacilityId ?? Guid.Empty
+                    Id = representation.Id,
+                    FacilityId = representation.FacilityId
                 });
 
                 configuration.CreateMap<FacilityRepresentation, Contracts.Models.Facility>()
                 .ConstructUsing(representation => new Contracts.Models.Facility
                 {
-                    Id = representation.Id ?? Guid.Empty
+                    Id = representation.Id
                 });
             });
 

@@ -75,7 +75,7 @@ namespace BookFast.Booking.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.Created, Type = typeof(BookingRepresentation))]
         [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Accommodation not found")]
-        public async Task<IActionResult> Create([FromRoute]Guid accommodationId, [FromBody]BookingData bookingData)
+        public async Task<IActionResult> Create([FromRoute]int accommodationId, [FromBody]BookingData bookingData)
         {
             try
             {

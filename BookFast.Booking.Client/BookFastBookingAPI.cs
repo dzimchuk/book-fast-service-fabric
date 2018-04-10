@@ -659,7 +659,7 @@ namespace BookFast.Booking.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<BookingRepresentation>> CreateBookingWithHttpMessagesAsync(System.Guid accommodationId, BookingData bookingData = default(BookingData), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<BookingRepresentation>> CreateBookingWithHttpMessagesAsync(int accommodationId, BookingData bookingData = default(BookingData), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (bookingData != null)
             {

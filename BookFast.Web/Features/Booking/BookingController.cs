@@ -28,7 +28,7 @@ namespace BookFast.Web.Features.Booking
             return View(mapper.MapFrom(bookings));
         }
 
-        public async Task<IActionResult> Create(Guid id)
+        public async Task<IActionResult> Create(int id)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace BookFast.Web.Features.Booking
             }
         }
 
-        public async Task<IActionResult> Cancel(Guid id, Guid facilityId)
+        public async Task<IActionResult> Cancel(Guid id, int facilityId)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace BookFast.Web.Features.Booking
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Cancel")]
-        public async Task<IActionResult> CancelConfirmed(Guid id, Guid facilityId)
+        public async Task<IActionResult> CancelConfirmed(Guid id, int facilityId)
         {
             try
             {

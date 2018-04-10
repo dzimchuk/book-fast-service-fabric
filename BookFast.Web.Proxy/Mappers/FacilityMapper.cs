@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using AutoMapper;
-using BookFast.Web.Contracts.Models;
-using System.Linq;
 using BookFast.Facility.Client.Models;
+using BookFast.Web.Contracts.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BookFast.Web.Proxy.Mappers
 {
@@ -18,26 +17,33 @@ namespace BookFast.Web.Proxy.Mappers
                 configuration.CreateMap<FacilityRepresentation, Contracts.Models.Facility>()
                              .ConvertUsing(representation => new Contracts.Models.Facility
                                                              {
-                                                                 Id = representation.Id ?? Guid.Empty,
+                                                                 Id = representation.Id,
                                                                  Owner = null,
                                                                  Details = new FacilityDetails
                                                                            {
                                                                                Name = representation.Name,
                                                                                Description = representation.Description,
                                                                                StreetAddress = representation.StreetAddress,
-                                                                               Images = representation.Images != null ? representation.Images.ToArray() : null
+                                                                               Images = representation.Images?.ToArray()
                                                                            },
                                                                  Location = new Location
                                                                             {
                                                                                 Latitude = representation.Latitude,
                                                                                 Longitude = representation.Longitude
                                                                             },
-                                                                 AccommodationCount = representation.AccommodationCount ?? 0
+                                                                 AccommodationCount = representation.AccommodationCount
                                                              });
-                configuration.CreateMap<FacilityDetails, FacilityData>()
-                             .ForMember(d => d.Latitude, config => config.Ignore())
-                             .ForMember(d => d.Longitude, config => config.Ignore())
-                             .ForMember(d => d.Images, 
+                configuration.CreateMap<FacilityDetails, CreateFacilityCommand>()
+                             .ForMember(command => command.Latitude, config => config.Ignore())
+                             .ForMember(command => command.Longitude, config => config.Ignore())
+                             .ForMember(command => command.Images, 
+                                config => config.ResolveUsing<ArrayToListResolver>());
+
+                configuration.CreateMap<FacilityDetails, UpdateFacilityCommand>()
+                             .ForMember(command => command.FacilityId, config => config.Ignore())
+                             .ForMember(command => command.Latitude, config => config.Ignore())
+                             .ForMember(command => command.Longitude, config => config.Ignore())
+                             .ForMember(command => command.Images,
                                 config => config.ResolveUsing<ArrayToListResolver>());
             });
 
@@ -55,14 +61,26 @@ namespace BookFast.Web.Proxy.Mappers
             return Mapper.Map<Contracts.Models.Facility>(facility);
         }
 
-        public FacilityData MapFrom(FacilityDetails details)
+        public CreateFacilityCommand ToCreateCommand(FacilityDetails details)
         {
-            return Mapper.Map<FacilityData>(details);
+            return Mapper.Map<CreateFacilityCommand>(details);
         }
 
-        private class ArrayToListResolver : IValueResolver<FacilityDetails, FacilityData, IList<string>>
+        public UpdateFacilityCommand ToUpdateCommand(FacilityDetails details)
         {
-            public IList<string> Resolve(FacilityDetails source, FacilityData destination, IList<string> destMember, ResolutionContext context)
+            return Mapper.Map<UpdateFacilityCommand>(details);
+        }
+
+        private class ArrayToListResolver : 
+            IValueResolver<FacilityDetails, CreateFacilityCommand, IList<string>>,
+            IValueResolver<FacilityDetails, UpdateFacilityCommand, IList<string>>
+        {
+            public IList<string> Resolve(FacilityDetails source, CreateFacilityCommand destination, IList<string> destMember, ResolutionContext context)
+            {
+                return source.Images?.ToList();
+            }
+
+            public IList<string> Resolve(FacilityDetails source, UpdateFacilityCommand destination, IList<string> destMember, ResolutionContext context)
             {
                 return source.Images?.ToList();
             }

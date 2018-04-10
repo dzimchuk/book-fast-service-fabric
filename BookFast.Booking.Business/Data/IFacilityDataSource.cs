@@ -6,7 +6,7 @@ namespace BookFast.Booking.Business.Data
 {
     public interface IFacilityDataSource
     {
-        Task<Accommodation> FindAccommodationAsync(Guid accommodationId);
-        Task<Facility> FindFacilityAsync(Guid facilityId);
+        Task<Accommodation> FindAccommodationAsync(int accommodationId);
+        Task<Facility> FindFacilityAsync(int facilityId);
     }
 }

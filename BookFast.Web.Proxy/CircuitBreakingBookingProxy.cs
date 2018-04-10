@@ -24,7 +24,7 @@ namespace BookFast.Web.Proxy
             this.innerProxy = innerProxy;
         }
 
-        public async Task BookAsync(Guid facilityId, Guid accommodationId, BookingDetails details)
+        public async Task BookAsync(int facilityId, int accommodationId, BookingDetails details)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task CancelAsync(Guid facilityId, Guid id)
+        public async Task CancelAsync(int facilityId, Guid id)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task<Contracts.Models.Booking> FindAsync(Guid facilityId, Guid id)
+        public async Task<Contracts.Models.Booking> FindAsync(int facilityId, Guid id)
         {
             try
             {

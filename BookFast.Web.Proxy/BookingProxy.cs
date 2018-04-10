@@ -22,7 +22,7 @@ namespace BookFast.Web.Proxy
             this.mapper = mapper;
         }
 
-        public async Task BookAsync(Guid facilityId, Guid accommodationId, BookingDetails details)
+        public async Task BookAsync(int facilityId, int accommodationId, BookingDetails details)
         {
             var data = mapper.MapFrom(details);
             data.AccommodationId = accommodationId;
@@ -69,7 +69,7 @@ namespace BookFast.Web.Proxy
             return mapper.MapFrom(result.Body);
         }
 
-        public async Task CancelAsync(Guid facilityId, Guid id)
+        public async Task CancelAsync(int facilityId, Guid id)
         {
             var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(facilityId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
             {
@@ -83,7 +83,7 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task<Contracts.Models.Booking> FindAsync(Guid facilityId, Guid id)
+        public async Task<Contracts.Models.Booking> FindAsync(int facilityId, Guid id)
         {
             var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(facilityId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
             {

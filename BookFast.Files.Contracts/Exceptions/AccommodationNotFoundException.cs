@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
 namespace BookFast.Files.Contracts.Exceptions
 {
     public class AccommodationNotFoundException : Exception
     {
-        public Guid AccommodationId { get; }
+        public int AccommodationId { get; }
 
-        public AccommodationNotFoundException(Guid accommodationId)
+        public AccommodationNotFoundException(int accommodationId)
         {
             AccommodationId = accommodationId;
         }

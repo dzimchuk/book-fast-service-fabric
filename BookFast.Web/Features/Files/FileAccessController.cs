@@ -1,4 +1,4 @@
-﻿using BookFast.Web.Contracts;
+using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace BookFast.Web.Features.Files
         }
         
         [HttpGet("/api/facilities/{id}/image-token")]
-        public async Task<IActionResult> GetFacilityImageUploadToken(Guid id, [FromQuery]string originalFileName)
+        public async Task<IActionResult> GetFacilityImageUploadToken(int id, [FromQuery]string originalFileName)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace BookFast.Web.Features.Files
         }
         
         [HttpGet("/api/accommodations/{id}/image-token")]
-        public async Task<IActionResult> GetAccommodationImageUploadToken(Guid id, [FromQuery]string originalFileName)
+        public async Task<IActionResult> GetAccommodationImageUploadToken(int id, [FromQuery]string originalFileName)
         {
             try
             {

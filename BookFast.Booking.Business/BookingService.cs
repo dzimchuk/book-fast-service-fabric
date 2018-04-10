@@ -21,7 +21,7 @@ namespace BookFast.Booking.Business
             this.facilityDataSource = facilityDataSource;
         }
 
-        public async Task<Contracts.Models.Booking> BookAsync(Guid accommodationId, Contracts.Models.BookingDetails details)
+        public async Task<Contracts.Models.Booking> BookAsync(int accommodationId, Contracts.Models.BookingDetails details)
         {
             var accommodation = await facilityDataSource.FindAccommodationAsync(accommodationId);
             if (accommodation == null)
@@ -38,7 +38,7 @@ namespace BookFast.Booking.Business
                               AccommodationId = accommodationId,
                               Details = details,
                               AccommodationName = accommodation.Name,
-                              FacilityId = facility != null ? facility.Id : Guid.Empty,
+                              FacilityId = facility != null ? facility.Id : 0,
                               FacilityName = facility?.Name,
                               StreetAddress = facility?.StreetAddress
                           };

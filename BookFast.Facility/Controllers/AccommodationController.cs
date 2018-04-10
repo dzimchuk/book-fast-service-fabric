@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.CommandStack.Commands;
+using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.Domain.Exceptions;
 using BookFast.Facility.QueryStack;
 using BookFast.Facility.QueryStack.Representations;
@@ -6,7 +6,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -86,12 +85,13 @@ namespace BookFast.Facility.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.Created)]
         [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
-        public async Task<IActionResult> Create([FromRoute]Guid facilityId, [FromBody]CreateAccommodationCommand accommodationData)
+        public async Task<IActionResult> Create([FromRoute]int facilityId, [FromBody]CreateAccommodationCommand accommodationData)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    accommodationData.FacilityId = facilityId;
                     var accommodationId = await mediator.Send(accommodationData);
                     return CreatedAtAction("Find", new { id = accommodationId });
                 }
