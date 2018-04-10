@@ -7,10 +7,9 @@
     "gulp": "3.8.11",
     "gulp-concat": "2.5.2",
     "gulp-cssmin": "0.1.7",
-    "gulp-uglify": "1.2.0",
+    "gulp-uglify": "3.0.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "rimraf": "2.2.8",
-    "brace-expansion": "1.1.11",
-    "uglyfly-js": "3.2.2"
+    "brace-expansion": "1.1.11"
   }
 }
