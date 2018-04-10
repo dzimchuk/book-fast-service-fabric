@@ -35,6 +35,7 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 message.Images);
 
             await repository.UpdateAsync(facility);
+            await repository.SaveChangesAsync();
 
             await facility.RaiseEventsAsync(mediator);
         }

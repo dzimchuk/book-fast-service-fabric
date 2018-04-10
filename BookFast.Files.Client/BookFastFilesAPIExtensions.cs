@@ -27,10 +27,27 @@ namespace BookFast.Files.Client
             /// <param name='originalFileName'>
             /// Image file name
             /// </param>
+            public static FileAccessTokenRepresentation GetFacilityImageUploadToken(this IBookFastFilesAPI operations, int id, string originalFileName = default(string))
+            {
+                return operations.GetFacilityImageUploadTokenAsync(id, originalFileName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get a write access token for a new facility image
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Facility ID
+            /// </param>
+            /// <param name='originalFileName'>
+            /// Image file name
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<FileAccessTokenRepresentation> GetFacilityImageUploadTokenAsync(this IBookFastFilesAPI operations, System.Guid id, string originalFileName = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<FileAccessTokenRepresentation> GetFacilityImageUploadTokenAsync(this IBookFastFilesAPI operations, int id, string originalFileName = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetFacilityImageUploadTokenWithHttpMessagesAsync(id, originalFileName, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -50,10 +67,27 @@ namespace BookFast.Files.Client
             /// <param name='originalFileName'>
             /// Image file name
             /// </param>
+            public static FileAccessTokenRepresentation GetAccommodationImageUploadToken(this IBookFastFilesAPI operations, int id, string originalFileName = default(string))
+            {
+                return operations.GetAccommodationImageUploadTokenAsync(id, originalFileName).GetAwaiter().GetResult();
+            }
+
+            /// <summary>
+            /// Get a write access token for a new accommodation image
+            /// </summary>
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='id'>
+            /// Accommodation ID
+            /// </param>
+            /// <param name='originalFileName'>
+            /// Image file name
+            /// </param>
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<FileAccessTokenRepresentation> GetAccommodationImageUploadTokenAsync(this IBookFastFilesAPI operations, System.Guid id, string originalFileName = default(string), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<FileAccessTokenRepresentation> GetAccommodationImageUploadTokenAsync(this IBookFastFilesAPI operations, int id, string originalFileName = default(string), CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetAccommodationImageUploadTokenWithHttpMessagesAsync(id, originalFileName, null, cancellationToken).ConfigureAwait(false))
                 {

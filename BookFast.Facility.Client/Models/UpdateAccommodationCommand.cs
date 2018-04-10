@@ -12,25 +12,22 @@ namespace BookFast.Facility.Client.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class AccommodationRepresentation
+    public partial class UpdateAccommodationCommand
     {
         /// <summary>
-        /// Initializes a new instance of the AccommodationRepresentation
-        /// class.
+        /// Initializes a new instance of the UpdateAccommodationCommand class.
         /// </summary>
-        public AccommodationRepresentation()
+        public UpdateAccommodationCommand()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the AccommodationRepresentation
-        /// class.
+        /// Initializes a new instance of the UpdateAccommodationCommand class.
         /// </summary>
-        public AccommodationRepresentation(int id, int facilityId, string name, int roomCount, string description = default(string), IList<string> images = default(IList<string>))
+        public UpdateAccommodationCommand(string name, int? accommodationId = default(int?), string description = default(string), int? roomCount = default(int?), IList<string> images = default(IList<string>))
         {
-            Id = id;
-            FacilityId = facilityId;
+            AccommodationId = accommodationId;
             Name = name;
             Description = description;
             RoomCount = roomCount;
@@ -45,13 +42,8 @@ namespace BookFast.Facility.Client.Models
 
         /// <summary>
         /// </summary>
-        [JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }
-
-        /// <summary>
-        /// </summary>
-        [JsonProperty(PropertyName = "facilityId")]
-        public int FacilityId { get; set; }
+        [JsonProperty(PropertyName = "accommodationId")]
+        public int? AccommodationId { get; set; }
 
         /// <summary>
         /// </summary>
@@ -66,7 +58,7 @@ namespace BookFast.Facility.Client.Models
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "roomCount")]
-        public int RoomCount { get; set; }
+        public int? RoomCount { get; set; }
 
         /// <summary>
         /// </summary>
@@ -84,6 +76,36 @@ namespace BookFast.Facility.Client.Models
             if (Name == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+            if (Name != null)
+            {
+                if (Name.Length > 100)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "Name", 100);
+                }
+                if (Name.Length < 3)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "Name", 3);
+                }
+            }
+            if (Description != null)
+            {
+                if (Description.Length > 1000)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "Description", 1000);
+                }
+                if (Description.Length < 0)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "Description", 0);
+                }
+            }
+            if (RoomCount > 20)
+            {
+                throw new ValidationException(ValidationRules.InclusiveMaximum, "RoomCount", 20);
+            }
+            if (RoomCount < 0)
+            {
+                throw new ValidationException(ValidationRules.InclusiveMinimum, "RoomCount", 0);
             }
         }
     }

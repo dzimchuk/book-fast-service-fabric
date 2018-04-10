@@ -1,4 +1,4 @@
-﻿using BookFast.Facility.CommandStack.Repositories;
+using BookFast.Facility.CommandStack.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace BookFast.Facility.Data.Repositories
             this.context = context;
         }
 
-        public async Task<int> CreateAsync(Domain.Models.Facility facility)
+        public async Task<int> AddAsync(Domain.Models.Facility facility)
         {
             var dataModel = new Models.Facility
             {
@@ -26,9 +26,7 @@ namespace BookFast.Facility.Data.Repositories
                 Images = facility.Images.ToJson()
             };
 
-            context.Facilities.Add(dataModel);
-
-            await context.SaveChangesAsync();
+            await context.Facilities.AddAsync(dataModel);
 
             return dataModel.Id;
         }
@@ -36,10 +34,7 @@ namespace BookFast.Facility.Data.Repositories
         public async Task DeleteAsync(int id)
         {
             var trackedFacility = await context.Facilities.FindAsync(id);
-
             context.Facilities.Remove(trackedFacility);
-
-            await context.SaveChangesAsync();
         }
 
         public async Task<Domain.Models.Facility> FindAsync(int id)
@@ -59,6 +54,11 @@ namespace BookFast.Facility.Data.Repositories
                 : null;
         }
 
+        public Task SaveChangesAsync()
+        {
+            return context.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(Domain.Models.Facility facility)
         {
             var trackedFacility = await context.Facilities.FindAsync(facility.Id);
@@ -69,8 +69,6 @@ namespace BookFast.Facility.Data.Repositories
             trackedFacility.Latitude = facility.Location?.Latitude;
             trackedFacility.Longitude = facility.Location?.Longitude;
             trackedFacility.Images = facility.Images.ToJson();
-
-            await context.SaveChangesAsync();
         }
     }
 }

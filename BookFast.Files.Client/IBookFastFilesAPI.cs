@@ -55,7 +55,7 @@ namespace BookFast.Files.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<FileAccessTokenRepresentation>> GetFacilityImageUploadTokenWithHttpMessagesAsync(System.Guid id, string originalFileName = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<FileAccessTokenRepresentation>> GetFacilityImageUploadTokenWithHttpMessagesAsync(int id, string originalFileName = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Get a write access token for a new accommodation image
@@ -72,7 +72,7 @@ namespace BookFast.Files.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<FileAccessTokenRepresentation>> GetAccommodationImageUploadTokenWithHttpMessagesAsync(System.Guid id, string originalFileName = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<FileAccessTokenRepresentation>> GetAccommodationImageUploadTokenWithHttpMessagesAsync(int id, string originalFileName = default(string), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts.Models;
@@ -8,9 +8,9 @@ namespace BookFast.Web.Contracts
     public interface IFacilityProxy
     {
         Task<List<Facility>> ListAsync();
-        Task<Facility> FindAsync(Guid facilityId);
+        Task<Facility> FindAsync(int facilityId);
         Task CreateAsync(FacilityDetails details);
-        Task UpdateAsync(Guid facilityId, FacilityDetails details);
-        Task DeleteAsync(Guid facilityId);
+        Task UpdateAsync(int facilityId, FacilityDetails details);
+        Task DeleteAsync(int facilityId);
     }
 }

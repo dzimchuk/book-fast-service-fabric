@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
 namespace BookFast.Web.Contracts.Exceptions
 {
     public class FacilityNotFoundException : Exception
     {
-        public Guid FacilityId { get; }
+        public int FacilityId { get; }
 
-        public FacilityNotFoundException(Guid facilityId)
+        public FacilityNotFoundException(int facilityId)
         {
             FacilityId = facilityId;
         }

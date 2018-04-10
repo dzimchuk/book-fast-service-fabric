@@ -18,7 +18,7 @@ namespace BookFast.Files.Data
             this.mapper = mapper;
         }
 
-        public async Task<Accommodation> FindAccommodationAsync(Guid accommodationId)
+        public async Task<Accommodation> FindAccommodationAsync(int accommodationId)
         {
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {
@@ -29,7 +29,7 @@ namespace BookFast.Files.Data
             return result.Response.StatusCode == System.Net.HttpStatusCode.OK ? mapper.MapFrom(result.Body) : null;
         }
 
-        public async Task<Contracts.Models.Facility> FindFacilityAsync(Guid facilityId)
+        public async Task<Contracts.Models.Facility> FindFacilityAsync(int facilityId)
         {
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {

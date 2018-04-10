@@ -6,6 +6,7 @@
 
 namespace BookFast.Facility.Client.Models
 {
+    using Microsoft.Rest;
     using Newtonsoft.Json;
     using System.Collections;
     using System.Collections.Generic;
@@ -24,15 +25,7 @@ namespace BookFast.Facility.Client.Models
         /// <summary>
         /// Initializes a new instance of the FacilityRepresentation class.
         /// </summary>
-        /// <param name="id">Facility ID</param>
-        /// <param name="name">Facility name</param>
-        /// <param name="description">Facility description</param>
-        /// <param name="streetAddress">Facility street address</param>
-        /// <param name="longitude">Latitude</param>
-        /// <param name="latitude">Longitude</param>
-        /// <param name="images">Facility images</param>
-        /// <param name="accommodationCount">Number of accommodations</param>
-        public FacilityRepresentation(System.Guid? id = default(System.Guid?), string name = default(string), string description = default(string), string streetAddress = default(string), double? longitude = default(double?), double? latitude = default(double?), IList<string> images = default(IList<string>), int? accommodationCount = default(int?))
+        public FacilityRepresentation(int id, string name, string streetAddress, int accommodationCount, string description = default(string), double? longitude = default(double?), double? latitude = default(double?), IList<string> images = default(IList<string>))
         {
             Id = id;
             Name = name;
@@ -51,52 +44,61 @@ namespace BookFast.Facility.Client.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets facility ID
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public System.Guid? Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets facility name
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets facility description
         /// </summary>
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets facility street address
         /// </summary>
         [JsonProperty(PropertyName = "streetAddress")]
         public string StreetAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets latitude
         /// </summary>
         [JsonProperty(PropertyName = "longitude")]
         public double? Longitude { get; set; }
 
         /// <summary>
-        /// Gets or sets longitude
         /// </summary>
         [JsonProperty(PropertyName = "latitude")]
         public double? Latitude { get; set; }
 
         /// <summary>
-        /// Gets or sets facility images
         /// </summary>
         [JsonProperty(PropertyName = "images")]
         public IList<string> Images { get; set; }
 
         /// <summary>
-        /// Gets or sets number of accommodations
         /// </summary>
         [JsonProperty(PropertyName = "accommodationCount")]
-        public int? AccommodationCount { get; set; }
+        public int AccommodationCount { get; set; }
 
+        /// <summary>
+        /// Validate the object.
+        /// </summary>
+        /// <exception cref="ValidationException">
+        /// Thrown if validation fails
+        /// </exception>
+        public virtual void Validate()
+        {
+            if (Name == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+            if (StreetAddress == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "StreetAddress");
+            }
+        }
     }
 }

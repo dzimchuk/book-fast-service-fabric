@@ -1,4 +1,4 @@
-﻿using BookFast.Files.Contracts;
+using BookFast.Files.Contracts;
 using System;
 using System.Threading.Tasks;
 using BookFast.Files.Contracts.Models;
@@ -21,7 +21,7 @@ namespace BookFast.Files.Business
             this.facilityProxy = facilityProxy;
         }
 
-        public async Task<FileAccessToken> IssueAccommodationImageUploadTokenAsync(Guid accommodationId, string originalFileName)
+        public async Task<FileAccessToken> IssueAccommodationImageUploadTokenAsync(int accommodationId, string originalFileName)
         {
             var accommodation = await facilityProxy.FindAccommodationAsync(accommodationId);
             if (accommodation == null)
@@ -34,7 +34,7 @@ namespace BookFast.Files.Business
             return IssueImageUploadToken(path);
         }
 
-        public async Task<FileAccessToken> IssueFacilityImageUploadTokenAsync(Guid facilityId, string originalFileName)
+        public async Task<FileAccessToken> IssueFacilityImageUploadTokenAsync(int facilityId, string originalFileName)
         {
             var facility = await facilityProxy.FindFacilityAsync(facilityId);
             if (facility == null)
@@ -68,8 +68,8 @@ namespace BookFast.Files.Business
             return $"{Path.GetRandomFileName()}{extension}";
         }
 
-        private string ConstructPath(Guid facilityId, Guid accommodationId, string fileName) => $"{facilityId}/{accommodationId}/{fileName}";
+        private string ConstructPath(int facilityId, int accommodationId, string fileName) => $"{facilityId}/{accommodationId}/{fileName}";
 
-        private string ConstructPath(Guid facilityId, string fileName) => $"{facilityId}/{fileName}";
+        private string ConstructPath(int facilityId, string fileName) => $"{facilityId}/{fileName}";
     }
 }

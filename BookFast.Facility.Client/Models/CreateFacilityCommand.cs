@@ -12,32 +12,26 @@ namespace BookFast.Facility.Client.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class FacilityData
+    public partial class CreateFacilityCommand
     {
         /// <summary>
-        /// Initializes a new instance of the FacilityData class.
+        /// Initializes a new instance of the CreateFacilityCommand class.
         /// </summary>
-        public FacilityData()
+        public CreateFacilityCommand()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the FacilityData class.
+        /// Initializes a new instance of the CreateFacilityCommand class.
         /// </summary>
-        /// <param name="name">Facility name</param>
-        /// <param name="streetAddress">Facility street address</param>
-        /// <param name="description">Facility description</param>
-        /// <param name="longitude">Latitude</param>
-        /// <param name="latitude">Longitude</param>
-        /// <param name="images">Facility images</param>
-        public FacilityData(string name, string streetAddress, string description = default(string), double? longitude = default(double?), double? latitude = default(double?), IList<string> images = default(IList<string>))
+        public CreateFacilityCommand(string name, string streetAddress, string description = default(string), double? latitude = default(double?), double? longitude = default(double?), IList<string> images = default(IList<string>))
         {
             Name = name;
             Description = description;
             StreetAddress = streetAddress;
-            Longitude = longitude;
             Latitude = latitude;
+            Longitude = longitude;
             Images = images;
             CustomInit();
         }
@@ -48,37 +42,31 @@ namespace BookFast.Facility.Client.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets facility name
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets facility description
         /// </summary>
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets facility street address
         /// </summary>
         [JsonProperty(PropertyName = "streetAddress")]
         public string StreetAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets latitude
-        /// </summary>
-        [JsonProperty(PropertyName = "longitude")]
-        public double? Longitude { get; set; }
-
-        /// <summary>
-        /// Gets or sets longitude
         /// </summary>
         [JsonProperty(PropertyName = "latitude")]
         public double? Latitude { get; set; }
 
         /// <summary>
-        /// Gets or sets facility images
+        /// </summary>
+        [JsonProperty(PropertyName = "longitude")]
+        public double? Longitude { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "images")]
         public IList<string> Images { get; set; }

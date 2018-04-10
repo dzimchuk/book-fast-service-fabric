@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using BookFast.Web.Contracts;
 using BookFast.Web.Contracts.Exceptions;
@@ -21,7 +21,7 @@ namespace BookFast.Web.Features.Facility
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -39,7 +39,7 @@ namespace BookFast.Web.Features.Facility
             }
         }
 
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -82,7 +82,7 @@ namespace BookFast.Web.Features.Facility
             return View(accommodationViewModel);
         }
 
-        public IActionResult Create(Guid? id)
+        public IActionResult Create(int? id)
         {
             if (id == null)
             {
@@ -95,7 +95,7 @@ namespace BookFast.Web.Features.Facility
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid? id, AccommodationViewModel accommodationViewModel)
+        public async Task<IActionResult> Create(int? id, AccommodationViewModel accommodationViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -115,7 +115,7 @@ namespace BookFast.Web.Features.Facility
             return View(accommodationViewModel);
         }
 
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -136,7 +136,7 @@ namespace BookFast.Web.Features.Facility
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id, [FromForm]Guid facilityId)
+        public async Task<IActionResult> DeleteConfirmed(int id, [FromForm]int facilityId)
         {
             try
             {

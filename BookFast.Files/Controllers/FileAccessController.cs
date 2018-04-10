@@ -1,4 +1,4 @@
-﻿using BookFast.Files.Contracts;
+using BookFast.Files.Contracts;
 using BookFast.Files.Contracts.Exceptions;
 using BookFast.Files.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +32,7 @@ namespace BookFast.Files.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FileAccessTokenRepresentation))]
         [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Facility not found")]
-        public async Task<IActionResult> GetFacilityImageUploadToken(Guid id, [FromQuery]string originalFileName)
+        public async Task<IActionResult> GetFacilityImageUploadToken(int id, [FromQuery]string originalFileName)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace BookFast.Files.Controllers
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(FileAccessTokenRepresentation))]
         [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Accommodation not found")]
-        public async Task<IActionResult> GetAccommodationImageUploadToken(Guid id, [FromQuery]string originalFileName)
+        public async Task<IActionResult> GetAccommodationImageUploadToken(int id, [FromQuery]string originalFileName)
         {
             try
             {

@@ -6,7 +6,7 @@ namespace BookFast.Web.Features.Booking.ViewModels
     public class BookingViewModel
     {
         public Guid Id { get; set; }
-        public Guid FacilityId { get; set; }
+        public int FacilityId { get; set; }
 
         [Display(Name = "Accommodation")]
         public string AccommodationName { get; set; }

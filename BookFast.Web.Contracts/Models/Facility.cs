@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 
 namespace BookFast.Web.Contracts.Models
 {
     public class Facility
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Owner { get; set; }
         public FacilityDetails Details { get; set; }
         public Location Location { get; set; }

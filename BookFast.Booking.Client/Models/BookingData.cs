@@ -25,7 +25,7 @@ namespace BookFast.Booking.Client.Models
         /// <param name="fromDate">Booking start date</param>
         /// <param name="toDate">Booking end date</param>
         /// <param name="accommodationId">Accommodation ID</param>
-        public BookingData(System.DateTime fromDate, System.DateTime toDate, System.Guid? accommodationId = default(System.Guid?))
+        public BookingData(System.DateTime fromDate, System.DateTime toDate, int? accommodationId = default(int?))
         {
             AccommodationId = accommodationId;
             FromDate = fromDate;
@@ -42,7 +42,7 @@ namespace BookFast.Booking.Client.Models
         /// Gets or sets accommodation ID
         /// </summary>
         [JsonProperty(PropertyName = "accommodationId")]
-        public System.Guid? AccommodationId { get; set; }
+        public int? AccommodationId { get; set; }
 
         /// <summary>
         /// Gets or sets booking start date

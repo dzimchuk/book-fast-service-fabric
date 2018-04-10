@@ -1,5 +1,4 @@
 using BookFast.Booking.Business.Data;
-using System;
 using System.Threading.Tasks;
 using BookFast.Booking.Contracts.Models;
 using Microsoft.Extensions.Caching.Distributed;
@@ -18,7 +17,7 @@ namespace BookFast.Booking.Data
             this.cache = cache;
         }
 
-        public async Task<Accommodation> FindAccommodationAsync(Guid accommodationId)
+        public async Task<Accommodation> FindAccommodationAsync(int accommodationId)
         {
             var key = $"Accoommodation_{accommodationId}";
 
@@ -38,7 +37,7 @@ namespace BookFast.Booking.Data
             return accommodation;
         }
 
-        public async Task<Contracts.Models.Facility> FindFacilityAsync(Guid facilityId)
+        public async Task<Contracts.Models.Facility> FindFacilityAsync(int facilityId)
         {
             var key = $"Facility_{facilityId}";
 

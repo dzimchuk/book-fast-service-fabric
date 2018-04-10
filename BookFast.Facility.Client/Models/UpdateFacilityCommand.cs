@@ -12,28 +12,27 @@ namespace BookFast.Facility.Client.Models
     using System.Collections.Generic;
     using System.Linq;
 
-    public partial class AccommodationData
+    public partial class UpdateFacilityCommand
     {
         /// <summary>
-        /// Initializes a new instance of the AccommodationData class.
+        /// Initializes a new instance of the UpdateFacilityCommand class.
         /// </summary>
-        public AccommodationData()
+        public UpdateFacilityCommand()
         {
             CustomInit();
         }
 
         /// <summary>
-        /// Initializes a new instance of the AccommodationData class.
+        /// Initializes a new instance of the UpdateFacilityCommand class.
         /// </summary>
-        /// <param name="name">Accommodation name</param>
-        /// <param name="description">Accommodation description</param>
-        /// <param name="roomCount">Number of rooms</param>
-        /// <param name="images">Accommodation images</param>
-        public AccommodationData(string name, string description = default(string), int? roomCount = default(int?), IList<string> images = default(IList<string>))
+        public UpdateFacilityCommand(string name, string streetAddress, int? facilityId = default(int?), string description = default(string), double? latitude = default(double?), double? longitude = default(double?), IList<string> images = default(IList<string>))
         {
+            FacilityId = facilityId;
             Name = name;
             Description = description;
-            RoomCount = roomCount;
+            StreetAddress = streetAddress;
+            Latitude = latitude;
+            Longitude = longitude;
             Images = images;
             CustomInit();
         }
@@ -44,25 +43,36 @@ namespace BookFast.Facility.Client.Models
         partial void CustomInit();
 
         /// <summary>
-        /// Gets or sets accommodation name
+        /// </summary>
+        [JsonProperty(PropertyName = "facilityId")]
+        public int? FacilityId { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets accommodation description
         /// </summary>
         [JsonProperty(PropertyName = "description")]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets number of rooms
         /// </summary>
-        [JsonProperty(PropertyName = "roomCount")]
-        public int? RoomCount { get; set; }
+        [JsonProperty(PropertyName = "streetAddress")]
+        public string StreetAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets accommodation images
+        /// </summary>
+        [JsonProperty(PropertyName = "latitude")]
+        public double? Latitude { get; set; }
+
+        /// <summary>
+        /// </summary>
+        [JsonProperty(PropertyName = "longitude")]
+        public double? Longitude { get; set; }
+
+        /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "images")]
         public IList<string> Images { get; set; }
@@ -78,6 +88,10 @@ namespace BookFast.Facility.Client.Models
             if (Name == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "Name");
+            }
+            if (StreetAddress == null)
+            {
+                throw new ValidationException(ValidationRules.CannotBeNull, "StreetAddress");
             }
             if (Name != null)
             {
@@ -101,13 +115,16 @@ namespace BookFast.Facility.Client.Models
                     throw new ValidationException(ValidationRules.MinLength, "Description", 0);
                 }
             }
-            if (RoomCount > 20)
+            if (StreetAddress != null)
             {
-                throw new ValidationException(ValidationRules.InclusiveMaximum, "RoomCount", 20);
-            }
-            if (RoomCount < 0)
-            {
-                throw new ValidationException(ValidationRules.InclusiveMinimum, "RoomCount", 0);
+                if (StreetAddress.Length > 100)
+                {
+                    throw new ValidationException(ValidationRules.MaxLength, "StreetAddress", 100);
+                }
+                if (StreetAddress.Length < 0)
+                {
+                    throw new ValidationException(ValidationRules.MinLength, "StreetAddress", 0);
+                }
             }
         }
     }

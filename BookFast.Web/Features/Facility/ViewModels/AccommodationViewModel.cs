@@ -1,12 +1,11 @@
-﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookFast.Web.Features.Facility.ViewModels
 {
     public class AccommodationViewModel
     {
-        public Guid Id { get; set; }
-        public Guid FacilityId { get; set; }
+        public int Id { get; set; }
+        public int FacilityId { get; set; }
 
         [Required]
         [StringLength(100, MinimumLength = 3)]

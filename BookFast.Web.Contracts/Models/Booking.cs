@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace BookFast.Web.Contracts.Models
 {
@@ -6,9 +6,9 @@ namespace BookFast.Web.Contracts.Models
     {
         public Guid Id { get; set; }
         public string User { get; set; }
-        public Guid AccommodationId { get; set; }
+        public int AccommodationId { get; set; }
         public string AccommodationName { get; set; }
-        public Guid FacilityId { get; set; }
+        public int FacilityId { get; set; }
         public string FacilityName { get; set; }
         public string StreetAddress { get; set; }
         public BookingDetails Details { get; set; }

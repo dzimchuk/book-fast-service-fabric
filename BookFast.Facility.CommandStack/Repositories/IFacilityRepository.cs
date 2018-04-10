@@ -6,8 +6,10 @@ namespace BookFast.Facility.CommandStack.Repositories
     public interface IFacilityRepository : IRepository<Domain.Models.Facility>
     {
         Task<Domain.Models.Facility> FindAsync(int id);
-        Task<int> CreateAsync(Domain.Models.Facility facility);
+        Task<int> AddAsync(Domain.Models.Facility facility);
         Task UpdateAsync(Domain.Models.Facility facility);
         Task DeleteAsync(int id);
+
+        Task SaveChangesAsync();
     }
 }
