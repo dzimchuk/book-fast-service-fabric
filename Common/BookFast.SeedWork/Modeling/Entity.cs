@@ -1,8 +1,5 @@
-using MediatR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BookFast.SeedWork.Modeling
 {
@@ -35,19 +32,6 @@ namespace BookFast.SeedWork.Modeling
             events.Add(@event);
         }
 
-        public async Task RaiseEventsAsync(IMediator mediator)
-        {
-            var events = CollectEvents();
-            if (events != null && events.Any())
-            {
-                var tasks = events
-                            .OrderBy(@event => @event.OccurredAt)
-                            .Select(@event => mediator.Publish(@event));
-
-                await Task.WhenAll(tasks);
-            }
-        }
-
-        protected virtual IEnumerable<Event> CollectEvents() => events;
+        public virtual IEnumerable<Event> CollectEvents() => events;
     }
 }

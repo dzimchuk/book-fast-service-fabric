@@ -82,7 +82,17 @@ namespace BookFast.Facility.Domain.Models
             Location = (latitude != null && longitude != null) ? new Location(latitude.Value, longitude.Value) : null;
             Images = ImagePathHelper.Merge(Images, images);
 
-            AddEvent(new FacilityUpdatedEvent(this));
+            AddEvent(new FacilityUpdatedEvent
+            {
+                Id = Id,
+                Name = Name,
+                Description = Description,
+                StreetAddress = StreetAddress,
+                Owner = Owner,
+                Latitude = latitude,
+                Longitude = longitude,
+                Images = Images
+            });
         }
 
         public void Delete()
@@ -92,7 +102,7 @@ namespace BookFast.Facility.Domain.Models
                 throw new FacilityNotEmptyException(Id, AccommodationCount);
             }
 
-            AddEvent(new FacilityDeletedEvent(Id));
+            AddEvent(new FacilityDeletedEvent { Id = Id });
         }
     }
 }

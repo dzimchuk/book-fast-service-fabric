@@ -9,12 +9,10 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
     public class CreateAccommodationCommandHandler : IRequestHandler<CreateAccommodationCommand, int>
     {
         private readonly IAccommodationRepository repository;
-        private readonly IMediator mediator;
 
-        public CreateAccommodationCommandHandler(IAccommodationRepository repository, IMediator mediator)
+        public CreateAccommodationCommandHandler(IAccommodationRepository repository)
         {
             this.repository = repository;
-            this.mediator = mediator;
         }
 
         public async Task<int> Handle(CreateAccommodationCommand request, CancellationToken cancellationToken)
@@ -27,10 +25,10 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 request.Images);
 
             accommodation.Id = await repository.AddAsync(accommodation);
+
+            await repository.PersistEventsAsync(accommodation);
             await repository.SaveChangesAsync();
-
-            await accommodation.RaiseEventsAsync(mediator);
-
+            
             return accommodation.Id;
         }
     }

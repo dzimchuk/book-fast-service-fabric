@@ -10,12 +10,10 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
     public class UpdateAccommodationCommandHandler : IRequestHandler<UpdateAccommodationCommand>
     {
         private readonly IAccommodationRepository repository;
-        private readonly IMediator mediator;
 
-        public UpdateAccommodationCommandHandler(IAccommodationRepository repository, IMediator mediator)
+        public UpdateAccommodationCommandHandler(IAccommodationRepository repository)
         {
             this.repository = repository;
-            this.mediator = mediator;
         }
 
         public async Task Handle(UpdateAccommodationCommand message, CancellationToken cancellationToken)
@@ -33,9 +31,9 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 message.Images);
 
             await repository.UpdateAsync(accommodation);
-            await repository.SaveChangesAsync();
 
-            await accommodation.RaiseEventsAsync(mediator);
+            await repository.PersistEventsAsync(accommodation);
+            await repository.SaveChangesAsync();
         }
     }
 }

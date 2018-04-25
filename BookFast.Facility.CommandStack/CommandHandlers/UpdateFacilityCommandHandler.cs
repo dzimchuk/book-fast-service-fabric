@@ -10,12 +10,10 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
     public class UpdateFacilityCommandHandler : IRequestHandler<UpdateFacilityCommand>
     {
         private readonly IFacilityRepository repository;
-        private readonly IMediator mediator;
 
-        public UpdateFacilityCommandHandler(IFacilityRepository repository, IMediator mediator)
+        public UpdateFacilityCommandHandler(IFacilityRepository repository)
         {
             this.repository = repository;
-            this.mediator = mediator;
         }
 
         public async Task Handle(UpdateFacilityCommand message, CancellationToken cancellationToken)
@@ -35,9 +33,9 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 message.Images);
 
             await repository.UpdateAsync(facility);
-            await repository.SaveChangesAsync();
 
-            await facility.RaiseEventsAsync(mediator);
+            await repository.PersistEventsAsync(facility);
+            await repository.SaveChangesAsync();
         }
     }
 }

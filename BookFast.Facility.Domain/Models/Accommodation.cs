@@ -64,12 +64,20 @@ namespace BookFast.Facility.Domain.Models
             RoomCount = roomCount;
             Images = ImagePathHelper.Merge(Images, images);
 
-            AddEvent(new AccommodationUpdatedEvent(this));
+            AddEvent(new AccommodationUpdatedEvent
+            {
+                Id = Id,
+                FacilityId = FacilityId,
+                Name = Name,
+                Description = Description,
+                RoomCount = RoomCount,
+                Images = Images
+            });
         }
 
         public void Delete()
         {
-            AddEvent(new AccommodationDeletedEvent(Id));
+            AddEvent(new AccommodationDeletedEvent { Id = Id });
         }
     }
 }

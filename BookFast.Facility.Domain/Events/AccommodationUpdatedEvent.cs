@@ -1,15 +1,15 @@
-﻿using BookFast.Facility.Domain.Models;
 using BookFast.SeedWork.Modeling;
 
 namespace BookFast.Facility.Domain.Events
 {
     public class AccommodationUpdatedEvent : Event
     {
-        public Accommodation Accommodation { get; }
+        public int Id { get; set; }
+        public int FacilityId { get; set; }
 
-        public AccommodationUpdatedEvent(Accommodation accommodation)
-        {
-            Accommodation = accommodation;
-        }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int RoomCount { get; set; }
+        public string[] Images { get; set; }
     }
 }
