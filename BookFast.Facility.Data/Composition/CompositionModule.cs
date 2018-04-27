@@ -3,6 +3,7 @@ using BookFast.Facility.Data.Queries;
 using BookFast.Facility.Data.Repositories;
 using BookFast.Facility.QueryStack;
 using BookFast.SeedWork;
+using BookFast.SeedWork.ReliableEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ namespace BookFast.Facility.Data.Composition
 
             services.AddTransient<IFacilityRepository, FacilityRepository>();
             services.AddTransient<IAccommodationRepository, AccommodationRepository>();
+
+            services.AddTransient<IReliableEventsDataSource, ReliableEventsDataSource>();
         }
     }
 }

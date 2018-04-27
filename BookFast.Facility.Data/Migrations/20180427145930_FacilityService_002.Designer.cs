@@ -11,7 +11,7 @@ using System;
 namespace BookFast.Facility.Data.Migrations
 {
     [DbContext(typeof(FacilityContext))]
-    [Migration("20180425120603_FacilityService_002")]
+    [Migration("20180427145930_FacilityService_002")]
     partial class FacilityService_002
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,7 @@ namespace BookFast.Facility.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011")
                 .HasAnnotation("Relational:Sequence:fm.accommodationseq", "'accommodationseq', 'fm', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("Relational:Sequence:fm.eventseq", "'eventseq', 'fm', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:fm.facilityseq", "'facilityseq', 'fm', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -54,7 +55,7 @@ namespace BookFast.Facility.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "facilityseq")
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "eventseq")
                         .HasAnnotation("SqlServer:HiLoSequenceSchema", "fm")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
