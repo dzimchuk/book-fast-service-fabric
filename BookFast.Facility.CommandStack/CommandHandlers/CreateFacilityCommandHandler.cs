@@ -10,13 +10,11 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
     public class CreateFacilityCommandHandler : IRequestHandler<CreateFacilityCommand, int>
     {
         private readonly IFacilityRepository repository;
-        private readonly IMediator mediator;
         private readonly ISecurityContext securityContext;
 
-        public CreateFacilityCommandHandler(IFacilityRepository repository, IMediator mediator, ISecurityContext securityContext)
+        public CreateFacilityCommandHandler(IFacilityRepository repository, ISecurityContext securityContext)
         {
             this.repository = repository;
-            this.mediator = mediator;
             this.securityContext = securityContext;
         }
 
@@ -32,9 +30,9 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
                 request.Images);
 
             facility.Id = await repository.AddAsync(facility);
-            await repository.SaveChangesAsync();
 
-            await facility.RaiseEventsAsync(mediator);
+            await repository.PersistEventsAsync(facility);
+            await repository.SaveChangesAsync();
 
             return facility.Id;
         }

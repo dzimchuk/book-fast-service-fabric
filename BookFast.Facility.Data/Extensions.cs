@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+using BookFast.SeedWork.Modeling;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BookFast.Facility.Data
 {
@@ -12,6 +15,23 @@ namespace BookFast.Facility.Data
         public static string[] ToStringArray(this string json)
         {
             return !string.IsNullOrWhiteSpace(json) ? JsonConvert.DeserializeObject<string[]>(json) : null;
+        }
+
+        public static async Task PersistEventsAsync(this FacilityContext context, Entity<int> entity)
+        {
+            var events = entity.CollectEvents();
+            if (events != null && events.Any())
+            {
+                foreach (var @event in events)
+                {
+                    await context.Events.AddAsync(new Models.Event
+                    {
+                        EventName = @event.GetType().Name,
+                        OccurredAt = @event.OccurredAt,
+                        Payload = JsonConvert.SerializeObject(@event)
+                    });
+                }
+            }
         }
     }
 }

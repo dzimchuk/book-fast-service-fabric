@@ -17,11 +17,13 @@ namespace BookFast.Facility.Data
 
         public DbSet<Models.Facility> Facilities { get; set; }
         public DbSet<Accommodation> Accommodations { get; set; }
+        public DbSet<Event> Events { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FacilityConfiguration());
             modelBuilder.ApplyConfiguration(new AccommodationConfiguration());
+            modelBuilder.ApplyConfiguration(new EventConfiguration());
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

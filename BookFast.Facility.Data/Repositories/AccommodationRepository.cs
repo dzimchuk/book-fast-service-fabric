@@ -49,6 +49,11 @@ namespace BookFast.Facility.Data.Repositories
                 : null;
         }
 
+        public Task PersistEventsAsync(Accommodation entity)
+        {
+            return context.PersistEventsAsync(entity);
+        }
+
         public Task SaveChangesAsync()
         {
             return context.SaveChangesAsync();

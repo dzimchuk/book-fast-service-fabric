@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System;
 
 namespace BookFast.Facility
 {
@@ -22,7 +23,7 @@ namespace BookFast.Facility
             this.configuration = configuration;
         }
         
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             var modules = new List<ICompositionModule>
                           {
@@ -38,6 +39,8 @@ namespace BookFast.Facility
             }
 
             services.AddSwashbuckle(configuration, apiTitle, apiVersion, "BookFast.Facility.xml");
+
+            return services.CreateLightInjectServiceProvider();
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

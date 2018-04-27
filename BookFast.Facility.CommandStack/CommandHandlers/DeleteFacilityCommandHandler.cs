@@ -10,12 +10,10 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
     public class DeleteFacilityCommandHandler : IRequestHandler<DeleteFacilityCommand>
     {
         private readonly IFacilityRepository repository;
-        private readonly IMediator mediator;
 
-        public DeleteFacilityCommandHandler(IFacilityRepository repository, IMediator mediator)
+        public DeleteFacilityCommandHandler(IFacilityRepository repository)
         {
             this.repository = repository;
-            this.mediator = mediator;
         }
 
         public async Task Handle(DeleteFacilityCommand message, CancellationToken cancellationToken)
@@ -28,9 +26,9 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
 
             facility.Delete();
             await repository.DeleteAsync(facility.Id);
-            await repository.SaveChangesAsync();
 
-            await facility.RaiseEventsAsync(mediator);
+            await repository.PersistEventsAsync(facility);
+            await repository.SaveChangesAsync();
         }
     }
 }

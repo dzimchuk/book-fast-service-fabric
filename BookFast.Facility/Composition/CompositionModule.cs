@@ -14,6 +14,7 @@ namespace BookFast.Facility.Composition
             AddAuthentication(services, configuration);
 
             services.AddMvc();
+            services.AddReliableEventsDispatcher();
 
             RegisterAuthorizationPolicies(services);
         }

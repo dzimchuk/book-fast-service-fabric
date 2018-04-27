@@ -10,12 +10,10 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
     public class DeleteAccommodationCommandHandler : IRequestHandler<DeleteAccommodationCommand>
     {
         private readonly IAccommodationRepository repository;
-        private readonly IMediator mediator;
 
-        public DeleteAccommodationCommandHandler(IAccommodationRepository repository, IMediator mediator)
+        public DeleteAccommodationCommandHandler(IAccommodationRepository repository)
         {
             this.repository = repository;
-            this.mediator = mediator;
         }
 
         public async Task Handle(DeleteAccommodationCommand message, CancellationToken cancellationToken)
@@ -28,9 +26,9 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
 
             accommodation.Delete();
             await repository.DeleteAsync(accommodation.Id);
-            await repository.SaveChangesAsync();
 
-            await accommodation.RaiseEventsAsync(mediator);
+            await repository.PersistEventsAsync(accommodation);
+            await repository.SaveChangesAsync();
         }
     }
 }
