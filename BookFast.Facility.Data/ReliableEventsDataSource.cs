@@ -43,6 +43,8 @@ namespace BookFast.Facility.Data
                     select new ReliableEvent
                     {
                         Id = @event.Id,
+                        User = @event.User,
+                        Tenant = @event.Tenant,
                         Event = (Event)JsonConvert.DeserializeObject(@event.Payload, type)
                     }).ToArray();
         }

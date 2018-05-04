@@ -22,6 +22,8 @@
     <Parameter Name="Data:Azure:Storage:ConnectionString" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:SearchIndexQueueName" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:ImageContainer" DefaultValue="" />
+    <Parameter Name="ServiceBus:ConnectionString" DefaultValue="" />
+    <Parameter Name="ServiceBus:TopicName" DefaultValue="" />
     <Parameter Name="Redis:Configuration" DefaultValue="" />
     <Parameter Name="Search:QueryKey" DefaultValue="" />
     <Parameter Name="Search:AdminKey" DefaultValue="" />
@@ -195,6 +197,10 @@
             <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
             <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
             <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
+          </Section>
+          <Section Name="ServiceBus">
+            <Parameter Name="ConnectionString" Value="[ServiceBus:ConnectionString]" />
+            <Parameter Name="TopicName" Value="[ServiceBus:TopicName]" />
           </Section>
         </Settings>
       </ConfigOverride>

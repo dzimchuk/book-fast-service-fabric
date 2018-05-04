@@ -3,7 +3,7 @@ using BookFast.SeedWork.Modeling;
 
 namespace BookFast.Facility.Domain.Events
 {
-    public class AccommodationCreatedEvent : Event
+    public class AccommodationCreatedEvent : IntegrationEvent
     {
         private readonly Accommodation accommodation;
         private int? id;

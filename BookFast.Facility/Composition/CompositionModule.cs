@@ -4,6 +4,8 @@ using BookFast.SeedWork;
 using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Security;
 using Microsoft.Extensions.Options;
+using BookFast.ServiceBus;
+using BookFast.Facility.Integration;
 
 namespace BookFast.Facility.Composition
 {
@@ -14,7 +16,12 @@ namespace BookFast.Facility.Composition
             AddAuthentication(services, configuration);
 
             services.AddMvc();
+
             services.AddReliableEventsDispatcher();
+
+            services.AddIntegrationEventPublisher(configuration);
+            services.AddIntegrationEventReceiver(configuration);
+            services.AddSingleton<IEventMapper, IntegrationEventMapper>();
 
             RegisterAuthorizationPolicies(services);
         }

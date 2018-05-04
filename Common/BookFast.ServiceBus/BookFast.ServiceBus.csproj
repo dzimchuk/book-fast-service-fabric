@@ -12,7 +12,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\BookFast.Security\BookFast.Security.csproj" />
     <ProjectReference Include="..\BookFast.SeedWork\BookFast.SeedWork.csproj" />
   </ItemGroup>
 

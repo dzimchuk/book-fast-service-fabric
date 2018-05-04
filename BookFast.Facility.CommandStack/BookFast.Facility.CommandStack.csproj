@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookFast.Facility.Domain\BookFast.Facility.Domain.csproj" />
-    <ProjectReference Include="..\Common\BookFast.Security\BookFast.Security.csproj" />
   </ItemGroup>
 
 </Project>

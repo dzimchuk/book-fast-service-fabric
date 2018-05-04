@@ -22,5 +22,11 @@
   <Section Name="ApplicationInsights">
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
+
+  <Section Name="ServiceBus">
+    <Parameter Name="ConnectionString" Value="" />
+    <Parameter Name="TopicName" Value="" />
+    <Parameter Name="SubscriptionName" Value="Facility" />
+  </Section>
   
 </Settings>
