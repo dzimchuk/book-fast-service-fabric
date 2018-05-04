@@ -7,9 +7,9 @@ namespace BookFast.Web.Contracts
 {
     public interface IBookingProxy
     {
-        Task BookAsync(int facilityId, int accommodationId, BookingDetails details);
-        Task<List<Booking>> ListPendingAsync();
-        Task CancelAsync(int facilityId, Guid id);
-        Task<Booking> FindAsync(int facilityId, Guid id);
+        Task BookAsync(string userId, int accommodationId, BookingDetails details);
+        Task<List<Booking>> ListPendingAsync(string userId);
+        Task CancelAsync(string userId, Guid id);
+        Task<Booking> FindAsync(string userId, Guid id);
     }
 }

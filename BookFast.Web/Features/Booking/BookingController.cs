@@ -5,6 +5,8 @@ using BookFast.Web.Contracts.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using BookFast.Web.Features.Booking.ViewModels;
+using Microsoft.AspNetCore.Http;
+using BookFast.Web.Infrastructure.Authentication.Customer;
 
 namespace BookFast.Web.Features.Booking
 {
@@ -14,17 +16,24 @@ namespace BookFast.Web.Features.Booking
         private readonly IBookingProxy bookingService;
         private readonly BookingMapper mapper;
         private readonly IAccommodationProxy accommodationService;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public BookingController(IBookingProxy bookingService, BookingMapper mapper, IAccommodationProxy accommodationService)
+        public BookingController(IBookingProxy bookingService, BookingMapper mapper, IAccommodationProxy accommodationService, IHttpContextAccessor httpContextAccessor)
         {
             this.bookingService = bookingService;
             this.mapper = mapper;
             this.accommodationService = accommodationService;
+            this.httpContextAccessor = httpContextAccessor;
+        }
+
+        private string GetUserId()
+        {
+            return httpContextAccessor.HttpContext.User.FindFirst(B2CAuthConstants.ObjectIdClaimType).Value;
         }
 
         public async Task<IActionResult> Index()
         {
-            var bookings = await bookingService.ListPendingAsync();
+            var bookings = await bookingService.ListPendingAsync(GetUserId());
             return View(mapper.MapFrom(bookings));
         }
 
@@ -54,7 +63,7 @@ namespace BookFast.Web.Features.Booking
                 if (ModelState.IsValid)
                 {
                     var details = mapper.MapFrom(booking);
-                    await bookingService.BookAsync(booking.FacilityId, booking.AccommodationId, details);
+                    await bookingService.BookAsync(GetUserId(), booking.AccommodationId, details);
                     return RedirectToAction("Index");
                 }
 
@@ -73,7 +82,7 @@ namespace BookFast.Web.Features.Booking
         {
             try
             {
-                var booking = await bookingService.FindAsync(facilityId, id);
+                var booking = await bookingService.FindAsync(GetUserId(), id);
                 ViewBag.FacilityId = facilityId;
                 return View(mapper.MapFrom(booking));
             }
@@ -90,7 +99,7 @@ namespace BookFast.Web.Features.Booking
         {
             try
             {
-                await bookingService.CancelAsync(facilityId, id);
+                await bookingService.CancelAsync(GetUserId(), id);
                 return RedirectToAction("Index");
             }
             catch (BookingNotFoundException)
