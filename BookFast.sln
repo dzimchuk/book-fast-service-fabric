@@ -73,7 +73,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility.CommandStack", "BookFast.Facility.CommandStack\BookFast.Facility.CommandStack.csproj", "{0066C906-FEFE-41A8-BC72-39779BDA66A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookFast.Facility.QueryStack", "BookFast.Facility.QueryStack\BookFast.Facility.QueryStack.csproj", "{27943339-2A02-49F0-8AA3-C7B2B32A4B86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookFast.Facility.QueryStack", "BookFast.Facility.QueryStack\BookFast.Facility.QueryStack.csproj", "{27943339-2A02-49F0-8AA3-C7B2B32A4B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookFast.ServiceBus", "Common\BookFast.ServiceBus\BookFast.ServiceBus.csproj", "{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -339,6 +341,14 @@ Global
 		{27943339-2A02-49F0-8AA3-C7B2B32A4B86}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27943339-2A02-49F0-8AA3-C7B2B32A4B86}.Release|x64.ActiveCfg = Release|Any CPU
 		{27943339-2A02-49F0-8AA3-C7B2B32A4B86}.Release|x64.Build.0 = Release|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Debug|x64.Build.0 = Debug|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Release|x64.ActiveCfg = Release|Any CPU
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -350,6 +360,7 @@ Global
 		{E965AA12-242A-41CB-AD8C-D90E06110F3D} = {B5FEFD8F-4BDB-4870-BAAB-7668F18F263D}
 		{B25E5363-3345-47FB-80DF-382C8195A912} = {B5FEFD8F-4BDB-4870-BAAB-7668F18F263D}
 		{F745AF89-17A7-4828-B47F-BDF3F36FCB82} = {B5FEFD8F-4BDB-4870-BAAB-7668F18F263D}
+		{4DF78BA9-EA73-424D-AADA-8784E5E3FA37} = {B5FEFD8F-4BDB-4870-BAAB-7668F18F263D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F715962D-939D-4876-9098-F8AABE4C0AFC}
