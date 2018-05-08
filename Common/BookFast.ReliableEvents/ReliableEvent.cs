@@ -1,6 +1,6 @@
 using BookFast.SeedWork.Modeling;
 
-namespace BookFast.SeedWork.ReliableEvents
+namespace BookFast.ReliableEvents
 {
     public class ReliableEvent
     {

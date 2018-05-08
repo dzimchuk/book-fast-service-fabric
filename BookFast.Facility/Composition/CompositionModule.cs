@@ -6,6 +6,7 @@ using BookFast.Security;
 using Microsoft.Extensions.Options;
 using BookFast.ServiceBus;
 using BookFast.Facility.Integration;
+using BookFast.ReliableEvents;
 
 namespace BookFast.Facility.Composition
 {

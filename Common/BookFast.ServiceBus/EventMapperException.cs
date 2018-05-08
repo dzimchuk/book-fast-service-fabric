@@ -3,7 +3,7 @@ using System;
 
 namespace BookFast.ServiceBus
 {
-    public class EventMapperException : FormattedException
+    public class EventMapperException : BusinessException
     {
         public EventMapperException(Exception innerException)
             : base("EventMapper", "Failed to map integration event.", innerException)

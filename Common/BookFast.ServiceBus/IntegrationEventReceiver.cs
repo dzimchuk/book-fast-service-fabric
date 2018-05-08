@@ -95,7 +95,7 @@ namespace BookFast.ServiceBus
 
                 await client.CompleteAsync(message.SystemProperties.LockToken);
             }
-            catch (FormattedException ex)
+            catch (BusinessException ex)
             {
                 logger.LogError($"Business exception occurred processing integration event. Details: {ex}");
                 await client.CompleteAsync(message.SystemProperties.LockToken);
@@ -119,7 +119,7 @@ namespace BookFast.ServiceBus
             }
         }
 
-        private void InitializeSecurityContext(IDictionary<string, object> userProperties, ISecurityContext securityContext)
+        private static void InitializeSecurityContext(IDictionary<string, object> userProperties, ISecurityContext securityContext)
         {
             var identity = new ClaimsIdentity();
             identity.AddClaim(new Claim(BookFastClaimTypes.ObjectId, userProperties[Constants.ObjectId].ToString()));

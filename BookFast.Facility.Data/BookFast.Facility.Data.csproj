@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BookFast.Facility.CommandStack\BookFast.Facility.CommandStack.csproj" />
     <ProjectReference Include="..\BookFast.Facility.QueryStack\BookFast.Facility.QueryStack.csproj" />
+    <ProjectReference Include="..\Common\BookFast.ReliableEvents\BookFast.ReliableEvents.csproj" />
   </ItemGroup>
 
 </Project>

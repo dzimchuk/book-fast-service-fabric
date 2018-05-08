@@ -2,7 +2,7 @@
 
 namespace BookFast.Facility.Domain.Exceptions
 {
-    internal class FacilityNotEmptyException : FormattedException
+    internal class FacilityNotEmptyException : BusinessException
     {
         public int FacilityId { get; }
         public int AccommodationCount { get; }

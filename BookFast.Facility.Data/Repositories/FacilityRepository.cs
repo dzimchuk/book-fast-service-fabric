@@ -10,9 +10,10 @@ namespace BookFast.Facility.Data.Repositories
         private readonly FacilityContext context;
         private readonly ISecurityContext securityContext;
 
-        public FacilityRepository(FacilityContext context)
+        public FacilityRepository(FacilityContext context, ISecurityContext securityContext)
         {
             this.context = context;
+            this.securityContext = securityContext;
         }
 
         public async Task<int> AddAsync(Domain.Models.Facility facility)

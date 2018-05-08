@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookFast.SeedWork.ReliableEvents
+namespace BookFast.ReliableEvents
 {
     public interface IReliableEventsDataSource
     {

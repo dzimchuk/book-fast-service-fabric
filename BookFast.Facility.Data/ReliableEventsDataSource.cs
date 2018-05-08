@@ -1,5 +1,5 @@
+using BookFast.ReliableEvents;
 using BookFast.SeedWork.Modeling;
-using BookFast.SeedWork.ReliableEvents;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
