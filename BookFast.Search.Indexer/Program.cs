@@ -74,7 +74,8 @@ namespace BookFast.Search.Indexer
             var modules = new List<ICompositionModule>
                           {
                               new Composition.CompositionModule(),
-                              new Adapter.Composition.CompositionModule()
+                              new Adapter.Composition.CompositionModule(),
+                              new Facility.Client.Composition.CompositionModule()
                           };
 
             foreach (var module in modules)

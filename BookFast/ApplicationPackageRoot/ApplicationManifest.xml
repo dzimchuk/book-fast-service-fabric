@@ -129,10 +129,6 @@
     <ConfigOverrides>
       <ConfigOverride Name="Config">
         <Settings>
-          <Section Name="Queue">
-            <Parameter Name="ConnectionString" Value="[Data:Azure:Storage:ConnectionString]" />
-            <Parameter Name="SearchIndexQueueName" Value="[Data:Azure:Storage:SearchIndexQueueName]" />
-          </Section>
           <Section Name="Search">
             <Parameter Name="QueryKey" Value="[Search:QueryKey]" />
             <Parameter Name="AdminKey" Value="[Search:AdminKey]" />
@@ -141,6 +137,10 @@
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
+          </Section>
+          <Section Name="ServiceBus">
+            <Parameter Name="ConnectionString" Value="[ServiceBus:ConnectionString]" />
+            <Parameter Name="TopicName" Value="[ServiceBus:TopicName]" />
           </Section>
         </Settings>
       </ConfigOverride>
@@ -183,7 +183,6 @@
           <Section Name="Data">
             <Parameter Name="DefaultConnection:ConnectionString" Value="[Data:DefaultConnection:ConnectionString]" />
             <Parameter Name="Azure:Storage:ConnectionString" Value="[Data:Azure:Storage:ConnectionString]" />
-            <Parameter Name="Azure:Storage:SearchIndexQueueName" Value="[Data:Azure:Storage:SearchIndexQueueName]" />
           </Section>
           <Section Name="Authentication">
             <Parameter Name="AzureAd:Audience" Value="[Authentication:AzureAd:ApiApp:Audience]" />

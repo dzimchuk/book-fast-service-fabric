@@ -5,16 +5,22 @@
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
   
-  <Section Name="Queue">
-    <Parameter Name="ConnectionString" Value="" />
-    <Parameter Name="SearchIndexQueueName" Value="" />
-  </Section>
-
   <Section Name="Search">
     <Parameter Name="QueryKey" Value="" />
     <Parameter Name="AdminKey" Value="" />
     <Parameter Name="ServiceName" Value="" />
     <Parameter Name="IndexName" Value="" />
+  </Section>
+
+  <Section Name="ServiceBus">
+    <Parameter Name="ConnectionString" Value="" />
+    <Parameter Name="TopicName" Value="" />
+    <Parameter Name="SubscriptionName" Value="SearchIndexer" />
+  </Section>
+
+  <Section Name="FacilityApi">
+    <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
+    <Parameter Name="ServiceApiResource" Value="App ID URI of the API app in Azure AD" />
   </Section>
   
 </Settings>

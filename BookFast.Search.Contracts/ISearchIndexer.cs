@@ -1,5 +1,4 @@
-﻿using BookFast.Search.Contracts.Models;
-using System;
+using BookFast.Search.Contracts.Models;
 using System.Threading.Tasks;
 
 namespace BookFast.Search.Contracts
@@ -7,6 +6,6 @@ namespace BookFast.Search.Contracts
     public interface ISearchIndexer
     {
         Task IndexAccommodationAsync(Accommodation accommodation);
-        Task DeleteAccommodationIndexAsync(Guid accommodationId);
+        Task DeleteAccommodationIndexAsync(int accommodationId);
     }
 }
