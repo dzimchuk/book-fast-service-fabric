@@ -15,7 +15,7 @@ namespace BookFast.Search.Indexer.CommandHandlers
             this.searchIndexer = searchIndexer;
         }
 
-        public Task HandleAsync(RemoveAccommodationCommand message, CancellationToken cancellationToken)
+        public Task Handle(RemoveAccommodationCommand message, CancellationToken cancellationToken)
         {
             return searchIndexer.DeleteAccommodationIndexAsync(message.Id);
         }
