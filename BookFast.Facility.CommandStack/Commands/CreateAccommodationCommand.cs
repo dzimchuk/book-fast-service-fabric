@@ -1,3 +1,4 @@
+using BookFast.SeedWork.Swagger;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
@@ -5,6 +6,7 @@ namespace BookFast.Facility.CommandStack.Commands
 {
     public class CreateAccommodationCommand : IRequest<int>
     {
+        [SwaggerIgnore]
         public int FacilityId { get; set; }
 
         [Required]

@@ -22,6 +22,8 @@
     <Parameter Name="Data:Azure:Storage:ConnectionString" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:SearchIndexQueueName" DefaultValue="" />
     <Parameter Name="Data:Azure:Storage:ImageContainer" DefaultValue="" />
+    <Parameter Name="ServiceBus:ConnectionString" DefaultValue="" />
+    <Parameter Name="ServiceBus:TopicName" DefaultValue="" />
     <Parameter Name="Redis:Configuration" DefaultValue="" />
     <Parameter Name="Search:QueryKey" DefaultValue="" />
     <Parameter Name="Search:AdminKey" DefaultValue="" />
@@ -127,9 +129,10 @@
     <ConfigOverrides>
       <ConfigOverride Name="Config">
         <Settings>
-          <Section Name="Queue">
-            <Parameter Name="ConnectionString" Value="[Data:Azure:Storage:ConnectionString]" />
-            <Parameter Name="SearchIndexQueueName" Value="[Data:Azure:Storage:SearchIndexQueueName]" />
+          <Section Name="Logging">
+            <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
+            <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
+            <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
           </Section>
           <Section Name="Search">
             <Parameter Name="QueryKey" Value="[Search:QueryKey]" />
@@ -139,6 +142,14 @@
           </Section>
           <Section Name="ApplicationInsights">
             <Parameter Name="InstrumentationKey" Value="[ApplicationInsights:InstrumentationKey]" />
+          </Section>
+          <Section Name="ServiceBus">
+            <Parameter Name="ConnectionString" Value="[ServiceBus:ConnectionString]" />
+            <Parameter Name="TopicName" Value="[ServiceBus:TopicName]" />
+          </Section>
+          <Section Name="FacilityApi">
+            <Parameter Name="ServiceUri" Value="[FacilityServiceUri]" />
+            <Parameter Name="ServiceApiResource" Value="[Authentication:AzureAd:WebApp:ApiResource]" />
           </Section>
         </Settings>
       </ConfigOverride>
@@ -181,7 +192,6 @@
           <Section Name="Data">
             <Parameter Name="DefaultConnection:ConnectionString" Value="[Data:DefaultConnection:ConnectionString]" />
             <Parameter Name="Azure:Storage:ConnectionString" Value="[Data:Azure:Storage:ConnectionString]" />
-            <Parameter Name="Azure:Storage:SearchIndexQueueName" Value="[Data:Azure:Storage:SearchIndexQueueName]" />
           </Section>
           <Section Name="Authentication">
             <Parameter Name="AzureAd:Audience" Value="[Authentication:AzureAd:ApiApp:Audience]" />
@@ -195,6 +205,10 @@
             <Parameter Name="IncludeScopes" Value="[Logging:IncludeScopes]" />
             <Parameter Name="LogLevel:Default" Value="[Logging:LogLevel:Default]" />
             <Parameter Name="Debug:LogLevel:Default" Value="[Logging:Debug:LogLevel:Default]" />
+          </Section>
+          <Section Name="ServiceBus">
+            <Parameter Name="ConnectionString" Value="[ServiceBus:ConnectionString]" />
+            <Parameter Name="TopicName" Value="[ServiceBus:TopicName]" />
           </Section>
         </Settings>
       </ConfigOverride>

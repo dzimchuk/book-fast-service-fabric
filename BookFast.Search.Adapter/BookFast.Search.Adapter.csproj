@@ -8,11 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookFast.Search.Business\BookFast.Search.Business.csproj" />
+    <ProjectReference Include="..\BookFast.Search.Contracts\BookFast.Search.Contracts.csproj" />
+    <ProjectReference Include="..\Common\BookFast.SeedWork\BookFast.SeedWork.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.Search" Version="3.0.5" />
+    <PackageReference Include="Microsoft.Azure.Search" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.1" />
     <PackageReference Include="AutoMapper" Version="6.2.2" />

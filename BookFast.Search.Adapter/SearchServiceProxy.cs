@@ -1,20 +1,20 @@
-﻿using BookFast.Search.Business.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using SearchResult = BookFast.Search.Contracts.Models.SearchResult;
 using SuggestResult = BookFast.Search.Contracts.Models.SuggestResult;
+using BookFast.Search.Contracts;
 
 namespace BookFast.Search.Adapter
 {
-    internal class SearchDataSource : ISearchDataSource
+    internal class SearchServiceProxy : ISearchServiceProxy
     {
         private const int PageSize = 10;
         private readonly ISearchIndexClient client;
         private readonly ISearchResultMapper mapper;
 
-        public SearchDataSource(ISearchIndexClient client, ISearchResultMapper mapper)
+        public SearchServiceProxy(ISearchIndexClient client, ISearchResultMapper mapper)
         {
             this.client = client;
             this.mapper = mapper;

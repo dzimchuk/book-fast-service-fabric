@@ -1,10 +1,9 @@
-﻿using BookFast.SeedWork;
+using BookFast.SeedWork;
 using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Azure.Search;
 using Microsoft.Extensions.Options;
-using BookFast.Search.Business.Data;
 using BookFast.Search.Adapter.Mappers;
 using BookFast.Search.Contracts;
 
@@ -19,7 +18,7 @@ namespace BookFast.Search.Adapter.Composition
             services.AddScoped(provider => CreateSearchIndexClient(provider, true));
 
             services.AddScoped<ISearchResultMapper, SearchResultMapper>();
-            services.AddScoped<ISearchDataSource>(provider => new SearchDataSource(CreateSearchIndexClient(provider, false), provider.GetService<ISearchResultMapper>()));
+            services.AddScoped<ISearchServiceProxy>(provider => new SearchServiceProxy(CreateSearchIndexClient(provider, false), provider.GetService<ISearchResultMapper>()));
 
             services.AddSingleton<ISearchIndexer, SearchIndexer>();
         }

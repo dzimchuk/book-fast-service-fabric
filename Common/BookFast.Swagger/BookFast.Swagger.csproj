@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookFast.SeedWork\BookFast.SeedWork.csproj" />
+  </ItemGroup>
+
 </Project>

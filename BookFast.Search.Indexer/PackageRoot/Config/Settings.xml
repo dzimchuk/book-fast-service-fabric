@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
 
+  <Section Name="Logging">
+    <Parameter Name="IncludeScopes" Value="" />
+    <Parameter Name="LogLevel:Default" Value="" />
+    <Parameter Name="Debug:LogLevel:Default" Value="" />
+  </Section>
+  
   <Section Name="ApplicationInsights">
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
   
-  <Section Name="Queue">
-    <Parameter Name="ConnectionString" Value="" />
-    <Parameter Name="SearchIndexQueueName" Value="" />
-  </Section>
-
   <Section Name="Search">
     <Parameter Name="QueryKey" Value="" />
     <Parameter Name="AdminKey" Value="" />
     <Parameter Name="ServiceName" Value="" />
     <Parameter Name="IndexName" Value="" />
+  </Section>
+
+  <Section Name="ServiceBus">
+    <Parameter Name="ConnectionString" Value="" />
+    <Parameter Name="TopicName" Value="" />
+    <Parameter Name="SubscriptionName" Value="SearchIndexer" />
+  </Section>
+
+  <Section Name="FacilityApi">
+    <Parameter Name="ServiceUri" Value="" />
+    <Parameter Name="ServiceApiResource" Value="" />
   </Section>
   
 </Settings>

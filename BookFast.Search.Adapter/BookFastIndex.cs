@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
@@ -37,7 +37,7 @@ namespace BookFast.Search.Adapter
             var suggester = new Suggester
             {
                 Name = "sg",
-                SearchMode = SuggesterSearchMode.AnalyzingInfixMatching,
+                //SearchMode = "analyzingInfixMatching",
                 SourceFields = new List<string> { "Name", "FacilityName" }
             };
 
@@ -47,7 +47,7 @@ namespace BookFast.Search.Adapter
                 Fields = new List<Field>
                                           {
                                               new Field("Id", DataType.String) { IsKey = true },
-                                              new Field("FacilityId", DataType.String) { IsFilterable = true },
+                                              new Field("FacilityId", DataType.Int32) { IsFilterable = true },
                                               new Field("Name", DataType.String, AnalyzerName.EnMicrosoft) { IsSearchable = true },
                                               new Field("Description", DataType.String, AnalyzerName.EnMicrosoft) { IsSearchable = true },
                                               new Field("FacilityName", DataType.String, AnalyzerName.EnMicrosoft) { IsSearchable = true },

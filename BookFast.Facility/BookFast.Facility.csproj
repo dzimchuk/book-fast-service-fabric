@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BookFast.Facility.Data\BookFast.Facility.Data.csproj" />
     <ProjectReference Include="..\Common\BookFast.Security.AspNetCore\BookFast.Security.AspNetCore.csproj" />
+    <ProjectReference Include="..\Common\BookFast.ServiceBus\BookFast.ServiceBus.csproj" />
     <ProjectReference Include="..\Common\BookFast.ServiceFabric\BookFast.ServiceFabric.csproj" />
     <ProjectReference Include="..\Common\BookFast.Swagger\BookFast.Swagger.csproj" />
   </ItemGroup>

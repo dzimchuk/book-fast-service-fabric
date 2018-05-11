@@ -1,5 +1,6 @@
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Facility.Domain.Models;
+using BookFast.Security;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.Data.Repositories
@@ -7,10 +8,12 @@ namespace BookFast.Facility.Data.Repositories
     internal class AccommodationRepository : IAccommodationRepository
     {
         private readonly FacilityContext context;
+        private readonly ISecurityContext securityContext;
 
-        public AccommodationRepository(FacilityContext context)
+        public AccommodationRepository(FacilityContext context, ISecurityContext securityContext)
         {
             this.context = context;
+            this.securityContext = securityContext;
         }
 
         public async Task<int> AddAsync(Accommodation accommodation)
@@ -51,7 +54,7 @@ namespace BookFast.Facility.Data.Repositories
 
         public Task PersistEventsAsync(Accommodation entity)
         {
-            return context.PersistEventsAsync(entity);
+            return context.PersistEventsAsync(entity, securityContext);
         }
 
         public Task SaveChangesAsync()

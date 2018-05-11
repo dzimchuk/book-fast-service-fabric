@@ -1,4 +1,3 @@
-using BookFast.SeedWork.ReliableEvents;
 using LightInject;
 using LightInject.Microsoft.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,11 +15,6 @@ namespace BookFast.SeedWork
             container.ScopeManagerProvider = new PerLogicalCallContextScopeManagerProvider();
 
             return container.CreateServiceProvider(services);
-        }
-
-        public static void AddReliableEventsDispatcher(this IServiceCollection services)
-        {
-            services.AddSingleton<ReliableEventsDispatcher>();
         }
     }
 }

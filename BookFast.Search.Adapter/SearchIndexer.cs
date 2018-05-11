@@ -1,8 +1,7 @@
-﻿using BookFast.Search.Contracts;
+using BookFast.Search.Contracts;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using Microsoft.Spatial;
-using System;
 using System.Threading.Tasks;
 
 namespace BookFast.Search.Adapter
@@ -16,9 +15,9 @@ namespace BookFast.Search.Adapter
             this.client = client;
         }
 
-        public Task DeleteAccommodationIndexAsync(Guid accommodationId)
+        public Task DeleteAccommodationIndexAsync(int accommodationId)
         {
-            var action = IndexAction.Delete(new Document { { "Id", accommodationId } });
+            var action = IndexAction.Delete(new Document { { "Id", accommodationId.ToString() } });
             return client.Documents.IndexAsync(new IndexBatch(new[] { action }));
         }
 
@@ -32,7 +31,7 @@ namespace BookFast.Search.Adapter
         {
             return new Document
                    {
-                       { "Id", accommodation.Id },
+                       { "Id", accommodation.Id.ToString() },
                        { "FacilityId", accommodation.FacilityId },
                        { "Name", accommodation.Name },
                        { "Description", accommodation.Description },
@@ -47,7 +46,9 @@ namespace BookFast.Search.Adapter
         private static GeographyPoint CreateGeographyPoint(Contracts.Models.Location location)
         {
             if (location != null && location.Latitude != null && location.Longitude != null)
+            {
                 return GeographyPoint.Create(location.Latitude.Value, location.Longitude.Value);
+            }
 
             return null;
         }

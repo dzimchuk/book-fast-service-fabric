@@ -2,19 +2,19 @@ using System;
 
 namespace BookFast.SeedWork
 {
-    public class FormattedException : Exception
+    public class BusinessException : Exception
     {
-        protected FormattedException(string errorCode)
+        protected BusinessException(string errorCode)
             : this(errorCode, null, null)
         {
         }
 
-        protected FormattedException(string errorCode, string errorDescription)
+        protected BusinessException(string errorCode, string errorDescription)
             : this(errorCode, errorDescription, null)
         {
         }
 
-        protected FormattedException(string errorCode, string errorDescription, Exception innerException)
+        protected BusinessException(string errorCode, string errorDescription, Exception innerException)
             : base(FormatMessage(errorCode, errorDescription), innerException)
         {
             ErrorCode = errorCode;

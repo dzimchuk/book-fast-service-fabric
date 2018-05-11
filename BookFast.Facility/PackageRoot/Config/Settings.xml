@@ -10,7 +10,6 @@
   <Section Name="Data">
     <Parameter Name="DefaultConnection:ConnectionString" Value="Data Source=(localdb)\\ProjectsV13;Initial Catalog=BookFast;Trusted_Connection=True;MultipleActiveResultSets=true" />
     <Parameter Name="Azure:Storage:ConnectionString" Value="" />
-    <Parameter Name="Azure:Storage:SearchIndexQueueName" Value="" />
   </Section>
 
   <Section Name="Authentication">
@@ -21,6 +20,12 @@
 
   <Section Name="ApplicationInsights">
     <Parameter Name="InstrumentationKey" Value="" />
+  </Section>
+
+  <Section Name="ServiceBus">
+    <Parameter Name="ConnectionString" Value="" />
+    <Parameter Name="TopicName" Value="" />
+    <Parameter Name="SubscriptionName" Value="Facility" />
   </Section>
   
 </Settings>

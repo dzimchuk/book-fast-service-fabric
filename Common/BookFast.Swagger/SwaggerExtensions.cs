@@ -24,6 +24,8 @@ namespace BookFast.Swagger
 
                 options.DescribeAllEnumsAsStrings();
 
+                options.SchemaFilter<SwaggerIgnoreSchemaFilter>();
+
                 //options.AddSecurityDefinition("oauth2", new OAuth2Scheme
                 //{
                 //    Flow = "implicit",

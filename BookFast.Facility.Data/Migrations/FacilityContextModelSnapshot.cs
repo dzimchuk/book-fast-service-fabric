@@ -67,6 +67,14 @@ namespace BookFast.Facility.Data.Migrations
                     b.Property<string>("Payload")
                         .IsRequired();
 
+                    b.Property<string>("Tenant")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
                     b.HasKey("Id");
 
                     b.ToTable("Events","fm");

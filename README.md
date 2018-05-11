@@ -41,9 +41,11 @@ Here's a short description of configuration parameters:
 
     <Parameter Name="Data:DefaultConnection:ConnectionString" Value="Connection string to a SQL database" />
     <Parameter Name="Data:Azure:Storage:ConnectionString" Value="Connection string to an Azure storage account" />
-    <Parameter Name="Data:Azure:Storage:SearchIndexQueueName" Value="search-index" />
     <Parameter Name="Data:Azure:Storage:ImageContainer" Value="book-fast" />
     
+    <Parameter Name="ServiceBus:ConnectionString" Value="Connection string to Service Bus topic" />
+    <Parameter Name="ServiceBus:TopicName" Value="bookfast" />
+
     <Parameter Name="Search:QueryKey" Value="Azure Search query key" />
     <Parameter Name="Search:AdminKey" Value="Azure Search admin key" />
     <Parameter Name="Search:ServiceName" Value="Azure Search service name" />

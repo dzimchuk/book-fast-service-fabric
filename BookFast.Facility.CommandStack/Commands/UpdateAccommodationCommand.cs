@@ -1,10 +1,12 @@
-﻿using MediatR;
+using BookFast.SeedWork.Swagger;
+using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookFast.Facility.CommandStack.Commands
 {
     public class UpdateAccommodationCommand : IRequest
     {
+        [SwaggerIgnore]
         public int AccommodationId { get; set; }
 
         [Required]

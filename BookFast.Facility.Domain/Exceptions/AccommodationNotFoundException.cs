@@ -3,7 +3,7 @@ using System;
 
 namespace BookFast.Facility.Domain.Exceptions
 {
-    public class AccommodationNotFoundException : FormattedException
+    public class AccommodationNotFoundException : BusinessException
     {
         public int AccommodationId { get; }
 

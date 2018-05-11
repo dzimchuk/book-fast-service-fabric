@@ -24,11 +24,11 @@ namespace BookFast.Web.Proxy
             this.innerProxy = innerProxy;
         }
 
-        public async Task BookAsync(int facilityId, int accommodationId, BookingDetails details)
+        public async Task BookAsync(string userId, int accommodationId, BookingDetails details)
         {
             try
             {
-                await breaker.ExecuteAsync(() => innerProxy.BookAsync(facilityId, accommodationId, details));
+                await breaker.ExecuteAsync(() => innerProxy.BookAsync(userId, accommodationId, details));
             }
             catch (HttpOperationException ex)
             {
@@ -40,11 +40,11 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task CancelAsync(int facilityId, Guid id)
+        public async Task CancelAsync(string userId, Guid id)
         {
             try
             {
-                await breaker.ExecuteAsync(() => innerProxy.CancelAsync(facilityId, id));
+                await breaker.ExecuteAsync(() => innerProxy.CancelAsync(userId, id));
             }
             catch (HttpOperationException ex)
             {
@@ -56,11 +56,11 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task<Contracts.Models.Booking> FindAsync(int facilityId, Guid id)
+        public async Task<Contracts.Models.Booking> FindAsync(string userId, Guid id)
         {
             try
             {
-                return await breaker.ExecuteAsync(() => innerProxy.FindAsync(facilityId, id));
+                return await breaker.ExecuteAsync(() => innerProxy.FindAsync(userId, id));
             }
             catch (HttpOperationException ex)
             {
@@ -72,11 +72,11 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task<List<Contracts.Models.Booking>> ListPendingAsync()
+        public async Task<List<Contracts.Models.Booking>> ListPendingAsync(string userId)
         {
             try
             {
-                return await breaker.ExecuteAsync(() => innerProxy.ListPendingAsync());
+                return await breaker.ExecuteAsync(() => innerProxy.ListPendingAsync(userId));
             }
             catch (HttpOperationException ex)
             {

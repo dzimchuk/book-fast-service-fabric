@@ -1,5 +1,5 @@
+using BookFast.ReliableEvents;
 using BookFast.SeedWork.Modeling;
-using BookFast.SeedWork.ReliableEvents;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -43,6 +43,8 @@ namespace BookFast.Facility.Data
                     select new ReliableEvent
                     {
                         Id = @event.Id,
+                        User = @event.User,
+                        Tenant = @event.Tenant,
                         Event = (Event)JsonConvert.DeserializeObject(@event.Payload, type)
                     }).ToArray();
         }

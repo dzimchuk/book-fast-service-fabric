@@ -2,7 +2,7 @@ using BookFast.SeedWork.Modeling;
 
 namespace BookFast.Facility.Domain.Events
 {
-    public class AccommodationUpdatedEvent : Event
+    public class AccommodationUpdatedEvent : IntegrationEvent
     {
         public int Id { get; set; }
         public int FacilityId { get; set; }

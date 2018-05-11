@@ -26,7 +26,6 @@ namespace BookFast.Search
             var modules = new List<ICompositionModule>
                           {
                               new Composition.CompositionModule(),
-                              new Business.Composition.CompositionModule(),
                               new Adapter.Composition.CompositionModule()
                           };
 

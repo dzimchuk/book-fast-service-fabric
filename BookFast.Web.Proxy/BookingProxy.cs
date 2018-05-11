@@ -22,12 +22,12 @@ namespace BookFast.Web.Proxy
             this.mapper = mapper;
         }
 
-        public async Task BookAsync(int facilityId, int accommodationId, BookingDetails details)
+        public async Task BookAsync(string userId, int accommodationId, BookingDetails details)
         {
             var data = mapper.MapFrom(details);
             data.AccommodationId = accommodationId;
 
-            var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(facilityId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
+            var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(userId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
             {
                 var api = await client.CreateApiClient();
                 return await api.CreateBookingWithHttpMessagesAsync(accommodationId, data);
@@ -39,28 +39,9 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task<List<Contracts.Models.Booking>> ListPendingAsync()
+        public async Task<List<Contracts.Models.Booking>> ListPendingAsync(string userId)
         {
-            var queries = new List<Task<List<Contracts.Models.Booking>>>();
-            for (var i = 0; i < 16; i++)
-            {
-                queries.Add(ListPartitionAsync(new ServicePartitionKey(i)));
-            }
-
-            await Task.WhenAll(queries);
-
-            var result = new List<Contracts.Models.Booking>();
-            foreach (var query in queries)
-            {
-                result.AddRange(await query);
-            }
-
-            return result;
-        }
-
-        private async Task<List<Contracts.Models.Booking>> ListPartitionAsync(ServicePartitionKey partitionKey)
-        {
-            var result = await partitionClientFactory.CreatePartitionClient(partitionKey).InvokeWithRetryAsync(async client =>
+            var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(userId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
             {
                 var api = await client.CreateApiClient();
                 return await api.ListBookingsWithHttpMessagesAsync();
@@ -69,9 +50,9 @@ namespace BookFast.Web.Proxy
             return mapper.MapFrom(result.Body);
         }
 
-        public async Task CancelAsync(int facilityId, Guid id)
+        public async Task CancelAsync(string userId, Guid id)
         {
-            var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(facilityId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
+            var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(userId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
             {
                 var api = await client.CreateApiClient();
                 return await api.DeleteBookingWithHttpMessagesAsync(id);
@@ -83,9 +64,9 @@ namespace BookFast.Web.Proxy
             }
         }
 
-        public async Task<Contracts.Models.Booking> FindAsync(int facilityId, Guid id)
+        public async Task<Contracts.Models.Booking> FindAsync(string userId, Guid id)
         {
-            var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(facilityId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
+            var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(userId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
             {
                 var api = await client.CreateApiClient();
                 return await api.FindBookingWithHttpMessagesAsync(id);
