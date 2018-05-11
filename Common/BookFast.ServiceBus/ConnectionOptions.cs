@@ -1,6 +1,6 @@
 namespace BookFast.ServiceBus
 {
-    public class ConnectionOptions
+    internal class ConnectionOptions
     {
         public string ConnectionString { get; set; }
         public string TopicName { get; set; }

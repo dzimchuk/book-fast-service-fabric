@@ -15,9 +15,10 @@ namespace BookFast.Search.Indexer.CommandHandlers
         private readonly ISearchIndexer searchIndexer;
         private readonly IApiClientFactory<IBookFastFacilityAPI> apiClientFactory;
 
-        public UpdateAccommodationCommandHandler(ISearchIndexer searchIndexer)
+        public UpdateAccommodationCommandHandler(ISearchIndexer searchIndexer, IApiClientFactory<IBookFastFacilityAPI> apiClientFactory)
         {
             this.searchIndexer = searchIndexer;
+            this.apiClientFactory = apiClientFactory;
         }
 
         public async Task Handle(UpdateAccommodationCommand message, CancellationToken cancellationToken)

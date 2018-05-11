@@ -63,13 +63,18 @@ namespace BookFast.ServiceBus
             using (var scope = serviceProvider.CreateScope())
             {
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-                var securityContext = scope.ServiceProvider.GetRequiredService<ISecurityContext>();
 
-                await OnMessageAsync(message, cancellationToken, mediator, securityContext); 
+                var securityContext = scope.ServiceProvider.GetService<ISecurityContext>();
+                if (securityContext != null)
+                {
+                    InitializeSecurityContext(message.UserProperties, securityContext);
+                }
+
+                await OnMessageAsync(message, cancellationToken, mediator); 
             }
         }
 
-        private async Task OnMessageAsync(Message message, CancellationToken cancellationToken, IMediator mediator, ISecurityContext securityContext)
+        private async Task OnMessageAsync(Message message, CancellationToken cancellationToken, IMediator mediator)
         {
             try
             {
@@ -77,8 +82,6 @@ namespace BookFast.ServiceBus
                 var command = MapEvent(message.Label, payload);
                 if (command != null)
                 {
-                    InitializeSecurityContext(message.UserProperties, securityContext);
-
                     if (command is IRequest)
                     {
                         await mediator.Send((IRequest)command, cancellationToken);

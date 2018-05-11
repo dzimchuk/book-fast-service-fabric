@@ -4,14 +4,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.Extensions.Hosting;
+using System.Collections.Generic;
 
 namespace BookFast.Search.Indexer
 {
     internal sealed class IndexerService : StatelessService
     {
-        private readonly IHostedService[] hostedServices;
+        private readonly IEnumerable<IHostedService> hostedServices;
 
-        public IndexerService(StatelessServiceContext context, IHostedService[] hostedServices)
+        public IndexerService(StatelessServiceContext context, IEnumerable<IHostedService> hostedServices)
             : base(context)
         {
             this.hostedServices = hostedServices;

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/2011/01/fabric">
 
+  <Section Name="Logging">
+    <Parameter Name="IncludeScopes" Value="" />
+    <Parameter Name="LogLevel:Default" Value="" />
+    <Parameter Name="Debug:LogLevel:Default" Value="" />
+  </Section>
+  
   <Section Name="ApplicationInsights">
     <Parameter Name="InstrumentationKey" Value="" />
   </Section>
@@ -19,8 +25,8 @@
   </Section>
 
   <Section Name="FacilityApi">
-    <Parameter Name="ServiceUri" Value="fabric:/BookFast/FacilityService" />
-    <Parameter Name="ServiceApiResource" Value="App ID URI of the API app in Azure AD" />
+    <Parameter Name="ServiceUri" Value="" />
+    <Parameter Name="ServiceApiResource" Value="" />
   </Section>
   
 </Settings>

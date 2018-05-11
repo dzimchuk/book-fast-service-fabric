@@ -1,10 +1,7 @@
+using BookFast.Search.Indexer.Commands;
 using BookFast.ServiceBus;
 using MediatR;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BookFast.Search.Indexer.Integration
 {
@@ -12,7 +9,26 @@ namespace BookFast.Search.Indexer.Integration
     {
         public IBaseRequest MapEvent(string eventName, JObject payload)
         {
-            throw new NotImplementedException();
+            switch (eventName)
+            {
+                case "AccommodationCreatedEvent":
+                case "AccommodationUpdatedEvent":
+                    return MapUpdate(payload);
+                case "AccommodationDeletedEvent":
+                    return MapRemove(payload);
+                default:
+                    return null;
+            }
+        }
+
+        private static UpdateAccommodationCommand MapUpdate(JObject payload)
+        {
+            return payload.ToObject<UpdateAccommodationCommand>();
+        }
+
+        private static RemoveAccommodationCommand MapRemove(JObject payload)
+        {
+            return new RemoveAccommodationCommand { Id = int.Parse(payload["Id"].ToString()) };
         }
     }
 }

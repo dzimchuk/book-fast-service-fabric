@@ -2,6 +2,7 @@ using BookFast.SeedWork;
 using Microsoft.Diagnostics.EventFlow.ServiceFabric;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.ServiceFabric.Services.Runtime;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,13 @@ namespace BookFast.Search.Indexer
         private static IServiceProvider GetServiceProvider(IConfigurationRoot configuration, StatelessServiceContext context)
         {
             var services = new ServiceCollection();
+            services.AddOptions();
+            services.AddLogging(logging =>
+            {
+                logging.AddConfiguration(configuration.GetSection("Logging"));
+                logging.AddDebug();
+            });
+
             var modules = new List<ICompositionModule>
                           {
                               new Composition.CompositionModule(),

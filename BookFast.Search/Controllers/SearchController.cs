@@ -10,9 +10,9 @@ namespace BookFast.Search.Controllers
     [Route("api/[controller]")]
     public class SearchController : Controller
     {
-        private readonly ISearchService service;
+        private readonly ISearchServiceProxy service;
 
-        public SearchController(ISearchService service)
+        public SearchController(ISearchServiceProxy service)
         {
             this.service = service;
         }
