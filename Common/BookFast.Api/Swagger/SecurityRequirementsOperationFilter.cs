@@ -17,8 +17,8 @@ namespace BookFast.Api.Swagger
 
         public void Apply(Operation operation, OperationFilterContext context)
         {
-            if (context.ApiDescription.ControllerAttributes().OfType<AuthorizeAttribute>().Any() ||
-                context.ApiDescription.ActionAttributes().OfType<AuthorizeAttribute>().Any())
+            if (context.ControllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes(typeof(AuthorizeAttribute), true).Any() ||
+                context.ControllerActionDescriptor.MethodInfo.GetCustomAttributes(typeof(AuthorizeAttribute), true).Any())
             {
                 operation.Responses.Add("401", new Response { Description = "Unauthorized" });
                 operation.Responses.Add("403", new Response { Description = "Forbidden" });
