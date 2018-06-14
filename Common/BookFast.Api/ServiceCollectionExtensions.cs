@@ -1,14 +1,22 @@
-using Microsoft.AspNetCore.Builder;
+﻿using BookFast.Api.SecurityContext;
+using BookFast.Api.Swagger;
+using BookFast.Security;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 
-namespace BookFast.Swagger
+#pragma warning disable ET002 // Namespace does not match file path or default namespace
+namespace Microsoft.Extensions.DependencyInjection
+#pragma warning restore ET002 // Namespace does not match file path or default namespace
 {
-    public static class SwaggerExtensions
+    public static class ServiceCollectionExtensions
     {
+        public static void AddSecurityContext(this IServiceCollection services)
+        {
+            services.AddScoped<ISecurityContext, SecurityContextProvider>();
+        }
+
         public static void AddSwashbuckle(this IServiceCollection services, IConfiguration configuration, string title, string version, string xmlDocFileName = null)
         {
             services.AddSwaggerGen(options =>
@@ -37,20 +45,6 @@ namespace BookFast.Swagger
             {
                 AddXmlComments(services, xmlDocFileName);
             }
-        }
-
-        public static void UseSwagger(this IApplicationBuilder app, string title, string version)
-        {
-            app.UseSwagger(options =>
-            {
-                options.RouteTemplate = "api-docs/{documentName}/swagger.json";
-            });
-
-            //app.UseSwaggerUI(options =>
-            //{
-            //    options.SwaggerEndpoint($"/api-docs/{version}/swagger.json", $"{title} {version}");
-            //    options.RoutePrefix = "api-docs";
-            //});
         }
 
         private static void AddXmlComments(IServiceCollection services, string xmlDocFileName)

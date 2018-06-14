@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Linq;
 
-namespace BookFast.Swagger
+namespace BookFast.Api.Swagger
 {
     internal class SecurityRequirementsOperationFilter : IOperationFilter
     {

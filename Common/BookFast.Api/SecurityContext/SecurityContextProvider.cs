@@ -1,7 +1,8 @@
-﻿using System;
+﻿using BookFast.Security;
+using System;
 using System.Security.Claims;
 
-namespace BookFast.Security.AspNetCore
+namespace BookFast.Api.SecurityContext
 {
     internal class SecurityContextProvider : ISecurityContext, ISecurityContextAcceptor
     {

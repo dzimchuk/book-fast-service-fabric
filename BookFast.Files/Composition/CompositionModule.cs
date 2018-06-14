@@ -2,10 +2,10 @@ using BookFast.Files.Controllers;
 using BookFast.Files.Mappers;
 using BookFast.SeedWork;
 using BookFast.Security;
-using BookFast.Security.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using BookFast.Api.Authentication;
 
 namespace BookFast.Files.Composition
 {
@@ -15,6 +15,7 @@ namespace BookFast.Files.Composition
         {
             AddAuthentication(services, configuration);
 
+            services.AddSecurityContext();
             services.AddMvc();
 
             RegisterAuthorizationPolicies(services);
@@ -47,9 +48,9 @@ namespace BookFast.Files.Composition
                 options =>
                 {
                     options.AddPolicy("Facility.Write", config =>
-                                                        {
-                                                            config.RequireRole(InteractorRole.FacilityProvider.ToString(), InteractorRole.ImporterProcess.ToString());
-                                                        });
+                    {
+                        config.RequireRole(InteractorRole.FacilityProvider.ToString(), InteractorRole.ImporterProcess.ToString());
+                    });
                 });
         }
     }

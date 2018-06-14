@@ -1,7 +1,7 @@
 ﻿using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace BookFast.Swagger
+namespace BookFast.Api.Swagger
 {
     internal class DefaultContentTypeOperationFilter : IOperationFilter
     {

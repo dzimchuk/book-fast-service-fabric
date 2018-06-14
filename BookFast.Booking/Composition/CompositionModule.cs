@@ -3,11 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.Booking.Controllers;
 using BookFast.Booking.Mappers;
-using BookFast.Security.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using BookFast.Booking.Models;
+using BookFast.Api.Authentication;
 
 namespace BookFast.Booking.Composition
 {
@@ -17,6 +17,7 @@ namespace BookFast.Booking.Composition
         {
             AddAuthentication(services, configuration);
 
+            services.AddSecurityContext();
             services.AddMvc();
 
             services.AddScoped<IBookingMapper, BookingMapper>();

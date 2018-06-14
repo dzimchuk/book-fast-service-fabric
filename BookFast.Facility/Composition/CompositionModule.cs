@@ -1,12 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using BookFast.SeedWork;
-using BookFast.Security.AspNetCore.Authentication;
 using BookFast.Security;
 using Microsoft.Extensions.Options;
 using BookFast.ServiceBus;
 using BookFast.Facility.Integration;
 using BookFast.ReliableEvents;
+using BookFast.Api.Authentication;
 
 namespace BookFast.Facility.Composition
 {
@@ -16,6 +16,7 @@ namespace BookFast.Facility.Composition
         {
             AddAuthentication(services, configuration);
 
+            services.AddSecurityContext();
             services.AddMvc();
 
             services.AddReliableEventsDispatcher();
@@ -52,9 +53,9 @@ namespace BookFast.Facility.Composition
                 options =>
                 {
                     options.AddPolicy("Facility.Write", config =>
-                                                        {
-                                                            config.RequireRole(InteractorRole.FacilityProvider.ToString(), InteractorRole.ImporterProcess.ToString());
-                                                        });
+                    {
+                        config.RequireRole(InteractorRole.FacilityProvider.ToString(), InteractorRole.ImporterProcess.ToString());
+                    });
                 });
         }
     }

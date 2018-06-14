@@ -1,6 +1,4 @@
 using BookFast.SeedWork;
-using BookFast.Security.AspNetCore;
-using BookFast.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +26,6 @@ namespace BookFast.Facility
             var modules = new List<ICompositionModule>
                           {
                               new Composition.CompositionModule(),
-                              new Security.AspNetCore.Composition.CompositionModule(),
                               new CommandStack.Composition.CompositionModule(),
                               new Data.Composition.CompositionModule()
                           };

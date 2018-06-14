@@ -1,4 +1,4 @@
-﻿namespace BookFast.Security.AspNetCore.Authentication
+﻿namespace BookFast.Api.Authentication
 {
     public static class Constants
     {
