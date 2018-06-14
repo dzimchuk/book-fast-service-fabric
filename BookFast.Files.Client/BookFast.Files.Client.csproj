@@ -11,9 +11,4 @@
     <ProjectReference Include="..\Common\BookFast.SeedWork\BookFast.SeedWork.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.1" />
-    <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
-  </ItemGroup>
-
 </Project>
