@@ -1,7 +1,9 @@
-﻿using BookFast.Api.SecurityContext;
+﻿using BookFast.Api.Formatters;
+using BookFast.Api.SecurityContext;
 using BookFast.Api.Swagger;
 using BookFast.Security;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
@@ -15,6 +17,19 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddSecurityContext(this IServiceCollection services)
         {
             services.AddScoped<ISecurityContext, SecurityContextProvider>();
+        }
+
+        public static void AddAndConfigureMvc(this IServiceCollection services)
+        {
+            services.AddMvc(options =>
+            {
+                options.OutputFormatters.Insert(0, new BusinessExceptionOutputFormatter());
+            })
+            .SetCompatibilityVersion(AspNetCore.Mvc.CompatibilityVersion.Version_2_1)
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
         }
 
         public static void AddSwashbuckle(this IServiceCollection services, IConfiguration configuration, string title, string version, string xmlDocFileName = null)

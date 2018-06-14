@@ -8,7 +8,7 @@ namespace BookFast.Search.Composition
     {
         public void AddServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddMvc();
+            services.AddAndConfigureMvc();
         }
     }
 }

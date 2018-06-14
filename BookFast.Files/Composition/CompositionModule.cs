@@ -16,7 +16,7 @@ namespace BookFast.Files.Composition
             AddAuthentication(services, configuration);
 
             services.AddSecurityContext();
-            services.AddMvc();
+            services.AddAndConfigureMvc();
 
             RegisterAuthorizationPolicies(services);
 

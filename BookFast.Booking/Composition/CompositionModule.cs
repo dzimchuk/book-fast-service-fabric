@@ -18,7 +18,7 @@ namespace BookFast.Booking.Composition
             AddAuthentication(services, configuration);
 
             services.AddSecurityContext();
-            services.AddMvc();
+            services.AddAndConfigureMvc();
 
             services.AddScoped<IBookingMapper, BookingMapper>();
 
