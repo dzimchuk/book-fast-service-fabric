@@ -16,7 +16,7 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
             this.repository = repository;
         }
 
-        public async Task Handle(UpdateFacilityCommand message, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateFacilityCommand message, CancellationToken cancellationToken)
         {
             var facility = await repository.FindAsync(message.FacilityId);
             if (facility == null)
@@ -36,6 +36,8 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
 
             await repository.PersistEventsAsync(facility);
             await repository.SaveChangesAsync();
+
+            return Unit.Value;
         }
     }
 }

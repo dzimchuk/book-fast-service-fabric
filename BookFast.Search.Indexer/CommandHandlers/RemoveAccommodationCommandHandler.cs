@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookFast.Search.Indexer.CommandHandlers
 {
-    public class RemoveAccommodationCommandHandler : IRequestHandler<RemoveAccommodationCommand>
+    public class RemoveAccommodationCommandHandler : AsyncRequestHandler<RemoveAccommodationCommand>
     {
         private readonly ISearchIndexer searchIndexer;
 
@@ -14,10 +14,10 @@ namespace BookFast.Search.Indexer.CommandHandlers
         {
             this.searchIndexer = searchIndexer;
         }
-
-        public Task Handle(RemoveAccommodationCommand message, CancellationToken cancellationToken)
+        
+        protected override Task Handle(RemoveAccommodationCommand request, CancellationToken cancellationToken)
         {
-            return searchIndexer.DeleteAccommodationIndexAsync(message.Id);
+            return searchIndexer.DeleteAccommodationIndexAsync(request.Id);
         }
     }
 }

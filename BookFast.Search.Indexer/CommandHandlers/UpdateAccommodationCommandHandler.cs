@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookFast.Search.Indexer.CommandHandlers
 {
-    public class UpdateAccommodationCommandHandler : IRequestHandler<UpdateAccommodationCommand>
+    public class UpdateAccommodationCommandHandler : AsyncRequestHandler<UpdateAccommodationCommand>
     {
         private readonly ISearchIndexer searchIndexer;
         private readonly IApiClientFactory<IBookFastFacilityAPI> apiClientFactory;
@@ -21,10 +21,10 @@ namespace BookFast.Search.Indexer.CommandHandlers
             this.apiClientFactory = apiClientFactory;
         }
 
-        public async Task Handle(UpdateAccommodationCommand message, CancellationToken cancellationToken)
+        protected override async Task Handle(UpdateAccommodationCommand request, CancellationToken cancellationToken)
         {
             var api = await apiClientFactory.CreateApiClientAsync();
-            var result = await api.FindFacilityWithHttpMessagesAsync(message.FacilityId);
+            var result = await api.FindFacilityWithHttpMessagesAsync(request.FacilityId);
 
             if (result.Response.StatusCode == HttpStatusCode.NotFound)
             {
@@ -33,12 +33,12 @@ namespace BookFast.Search.Indexer.CommandHandlers
 
             var accommodation = new Accommodation
             {
-                Id = message.Id,
-                FacilityId = message.FacilityId,
-                Name = message.Name,
-                Description = message.Description,
-                RoomCount = message.RoomCount,
-                Images = message.Images,
+                Id = request.Id,
+                FacilityId = request.FacilityId,
+                Name = request.Name,
+                Description = request.Description,
+                RoomCount = request.RoomCount,
+                Images = request.Images,
                 FacilityName = result.Body.Name,
                 FacilityDescription = result.Body.Description,
                 FacilityLocation = new Location
