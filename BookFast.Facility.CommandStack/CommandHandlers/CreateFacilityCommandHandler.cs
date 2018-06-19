@@ -1,24 +1,27 @@
 using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Security;
-using MediatR;
+using BookFast.SeedWork.CommandStack;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.CommandStack.CommandHandlers
 {
-    public class CreateFacilityCommandHandler : IRequestHandler<CreateFacilityCommand, int>
+    public class CreateFacilityCommandHandler : CommandHandler<CreateFacilityCommand, int>
     {
         private readonly IFacilityRepository repository;
         private readonly ISecurityContext securityContext;
+        private readonly CommandContext context;
 
-        public CreateFacilityCommandHandler(IFacilityRepository repository, ISecurityContext securityContext)
+        public CreateFacilityCommandHandler(IFacilityRepository repository, ISecurityContext securityContext, CommandContext context)
+            : base(context)
         {
             this.repository = repository;
             this.securityContext = securityContext;
+            this.context = context;
         }
 
-        public async Task<int> Handle(CreateFacilityCommand request, CancellationToken cancellationToken)
+        protected override async Task<int> HandleAsync(CreateFacilityCommand request, CancellationToken cancellationToken)
         {
             var facility = Domain.Models.Facility.NewFacility(
                 securityContext.GetCurrentTenant(),
@@ -31,8 +34,7 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
 
             facility.Id = await repository.AddAsync(facility);
 
-            await repository.PersistEventsAsync(facility);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync(facility, context);
 
             return facility.Id;
         }

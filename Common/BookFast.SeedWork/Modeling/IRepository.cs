@@ -11,6 +11,5 @@ namespace BookFast.SeedWork.Modeling
 
     public interface IRepository<T> : IRepository where T: IAggregateRoot
     {
-        Task PersistEventsAsync(T entity);
     }
 }
