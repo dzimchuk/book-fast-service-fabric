@@ -19,9 +19,6 @@ namespace BookFast.ReliableEvents
                 
         private readonly AutoResetEvent dispatcherTrigger = new AutoResetEvent(false);
 
-        private CancellationTokenSource cancellationTokenSource;
-        private Timer timer;
-
         public ReliableEventsDispatcher(IReliableEventsDataSource dataSource, ILogger<ReliableEventsDispatcher> logger, IServiceProvider serviceProvider)
         {
             this.dataSource = dataSource;
@@ -29,25 +26,35 @@ namespace BookFast.ReliableEvents
             this.serviceProvider = serviceProvider;
         }
 
-        public Task RunDispatcherAsync(CancellationToken cancellationToken)
+        public async Task RunDispatcherAsync(CancellationToken cancellationToken)
         {
             dispatcherTrigger.Reset();
 
-            cancellationTokenSource = new CancellationTokenSource();
-            Task.Run(() => WaitAndProcessEventsAsync(cancellationTokenSource.Token));
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            Task.Run(() => WaitAndProcessEventsAsync(cancellationToken));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
             var interval = TimeSpan.FromMinutes(2);
-            timer = new Timer(state =>
+            var timer = new Timer(state =>
             {
                 dispatcherTrigger.Set();
             }, null, interval, interval);
+
+            await WaitCancellationAsync(cancellationToken);
+
+            timer.Dispose();
+            dispatcherTrigger.Set();
         }
 
-        public void StopDispatcher()
+        private static async Task WaitCancellationAsync(CancellationToken cancellationToken)
         {
-            timer.Dispose();
-            cancellationTokenSource.Cancel();
-            dispatcherTrigger.Set();
+            try
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(-1), cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+            }
         }
 
         public Task Handle(EventsAvailableNotification notification, CancellationToken cancellationToken)
@@ -58,14 +65,10 @@ namespace BookFast.ReliableEvents
 
         private async Task WaitAndProcessEventsAsync(CancellationToken cancellationToken)
         {
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                dispatcherTrigger.WaitOne();
-
                 try
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
                     var events = await dataSource.GetPendingEventsAsync(cancellationToken);
                     foreach (var @event in events)
                     {
@@ -87,6 +90,8 @@ namespace BookFast.ReliableEvents
                 {
                     logger.LogError($"Error processing reliable events. Details: {ex}");
                 }
+
+                dispatcherTrigger.WaitOne();
             }
         }
 

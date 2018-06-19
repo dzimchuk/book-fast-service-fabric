@@ -73,7 +73,7 @@ namespace BookFast.ReliableEvents.DistributedMutex
                     // Create a new linked cancellation token source, so if either the 
                     // original token is canceled or the lease cannot be renewed,
                     // then the leader task can be canceled.
-                    using (var leaseCts = CancellationTokenSource.CreateLinkedTokenSource(new[] { token }))
+                    using (var leaseCts = CancellationTokenSource.CreateLinkedTokenSource(token))
                     {
                         // Run the leader task.
                         var leaderTask = taskToRunWhenLeaseAcquired.Invoke(leaseCts.Token);

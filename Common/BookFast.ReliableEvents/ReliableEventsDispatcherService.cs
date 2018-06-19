@@ -31,10 +31,7 @@ namespace BookFast.ReliableEvents
 
             while (!globalCts.IsCancellationRequested)
             {
-                using (var cts = new CancellationTokenSource())
-                {
-                    await mutex.RunTaskWhenMutexAcquired(cts.Token);
-                }
+                await mutex.RunTaskWhenMutexAcquired(globalCts.Token);
             }
         }
 
