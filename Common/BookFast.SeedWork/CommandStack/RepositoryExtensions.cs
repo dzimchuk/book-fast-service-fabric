@@ -8,7 +8,12 @@ namespace BookFast.SeedWork.CommandStack
     {
         public static async Task SaveChangesAsync(this IRepository repository, IEntity entity, CommandContext context)
         {
-            var events = entity.CollectEvents().ToList();
+            var events = entity.CollectEvents()?.ToList();
+            if (events == null)
+            {
+                await repository.SaveChangesAsync();
+                return;
+            }
 
             var integrationEvents = events.OfType<IntegrationEvent>().ToList();
             if (integrationEvents.Any())

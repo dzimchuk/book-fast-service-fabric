@@ -1,7 +1,7 @@
 using BookFast.Security;
 using BookFast.SeedWork.Modeling;
 using Newtonsoft.Json;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.Data
@@ -18,22 +18,18 @@ namespace BookFast.Facility.Data
             return !string.IsNullOrWhiteSpace(json) ? JsonConvert.DeserializeObject<string[]>(json) : null;
         }
 
-        public static async Task PersistEventsAsync(this FacilityContext context, Entity<int> entity, ISecurityContext securityContext)
+        public static async Task PersistEventsAsync(this FacilityContext context, IEnumerable<Event> events, ISecurityContext securityContext)
         {
-            var events = entity.CollectEvents();
-            if (events != null && events.Any())
+            foreach (var @event in events)
             {
-                foreach (var @event in events)
+                await context.Events.AddAsync(new Models.Event
                 {
-                    await context.Events.AddAsync(new Models.Event
-                    {
-                        EventName = @event.GetType().Name,
-                        OccurredAt = @event.OccurredAt,
-                        User = securityContext.GetCurrentUser(),
-                        Tenant = securityContext.GetCurrentTenant(),
-                        Payload = JsonConvert.SerializeObject(@event)
-                    });
-                }
+                    EventName = @event.GetType().Name,
+                    OccurredAt = @event.OccurredAt,
+                    User = securityContext.GetCurrentUser(),
+                    Tenant = securityContext.GetCurrentTenant(),
+                    Payload = JsonConvert.SerializeObject(@event)
+                });
             }
         }
     }

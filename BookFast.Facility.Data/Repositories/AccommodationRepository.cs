@@ -1,6 +1,8 @@
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Facility.Domain.Models;
 using BookFast.Security;
+using BookFast.SeedWork.Modeling;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.Data.Repositories
@@ -51,10 +53,10 @@ namespace BookFast.Facility.Data.Repositories
                     accommodation.Images.ToStringArray())
                 : null;
         }
-
-        public Task PersistEventsAsync(Accommodation entity)
+        
+        public Task PersistEventsAsync(IEnumerable<Event> events)
         {
-            return context.PersistEventsAsync(entity, securityContext);
+            return context.PersistEventsAsync(events, securityContext);
         }
 
         public Task SaveChangesAsync()
