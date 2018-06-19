@@ -2,7 +2,7 @@
 
 namespace BookFast.SeedWork.CommandStack
 {
-    internal class EventsAvailableNotification : INotification
+    public class EventsAvailableNotification : INotification
     {
     }
 }

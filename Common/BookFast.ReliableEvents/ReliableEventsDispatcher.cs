@@ -1,25 +1,26 @@
 using BookFast.Security;
 using BookFast.SeedWork;
+using BookFast.SeedWork.CommandStack;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookFast.ReliableEvents
 {
-    internal class ReliableEventsDispatcher : IHostedService
+    internal class ReliableEventsDispatcher : INotificationHandler<EventsAvailableNotification>
     {
         private readonly IReliableEventsDataSource dataSource;
         private readonly ILogger logger;
         private readonly IServiceProvider serviceProvider;
+                
+        private readonly AutoResetEvent dispatcherTrigger = new AutoResetEvent(false);
 
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource cancellationTokenSource;
+        private Timer timer;
 
         public ReliableEventsDispatcher(IReliableEventsDataSource dataSource, ILogger<ReliableEventsDispatcher> logger, IServiceProvider serviceProvider)
         {
@@ -28,27 +29,44 @@ namespace BookFast.ReliableEvents
             this.serviceProvider = serviceProvider;
         }
 
-        private async Task<IEnumerable<ReliableEvent>> FetchPendingEventsAsync(CancellationToken cancellationToken)
+        public Task RunDispatcherAsync(CancellationToken cancellationToken)
         {
-            while (true)
-            {
-                var events = await dataSource.GetPendingEventsAsync(cancellationToken);
-                if (events != null && events.Any())
-                {
-                    return events;
-                }
+            dispatcherTrigger.Reset();
 
-                await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
-            }
+            cancellationTokenSource = new CancellationTokenSource();
+            Task.Run(() => WaitAndProcessEventsAsync(cancellationTokenSource.Token));
+
+            var interval = TimeSpan.FromMinutes(2);
+            timer = new Timer(state =>
+            {
+                dispatcherTrigger.Set();
+            }, null, interval, interval);
         }
 
-        private async Task RunDispatcherAsync(CancellationToken cancellationToken)
+        public void StopDispatcher()
+        {
+            timer.Dispose();
+            cancellationTokenSource.Cancel();
+            dispatcherTrigger.Set();
+        }
+
+        public Task Handle(EventsAvailableNotification notification, CancellationToken cancellationToken)
+        {
+            dispatcherTrigger.Set();
+            return Task.CompletedTask;
+        }
+
+        private async Task WaitAndProcessEventsAsync(CancellationToken cancellationToken)
         {
             while (true)
             {
+                dispatcherTrigger.WaitOne();
+
                 try
                 {
-                    var events = await FetchPendingEventsAsync(cancellationToken);
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var events = await dataSource.GetPendingEventsAsync(cancellationToken);
                     foreach (var @event in events)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -56,7 +74,7 @@ namespace BookFast.ReliableEvents
                         var okToClear = await PublishEventAsync(@event, cancellationToken);
                         if (okToClear)
                         {
-                            await dataSource.ClearEventAsync(@event.Id, cancellationToken); 
+                            await dataSource.ClearEventAsync(@event.Id, cancellationToken);
                         }
                     }
                 }
@@ -107,18 +125,6 @@ namespace BookFast.ReliableEvents
 
             var acceptor = (ISecurityContextAcceptor)securityContext;
             acceptor.Principal = new ClaimsPrincipal(identity);
-        }
-
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
-            Task.Run(() => RunDispatcherAsync(cancellationTokenSource.Token));
-            return Task.CompletedTask;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            cancellationTokenSource.Cancel();
-            return Task.CompletedTask;
         }
     }
 }
