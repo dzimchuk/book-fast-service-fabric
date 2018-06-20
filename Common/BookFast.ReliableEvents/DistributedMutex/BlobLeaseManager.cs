@@ -2,7 +2,6 @@
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,32 +43,26 @@ namespace BookFast.ReliableEvents.DistributedMutex
         public async Task<string> AcquireLeaseAsync(CancellationToken token)
         {
             var blobNotFound = false;
+
             try
             {
                 return await leaseBlob.AcquireLeaseAsync(TimeSpan.FromSeconds(60));
             }
             catch (StorageException storageException)
             {
-                logger.LogError($"Error acquiring lease. Details: {storageException}");
-
-                if (storageException.InnerException is WebException webException)
+                var errorCode = storageException.RequestInformation.ExtendedErrorInformation.ErrorCode;
+                if (errorCode.Equals("ContainerNotFound", StringComparison.OrdinalIgnoreCase) ||
+                    errorCode.Equals("BlobNotFound", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (webException.Response is HttpWebResponse response)
-                    {
-                        if (response.StatusCode == HttpStatusCode.NotFound)
-                        {
-                            blobNotFound = true;
-                        }
-
-                        if (response.StatusCode == HttpStatusCode.Conflict)
-                        {
-                            return null;
-                        }
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    blobNotFound = true;
+                }
+                else if (errorCode.Equals("LeaseAlreadyPresent", StringComparison.OrdinalIgnoreCase))
+                {
+                    return null;
+                }
+                else
+                {
+                    logger.LogError($"Error acquiring lease. Details: {storageException}");
                 }
             }
 
@@ -98,27 +91,19 @@ namespace BookFast.ReliableEvents.DistributedMutex
 
         private async Task CreateBlobAsync(CancellationToken token)
         {
-            await leaseBlob.Container.CreateIfNotExistsAsync();
-
-            if (!await leaseBlob.ExistsAsync())
+            try
             {
-                try
+                await leaseBlob.Container.CreateIfNotExistsAsync();
+
+                if (!await leaseBlob.ExistsAsync())
                 {
                     await leaseBlob.CreateAsync(0);
                 }
-                catch (StorageException e)
-                {
-                    if (e.InnerException is WebException)
-                    {
-                        var webException = e.InnerException as WebException;
-                        var response = webException.Response as HttpWebResponse;
-
-                        if (response == null || response.StatusCode != HttpStatusCode.PreconditionFailed)
-                        {
-                            throw;
-                        }
-                    }
-                }
+            }
+            catch (StorageException storageException)
+            {
+                logger.LogError($"Error creating a mutex blob. Details: {storageException}");
+                throw;
             }
         }
     }
