@@ -1,6 +1,7 @@
 using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Security;
+using BookFast.SeedWork.CommandStack;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
     {
         private readonly IFacilityRepository repository;
         private readonly ISecurityContext securityContext;
+        private readonly CommandContext context;
 
-        public CreateFacilityCommandHandler(IFacilityRepository repository, ISecurityContext securityContext)
+        public CreateFacilityCommandHandler(IFacilityRepository repository, ISecurityContext securityContext, CommandContext context)
         {
             this.repository = repository;
             this.securityContext = securityContext;
+            this.context = context;
         }
 
         public async Task<int> Handle(CreateFacilityCommand request, CancellationToken cancellationToken)
@@ -31,8 +34,7 @@ namespace BookFast.Facility.CommandStack.CommandHandlers
 
             facility.Id = await repository.AddAsync(facility);
 
-            await repository.PersistEventsAsync(facility);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync(facility, context);
 
             return facility.Id;
         }

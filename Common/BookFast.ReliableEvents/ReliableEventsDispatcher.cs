@@ -1,54 +1,108 @@
 using BookFast.Security;
 using BookFast.SeedWork;
 using MediatR;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookFast.ReliableEvents
 {
-    internal class ReliableEventsDispatcher : IHostedService
+    internal class ReliableEventsDispatcher
     {
+        private const int PeriodicCheckIntervalInMinutes = 2;
+
         private readonly IReliableEventsDataSource dataSource;
         private readonly ILogger logger;
         private readonly IServiceProvider serviceProvider;
+        private readonly ConnectionOptions serviceBusConnectionOptions;
 
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-        public ReliableEventsDispatcher(IReliableEventsDataSource dataSource, ILogger<ReliableEventsDispatcher> logger, IServiceProvider serviceProvider)
+        private readonly AutoResetEvent dispatcherTrigger = new AutoResetEvent(false);
+
+        public ReliableEventsDispatcher(IReliableEventsDataSource dataSource, 
+            ILogger<ReliableEventsDispatcher> logger, 
+            IServiceProvider serviceProvider, 
+            IOptions<ConnectionOptions> serviceBusConnectionOptions)
         {
             this.dataSource = dataSource;
             this.logger = logger;
             this.serviceProvider = serviceProvider;
+            this.serviceBusConnectionOptions = serviceBusConnectionOptions.Value;
         }
 
-        private async Task<IEnumerable<ReliableEvent>> FetchPendingEventsAsync(CancellationToken cancellationToken)
+        public async Task RunDispatcherAsync(CancellationToken cancellationToken)
         {
-            while (true)
-            {
-                var events = await dataSource.GetPendingEventsAsync(cancellationToken);
-                if (events != null && events.Any())
-                {
-                    return events;
-                }
+            dispatcherTrigger.Reset();
 
-                await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            Task.Run(() => WaitAndProcessEventsAsync(cancellationToken));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+
+            var interval = TimeSpan.FromMinutes(PeriodicCheckIntervalInMinutes);
+            var timer = new Timer(state =>
+            {
+                dispatcherTrigger.Set();
+            }, null, interval, interval);
+
+            var queueClient = StartNotificationReceiver();
+
+            await WaitCancellationAsync(cancellationToken);
+
+            timer.Dispose();
+            dispatcherTrigger.Set();
+
+            if (queueClient != null)
+            {
+                await queueClient.CloseAsync(); 
             }
         }
 
-        private async Task RunDispatcherAsync(CancellationToken cancellationToken)
+        private static async Task WaitCancellationAsync(CancellationToken cancellationToken)
         {
-            while (true)
+            try
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(-1), cancellationToken);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+        }
+
+        private QueueClient StartNotificationReceiver()
+        {
+            QueueClient queueClient = null;
+
+            if (!string.IsNullOrWhiteSpace(serviceBusConnectionOptions.NotificationQueueConnection))
+            {
+                queueClient = new QueueClient(serviceBusConnectionOptions.NotificationQueueConnection, serviceBusConnectionOptions.NotificationQueueName, ReceiveMode.ReceiveAndDelete, RetryPolicy.Default);
+                queueClient.RegisterMessageHandler((message, cancellationToken) =>
+                {
+                    dispatcherTrigger.Set();
+                    return Task.CompletedTask;
+                }, new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 1 }); 
+            }
+
+            return queueClient;
+        }
+
+        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)
+        {
+            logger.LogError($"Error receiving reliable events notification. Details: {arg.Exception}.");
+            return Task.CompletedTask;
+        }
+
+        private async Task WaitAndProcessEventsAsync(CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
             {
                 try
                 {
-                    var events = await FetchPendingEventsAsync(cancellationToken);
+                    var events = await dataSource.GetPendingEventsAsync(cancellationToken);
                     foreach (var @event in events)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
@@ -56,7 +110,7 @@ namespace BookFast.ReliableEvents
                         var okToClear = await PublishEventAsync(@event, cancellationToken);
                         if (okToClear)
                         {
-                            await dataSource.ClearEventAsync(@event.Id, cancellationToken); 
+                            await dataSource.ClearEventAsync(@event.Id, cancellationToken);
                         }
                     }
                 }
@@ -69,6 +123,8 @@ namespace BookFast.ReliableEvents
                 {
                     logger.LogError($"Error processing reliable events. Details: {ex}");
                 }
+
+                dispatcherTrigger.WaitOne();
             }
         }
 
@@ -107,18 +163,6 @@ namespace BookFast.ReliableEvents
 
             var acceptor = (ISecurityContextAcceptor)securityContext;
             acceptor.Principal = new ClaimsPrincipal(identity);
-        }
-
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
-            Task.Run(() => RunDispatcherAsync(cancellationTokenSource.Token));
-            return Task.CompletedTask;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            cancellationTokenSource.Cancel();
-            return Task.CompletedTask;
         }
     }
 }

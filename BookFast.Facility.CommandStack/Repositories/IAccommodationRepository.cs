@@ -9,7 +9,5 @@ namespace BookFast.Facility.CommandStack.Repositories
         Task<int> AddAsync(Domain.Models.Accommodation accommodation);
         Task UpdateAsync(Domain.Models.Accommodation accommodation);
         Task DeleteAsync(int id);
-
-        Task SaveChangesAsync();
     }
 }

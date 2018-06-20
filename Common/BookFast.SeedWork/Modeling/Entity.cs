@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BookFast.SeedWork.Modeling
 {
-    public abstract class Entity<TIdentity>
+    public abstract class Entity<TIdentity> : IEntity
     {
         private TIdentity id = default(TIdentity);
         private List<Event> events;

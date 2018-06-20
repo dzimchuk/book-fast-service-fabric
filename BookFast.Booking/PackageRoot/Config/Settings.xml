@@ -31,5 +31,9 @@
   <Section Name="Test">
     <Parameter Name="FailRandom" Value="false" />
   </Section>
+
+  <Section Name="General">
+    <Parameter Name="ServiceName" Value="Booking"/>
+  </Section>
   
 </Settings>

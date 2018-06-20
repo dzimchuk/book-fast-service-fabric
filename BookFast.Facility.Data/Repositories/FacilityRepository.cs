@@ -1,6 +1,8 @@
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Security;
+using BookFast.SeedWork.Modeling;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.Data.Repositories
@@ -57,9 +59,9 @@ namespace BookFast.Facility.Data.Repositories
                 : null;
         }
 
-        public Task PersistEventsAsync(Domain.Models.Facility entity)
+        public Task PersistEventsAsync(IEnumerable<Event> events)
         {
-            return context.PersistEventsAsync(entity, securityContext);
+            return context.PersistEventsAsync(events, securityContext);
         }
 
         public Task SaveChangesAsync()

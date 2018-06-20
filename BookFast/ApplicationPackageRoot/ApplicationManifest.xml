@@ -24,6 +24,8 @@
     <Parameter Name="Data:Azure:Storage:ImageContainer" DefaultValue="" />
     <Parameter Name="ServiceBus:ConnectionString" DefaultValue="" />
     <Parameter Name="ServiceBus:TopicName" DefaultValue="" />
+    <Parameter Name="ServiceBus:NotificationQueueConnection" DefaultValue="" />
+    <Parameter Name="ServiceBus:NotificationQueueName" DefaultValue="" />
     <Parameter Name="Redis:Configuration" DefaultValue="" />
     <Parameter Name="Search:QueryKey" DefaultValue="" />
     <Parameter Name="Search:AdminKey" DefaultValue="" />
@@ -209,6 +211,8 @@
           <Section Name="ServiceBus">
             <Parameter Name="ConnectionString" Value="[ServiceBus:ConnectionString]" />
             <Parameter Name="TopicName" Value="[ServiceBus:TopicName]" />
+            <Parameter Name="NotificationQueueConnection" Value="[ServiceBus:NotificationQueueConnection]" />
+            <Parameter Name="NotificationQueueName" Value="[ServiceBus:NotificationQueueName]" />
           </Section>
         </Settings>
       </ConfigOverride>
