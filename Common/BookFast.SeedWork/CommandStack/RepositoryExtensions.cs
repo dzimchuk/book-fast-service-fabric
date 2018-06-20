@@ -6,27 +6,33 @@ namespace BookFast.SeedWork.CommandStack
 {
     public static class RepositoryExtensions
     {
-        public static async Task SaveChangesAsync(this IRepository repository, IEntity entity, CommandContext context)
+        public static async Task SaveChangesAsync<TEntity>(this IRepository<TEntity> repository, TEntity entity, CommandContext context) 
+            where TEntity : IAggregateRoot, IEntity
         {
+            var isOwner = context.AcquireOwnership();
+
             var events = entity.CollectEvents()?.ToList();
-            if (events == null)
-            {
-                await repository.SaveChangesAsync();
-                return;
-            }
 
             var integrationEvents = events.OfType<IntegrationEvent>().ToList();
             if (integrationEvents.Any())
             {
                 await repository.PersistEventsAsync(integrationEvents);
-                context.EventsAvailable = true;
+                context.NotifyWhenDone();
             }
-
-            await repository.SaveChangesAsync();
-
+            
             foreach (var @event in events.Except(integrationEvents).OrderBy(evt => evt.OccurredAt))
             {
                 await context.Mediator.Publish(@event);
+            }
+
+            if (isOwner)
+            {
+                await repository.SaveChangesAsync();
+
+                if (context.ShouldNotify)
+                {
+                    await context.Mediator.Publish(new EventsAvailableNotification());
+                }
             }
         }
     }

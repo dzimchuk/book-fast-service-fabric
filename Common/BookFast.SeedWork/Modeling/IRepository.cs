@@ -3,13 +3,9 @@ using System.Threading.Tasks;
 
 namespace BookFast.SeedWork.Modeling
 {
-    public interface IRepository
+    public interface IRepository<TEntity> where TEntity: IAggregateRoot, IEntity
     {
         Task PersistEventsAsync(IEnumerable<Event> events);
         Task SaveChangesAsync();
-    }
-
-    public interface IRepository<T> : IRepository where T: IAggregateRoot
-    {
     }
 }
