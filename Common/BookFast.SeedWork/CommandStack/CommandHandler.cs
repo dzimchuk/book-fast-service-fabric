@@ -27,7 +27,7 @@ namespace BookFast.SeedWork.CommandStack
                     await context.Mediator.Publish(new EventsAvailableNotification());
                 }
 
-                return response; 
+                return response;
             }
         }
 

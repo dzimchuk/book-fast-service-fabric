@@ -19,7 +19,7 @@ namespace BookFast.Facility.Composition
             services.AddSecurityContext();
             services.AddAndConfigureMvc();
 
-            services.AddReliableEventsDispatcher();
+            services.AddReliableEventsDispatcher(configuration);
 
             services.AddIntegrationEventPublisher(configuration);
             services.AddIntegrationEventReceiver(configuration);
