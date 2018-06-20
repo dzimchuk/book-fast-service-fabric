@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace BookFast.ReliableEvents
 {
@@ -7,7 +8,7 @@ namespace BookFast.ReliableEvents
         public static void AddReliableEventsDispatcher(this IServiceCollection services)
         {
             services.AddSingleton<ReliableEventsDispatcher>();
-            services.AddSingleton<ReliableEventsDispatcherService>();
+            services.AddSingleton<IHostedService, ReliableEventsDispatcherService>();
         }
     }
 }

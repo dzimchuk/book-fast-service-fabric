@@ -8,43 +8,31 @@ using System.Threading.Tasks;
 
 namespace BookFast.ReliableEvents
 {
-    internal class ReliableEventsDispatcherService : IHostedService
+    internal class ReliableEventsDispatcherService : BackgroundService
     {
         private readonly ReliableEventsDispatcher dispatcher;
         private readonly IConfiguration configuration;
         private readonly ILogger logger;
 
-        private readonly CancellationTokenSource globalCts = new CancellationTokenSource();
-        
-        public ReliableEventsDispatcherService(ReliableEventsDispatcher dispatcher, IConfiguration configuration, ILogger<ReliableEventsDispatcherService> logger)
+        public ReliableEventsDispatcherService(ReliableEventsDispatcher dispatcher, 
+            IConfiguration configuration, 
+            ILogger<ReliableEventsDispatcherService> logger)
         {
             this.dispatcher = dispatcher;
             this.configuration = configuration;
             this.logger = logger;
         }
 
-        private async Task RunDispatcherAsync()
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var storageAccount = CloudStorageAccount.Parse(configuration["Data:Azure:Storage:ConnectionString"]);
-            var settings = new BlobSettings(storageAccount, "mutex", "blob");
+            var settings = new BlobSettings(storageAccount, "mutex", configuration["General:ServiceName"]);
             var mutex = new BlobDistributedMutex(settings, dispatcher.RunDispatcherAsync, logger);
 
-            while (!globalCts.IsCancellationRequested)
+            while (!stoppingToken.IsCancellationRequested)
             {
-                await mutex.RunTaskWhenMutexAcquired(globalCts.Token);
+                await mutex.RunTaskWhenMutexAcquired(stoppingToken);
             }
-        }
-
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
-            Task.Run(() => RunDispatcherAsync());
-            return Task.CompletedTask;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            globalCts.Cancel();
-            return Task.CompletedTask;
         }
     }
 }

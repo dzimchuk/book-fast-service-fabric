@@ -28,4 +28,8 @@
     <Parameter Name="SubscriptionName" Value="Facility" />
   </Section>
   
+  <Section Name="General">
+    <Parameter Name="ServiceName" Value="Facility"/>
+  </Section>
+  
 </Settings>
