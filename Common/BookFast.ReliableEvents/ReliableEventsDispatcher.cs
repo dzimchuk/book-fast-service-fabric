@@ -55,7 +55,11 @@ namespace BookFast.ReliableEvents
 
             timer.Dispose();
             dispatcherTrigger.Set();
-            await queueClient.CloseAsync();
+
+            if (queueClient != null)
+            {
+                await queueClient.CloseAsync(); 
+            }
         }
 
         private static async Task WaitCancellationAsync(CancellationToken cancellationToken)
@@ -71,12 +75,17 @@ namespace BookFast.ReliableEvents
 
         private QueueClient StartNotificationReceiver()
         {
-            var queueClient = new QueueClient(serviceBusConnectionOptions.NotificationQueueConnection, serviceBusConnectionOptions.NotificationQueueName, ReceiveMode.ReceiveAndDelete, RetryPolicy.Default);
-            queueClient.RegisterMessageHandler((message, cancellationToken) =>
+            QueueClient queueClient = null;
+
+            if (!string.IsNullOrWhiteSpace(serviceBusConnectionOptions.NotificationQueueConnection))
             {
-                dispatcherTrigger.Set();
-                return Task.CompletedTask;
-            }, new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 1 });
+                queueClient = new QueueClient(serviceBusConnectionOptions.NotificationQueueConnection, serviceBusConnectionOptions.NotificationQueueName, ReceiveMode.ReceiveAndDelete, RetryPolicy.Default);
+                queueClient.RegisterMessageHandler((message, cancellationToken) =>
+                {
+                    dispatcherTrigger.Set();
+                    return Task.CompletedTask;
+                }, new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 1 }); 
+            }
 
             return queueClient;
         }

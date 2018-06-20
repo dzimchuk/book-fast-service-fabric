@@ -15,7 +15,10 @@ namespace BookFast.ReliableEvents
 
         public NotificationPublisher(IOptions<ConnectionOptions> options)
         {
-            queueClient = new QueueClient(options.Value.NotificationQueueConnection, options.Value.NotificationQueueName, ReceiveMode.PeekLock, RetryPolicy.Default);
+            if (!string.IsNullOrWhiteSpace(options.Value.NotificationQueueConnection))
+            {
+                queueClient = new QueueClient(options.Value.NotificationQueueConnection, options.Value.NotificationQueueName, ReceiveMode.PeekLock, RetryPolicy.Default); 
+            }
         }
         public Task Handle(EventsAvailableNotification notification, CancellationToken cancellationToken)
         {
