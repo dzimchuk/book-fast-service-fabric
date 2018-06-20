@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="WindowsAzure.Storage" Version="9.2.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.0.2" />
   </ItemGroup>
 
 </Project>

@@ -26,6 +26,8 @@
     <Parameter Name="ConnectionString" Value="" />
     <Parameter Name="TopicName" Value="" />
     <Parameter Name="SubscriptionName" Value="Facility" />
+    <Parameter Name="NotificationQueueConnection" Value="" />
+    <Parameter Name="NotificationQueueName" Value="" />
   </Section>
   
   <Section Name="General">

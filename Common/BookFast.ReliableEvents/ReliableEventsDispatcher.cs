@@ -1,9 +1,10 @@
 using BookFast.Security;
 using BookFast.SeedWork;
-using BookFast.SeedWork.CommandStack;
 using MediatR;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Security.Claims;
 using System.Threading;
@@ -11,19 +12,27 @@ using System.Threading.Tasks;
 
 namespace BookFast.ReliableEvents
 {
-    internal class ReliableEventsDispatcher : INotificationHandler<EventsAvailableNotification>
+    internal class ReliableEventsDispatcher
     {
+        private const int PeriodicCheckIntervalInMinutes = 2;
+
         private readonly IReliableEventsDataSource dataSource;
         private readonly ILogger logger;
         private readonly IServiceProvider serviceProvider;
-                
+        private readonly ConnectionOptions serviceBusConnectionOptions;
+
+
         private readonly AutoResetEvent dispatcherTrigger = new AutoResetEvent(false);
 
-        public ReliableEventsDispatcher(IReliableEventsDataSource dataSource, ILogger<ReliableEventsDispatcher> logger, IServiceProvider serviceProvider)
+        public ReliableEventsDispatcher(IReliableEventsDataSource dataSource, 
+            ILogger<ReliableEventsDispatcher> logger, 
+            IServiceProvider serviceProvider, 
+            IOptions<ConnectionOptions> serviceBusConnectionOptions)
         {
             this.dataSource = dataSource;
             this.logger = logger;
             this.serviceProvider = serviceProvider;
+            this.serviceBusConnectionOptions = serviceBusConnectionOptions.Value;
         }
 
         public async Task RunDispatcherAsync(CancellationToken cancellationToken)
@@ -34,16 +43,19 @@ namespace BookFast.ReliableEvents
             Task.Run(() => WaitAndProcessEventsAsync(cancellationToken));
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
 
-            var interval = TimeSpan.FromMinutes(2);
+            var interval = TimeSpan.FromMinutes(PeriodicCheckIntervalInMinutes);
             var timer = new Timer(state =>
             {
                 dispatcherTrigger.Set();
             }, null, interval, interval);
 
+            var queueClient = StartNotificationReceiver();
+
             await WaitCancellationAsync(cancellationToken);
 
             timer.Dispose();
             dispatcherTrigger.Set();
+            await queueClient.CloseAsync();
         }
 
         private static async Task WaitCancellationAsync(CancellationToken cancellationToken)
@@ -57,9 +69,21 @@ namespace BookFast.ReliableEvents
             }
         }
 
-        public Task Handle(EventsAvailableNotification notification, CancellationToken cancellationToken)
+        private QueueClient StartNotificationReceiver()
         {
-            dispatcherTrigger.Set();
+            var queueClient = new QueueClient(serviceBusConnectionOptions.NotificationQueueConnection, serviceBusConnectionOptions.NotificationQueueName, ReceiveMode.ReceiveAndDelete, RetryPolicy.Default);
+            queueClient.RegisterMessageHandler((message, cancellationToken) =>
+            {
+                dispatcherTrigger.Set();
+                return Task.CompletedTask;
+            }, new MessageHandlerOptions(ExceptionReceivedHandler) { MaxConcurrentCalls = 1 });
+
+            return queueClient;
+        }
+
+        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)
+        {
+            logger.LogError($"Error receiving reliable events notification. Details: {arg.Exception}.");
             return Task.CompletedTask;
         }
 
