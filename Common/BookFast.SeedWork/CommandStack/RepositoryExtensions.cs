@@ -11,7 +11,7 @@ namespace BookFast.SeedWork.CommandStack
         {
             var isOwner = context.AcquireOwnership();
 
-            var events = entity.CollectEvents()?.ToList();
+            var events = entity.CollectEvents() ?? new List<Event>();
 
             var integrationEvents = events.OfType<IntegrationEvent>().ToList();
             if (integrationEvents.Any())
