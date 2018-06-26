@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
-using System.Collections.Generic;
 
 namespace BookFast.Facility.Data.Migrations
 {
@@ -22,12 +21,21 @@ namespace BookFast.Facility.Data.Migrations
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                 });
+
+            migrationBuilder.CreateSequence(
+                name: "eventseq",
+                schema: "fm",
+                incrementBy: 10);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Events",
+                schema: "fm");
+
+            migrationBuilder.DropSequence(
+                name: "eventseq",
                 schema: "fm");
         }
     }

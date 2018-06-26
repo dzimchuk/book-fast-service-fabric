@@ -25,7 +25,13 @@ namespace BookFast.ReliableEvents
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var storageAccount = CloudStorageAccount.Parse(configuration["Data:Azure:Storage:ConnectionString"]);
+            var connectionString = configuration["Data:Azure:Storage:ConnectionString"];
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                return;
+            }
+
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
             var settings = new BlobSettings(storageAccount, "mutex", configuration["General:ServiceName"]);
             var mutex = new BlobDistributedMutex(settings, dispatcher.RunDispatcherAsync, logger);
 

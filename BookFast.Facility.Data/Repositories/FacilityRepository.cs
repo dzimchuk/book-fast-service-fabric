@@ -1,6 +1,5 @@
 using BookFast.Facility.CommandStack.Repositories;
-using BookFast.Security;
-using BookFast.SeedWork.Modeling;
+using BookFast.ReliableEvents;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,12 +9,10 @@ namespace BookFast.Facility.Data.Repositories
     internal class FacilityRepository : IFacilityRepository
     {
         private readonly FacilityContext context;
-        private readonly ISecurityContext securityContext;
 
-        public FacilityRepository(FacilityContext context, ISecurityContext securityContext)
+        public FacilityRepository(FacilityContext context)
         {
             this.context = context;
-            this.securityContext = securityContext;
         }
 
         public async Task<int> AddAsync(Domain.Models.Facility facility)
@@ -59,9 +56,10 @@ namespace BookFast.Facility.Data.Repositories
                 : null;
         }
 
-        public Task PersistEventsAsync(IEnumerable<Event> events)
+        public Task PersistEventsAsync(IEnumerable<ReliableEvent> events)
         {
-            return context.PersistEventsAsync(events, securityContext);
+            context.Events.AddRange(events);
+            return Task.CompletedTask;
         }
 
         public Task SaveChangesAsync()

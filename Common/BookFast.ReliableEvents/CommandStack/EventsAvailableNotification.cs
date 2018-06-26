@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using System;
 
-namespace BookFast.SeedWork.CommandStack
+namespace BookFast.ReliableEvents.CommandStack
 {
     public class EventsAvailableNotification : INotification
     {

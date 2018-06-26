@@ -1,7 +1,6 @@
 using BookFast.Facility.CommandStack.Repositories;
 using BookFast.Facility.Domain.Models;
-using BookFast.Security;
-using BookFast.SeedWork.Modeling;
+using BookFast.ReliableEvents;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,12 +9,10 @@ namespace BookFast.Facility.Data.Repositories
     internal class AccommodationRepository : IAccommodationRepository
     {
         private readonly FacilityContext context;
-        private readonly ISecurityContext securityContext;
 
-        public AccommodationRepository(FacilityContext context, ISecurityContext securityContext)
+        public AccommodationRepository(FacilityContext context)
         {
             this.context = context;
-            this.securityContext = securityContext;
         }
 
         public async Task<int> AddAsync(Accommodation accommodation)
@@ -53,10 +50,11 @@ namespace BookFast.Facility.Data.Repositories
                     accommodation.Images.ToStringArray())
                 : null;
         }
-        
-        public Task PersistEventsAsync(IEnumerable<Event> events)
+
+        public Task PersistEventsAsync(IEnumerable<ReliableEvent> events)
         {
-            return context.PersistEventsAsync(events, securityContext);
+            context.Events.AddRange(events);
+            return Task.CompletedTask;
         }
 
         public Task SaveChangesAsync()

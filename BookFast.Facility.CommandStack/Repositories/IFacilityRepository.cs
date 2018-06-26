@@ -1,9 +1,9 @@
-using BookFast.SeedWork.Modeling;
+using BookFast.ReliableEvents.CommandStack;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.CommandStack.Repositories
 {
-    public interface IFacilityRepository : IRepository<Domain.Models.Facility>
+    public interface IFacilityRepository : IRepositoryWithReliableEvents<Domain.Models.Facility>
     {
         Task<Domain.Models.Facility> FindAsync(int id);
         Task<int> AddAsync(Domain.Models.Facility facility);

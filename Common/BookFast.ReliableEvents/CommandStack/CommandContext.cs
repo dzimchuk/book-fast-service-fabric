@@ -1,17 +1,20 @@
-﻿using MediatR;
+﻿using BookFast.Security;
+using MediatR;
 
-namespace BookFast.SeedWork.CommandStack
+namespace BookFast.ReliableEvents.CommandStack
 {
     public class CommandContext
     {
         private bool owned;
 
-        public CommandContext(IMediator mediator)
+        public CommandContext(IMediator mediator, ISecurityContext securityContext)
         {
             Mediator = mediator;
+            SecurityContext = securityContext;
         }
 
         public IMediator Mediator { get; }
+        public ISecurityContext SecurityContext { get; }
 
         public bool AcquireOwnership()
         {

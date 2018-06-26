@@ -1,7 +1,7 @@
 using BookFast.Facility.CommandStack.Commands;
 using BookFast.Facility.CommandStack.Repositories;
+using BookFast.ReliableEvents.CommandStack;
 using BookFast.Security;
-using BookFast.SeedWork.CommandStack;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

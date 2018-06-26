@@ -1,5 +1,6 @@
 using BookFast.Facility.Data.Models;
 using BookFast.Facility.Data.Models.Configurations;
+using BookFast.ReliableEvents;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookFast.Facility.Data
@@ -17,13 +18,13 @@ namespace BookFast.Facility.Data
 
         public DbSet<Models.Facility> Facilities { get; set; }
         public DbSet<Accommodation> Accommodations { get; set; }
-        public DbSet<Event> Events { get; set; }
+        public DbSet<ReliableEvent> Events { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new FacilityConfiguration());
             modelBuilder.ApplyConfiguration(new AccommodationConfiguration());
-            modelBuilder.ApplyConfiguration(new EventConfiguration());
+            modelBuilder.ApplyConfiguration(new ReliableEventConfiguration());
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

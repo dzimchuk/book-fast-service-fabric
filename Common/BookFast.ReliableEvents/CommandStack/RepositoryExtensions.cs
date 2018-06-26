@@ -1,13 +1,15 @@
-﻿using BookFast.SeedWork.Modeling;
+﻿using BookFast.Security;
+using BookFast.SeedWork.Modeling;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookFast.SeedWork.CommandStack
+namespace BookFast.ReliableEvents.CommandStack
 {
     public static class RepositoryExtensions
     {
-        public static async Task SaveChangesAsync<TEntity>(this IRepository<TEntity> repository, TEntity entity, CommandContext context) 
+        public static async Task SaveChangesAsync<TEntity>(this IRepositoryWithReliableEvents<TEntity> repository, TEntity entity, CommandContext context) 
             where TEntity : IAggregateRoot, IEntity
         {
             var isOwner = context.AcquireOwnership();
@@ -17,7 +19,7 @@ namespace BookFast.SeedWork.CommandStack
             var integrationEvents = events.OfType<IntegrationEvent>().ToList();
             if (integrationEvents.Any())
             {
-                await repository.PersistEventsAsync(integrationEvents);
+                await repository.PersistEventsAsync(integrationEvents.AsReliableEvents(context.SecurityContext));
                 context.NotifyWhenDone();
             }
             
@@ -35,6 +37,19 @@ namespace BookFast.SeedWork.CommandStack
                     await context.Mediator.Publish(new EventsAvailableNotification());
                 }
             }
+        }
+
+        private static IEnumerable<ReliableEvent> AsReliableEvents(this IEnumerable<Event> events, ISecurityContext securityContext)
+        {
+            return from @event in events
+                   select new ReliableEvent
+                   {
+                       EventName = @event.GetType().Name,
+                       OccurredAt = @event.OccurredAt,
+                       User = securityContext.GetCurrentUser(),
+                       Tenant = securityContext.GetCurrentTenant(),
+                       Payload = JsonConvert.SerializeObject(@event)
+                   };
         }
     }
 }

@@ -21,6 +21,7 @@ namespace BookFast.Facility.Composition
 
             services.AddCommandContext();
             services.AddReliableEventsDispatcher(configuration);
+            services.AddSingleton<IReliableEventMapper, ReliableEventMapper>();
 
             services.AddIntegrationEventPublisher(configuration);
             services.AddIntegrationEventReceiver(configuration);

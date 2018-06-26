@@ -1,10 +1,12 @@
 using BookFast.Security;
 using BookFast.SeedWork;
+using BookFast.SeedWork.Modeling;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Security.Claims;
 using System.Threading;
@@ -20,19 +22,21 @@ namespace BookFast.ReliableEvents
         private readonly ILogger logger;
         private readonly IServiceProvider serviceProvider;
         private readonly ConnectionOptions serviceBusConnectionOptions;
-
+        private readonly IReliableEventMapper eventMapper;
 
         private readonly AutoResetEvent dispatcherTrigger = new AutoResetEvent(false);
 
         public ReliableEventsDispatcher(IReliableEventsDataSource dataSource, 
             ILogger<ReliableEventsDispatcher> logger, 
             IServiceProvider serviceProvider, 
-            IOptions<ConnectionOptions> serviceBusConnectionOptions)
+            IOptions<ConnectionOptions> serviceBusConnectionOptions, 
+            IReliableEventMapper eventMapper)
         {
             this.dataSource = dataSource;
             this.logger = logger;
             this.serviceProvider = serviceProvider;
             this.serviceBusConnectionOptions = serviceBusConnectionOptions.Value;
+            this.eventMapper = eventMapper;
         }
 
         public async Task RunDispatcherAsync(CancellationToken cancellationToken)
@@ -130,6 +134,13 @@ namespace BookFast.ReliableEvents
 
         private async Task<bool> PublishEventAsync(ReliableEvent @event, CancellationToken cancellationToken)
         {
+            var actualEvent = Deserialize(@event);
+            if (actualEvent == null)
+            {
+                logger.LogWarning($"Unknown reliable event type: {@event.EventName}. The event won't be dispatched.");
+                return true;
+            }
+
             using (var scope = serviceProvider.CreateScope())
             {
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
@@ -139,7 +150,7 @@ namespace BookFast.ReliableEvents
 
                 try
                 {
-                    await mediator.Publish(@event.Event, cancellationToken);
+                    await mediator.Publish(actualEvent, cancellationToken);
                     return true;
                 }
                 catch (BusinessException ex)
@@ -153,6 +164,12 @@ namespace BookFast.ReliableEvents
                     return false; // TODO: handle poison events
                 }
             }
+        }
+
+        private Event Deserialize(ReliableEvent @event)
+        {
+            var type = eventMapper.GetEventType(@event.EventName);
+            return type != null ? (Event)JsonConvert.DeserializeObject(@event.Payload, type) : null;
         }
 
         private static void InitializeSecurityContext(ReliableEvent @event, ISecurityContext securityContext)

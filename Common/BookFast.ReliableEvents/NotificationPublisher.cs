@@ -1,4 +1,4 @@
-﻿using BookFast.SeedWork.CommandStack;
+﻿using BookFast.ReliableEvents.CommandStack;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Options;

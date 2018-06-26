@@ -1,4 +1,4 @@
-using BookFast.SeedWork.CommandStack;
+using BookFast.ReliableEvents.CommandStack;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +15,11 @@ namespace BookFast.ReliableEvents
 
             services.Configure<ConnectionOptions>(configuration.GetSection("ServiceBus"));
             services.AddSingleton<INotificationHandler<EventsAvailableNotification>, NotificationPublisher>();
+        }
+
+        public static void AddCommandContext(this IServiceCollection services)
+        {
+            services.AddScoped<CommandContext>();
         }
     }
 }
