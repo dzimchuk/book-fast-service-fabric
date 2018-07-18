@@ -46,6 +46,12 @@ Here's a short description of configuration parameters:
     <Parameter Name="ServiceBus:ConnectionString" Value="Connection string to Service Bus topic" />
     <Parameter Name="ServiceBus:TopicName" Value="bookfast" />
 
+    <Parameter Name="FacilityService:ServiceBus:NotificationQueueConnection" Value="Connection string to the notification queue" />
+    <Parameter Name="FacilityService:ServiceBus:NotificationQueueName" Value="bookfast-facility-notifications" />
+
+    <Parameter Name="BookingService:ServiceBus:NotificationQueueConnection" Value="Connection string to the notification queue" />
+    <Parameter Name="BookingService:ServiceBus:NotificationQueueName" Value="bookfast-booking-notifications" />
+
     <Parameter Name="Search:QueryKey" Value="Azure Search query key" />
     <Parameter Name="Search:AdminKey" Value="Azure Search admin key" />
     <Parameter Name="Search:ServiceName" Value="Azure Search service name" />

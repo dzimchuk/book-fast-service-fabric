@@ -24,8 +24,10 @@
     <Parameter Name="Data:Azure:Storage:ImageContainer" DefaultValue="" />
     <Parameter Name="ServiceBus:ConnectionString" DefaultValue="" />
     <Parameter Name="ServiceBus:TopicName" DefaultValue="" />
-    <Parameter Name="ServiceBus:NotificationQueueConnection" DefaultValue="" />
-    <Parameter Name="ServiceBus:NotificationQueueName" DefaultValue="" />
+    <Parameter Name="FacilityService:ServiceBus:NotificationQueueConnection" DefaultValue="" />
+    <Parameter Name="FacilityService:ServiceBus:NotificationQueueName" DefaultValue="" />
+    <Parameter Name="BookingService:ServiceBus:NotificationQueueConnection" DefaultValue="" />
+    <Parameter Name="BookingService:ServiceBus:NotificationQueueName" DefaultValue="" />
     <Parameter Name="Redis:Configuration" DefaultValue="" />
     <Parameter Name="Search:QueryKey" DefaultValue="" />
     <Parameter Name="Search:AdminKey" DefaultValue="" />
@@ -119,6 +121,12 @@
           <Section Name="Test">
             <Parameter Name="FailRandom" Value="[Booking:Test:FailRandom]" />
           </Section>
+          <Section Name="ServiceBus">
+            <Parameter Name="ConnectionString" Value="[ServiceBus:ConnectionString]" />
+            <Parameter Name="TopicName" Value="[ServiceBus:TopicName]" />
+            <Parameter Name="NotificationQueueConnection" Value="[BookingService:ServiceBus:NotificationQueueConnection]" />
+            <Parameter Name="NotificationQueueName" Value="[BookingService:ServiceBus:NotificationQueueName]" />
+          </Section>
         </Settings>
       </ConfigOverride>
     </ConfigOverrides>
@@ -211,8 +219,8 @@
           <Section Name="ServiceBus">
             <Parameter Name="ConnectionString" Value="[ServiceBus:ConnectionString]" />
             <Parameter Name="TopicName" Value="[ServiceBus:TopicName]" />
-            <Parameter Name="NotificationQueueConnection" Value="[ServiceBus:NotificationQueueConnection]" />
-            <Parameter Name="NotificationQueueName" Value="[ServiceBus:NotificationQueueName]" />
+            <Parameter Name="NotificationQueueConnection" Value="[FacilityService:ServiceBus:NotificationQueueConnection]" />
+            <Parameter Name="NotificationQueueName" Value="[FacilityService:ServiceBus:NotificationQueueName]" />
           </Section>
         </Settings>
       </ConfigOverride>

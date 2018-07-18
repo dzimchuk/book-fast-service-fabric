@@ -32,6 +32,14 @@
     <Parameter Name="FailRandom" Value="false" />
   </Section>
 
+  <Section Name="ServiceBus">
+    <Parameter Name="ConnectionString" Value="" />
+    <Parameter Name="TopicName" Value="" />
+    <Parameter Name="SubscriptionName" Value="Booking" />
+    <Parameter Name="NotificationQueueConnection" Value="" />
+    <Parameter Name="NotificationQueueName" Value="" />
+  </Section>
+
   <Section Name="General">
     <Parameter Name="ServiceName" Value="Booking"/>
   </Section>
