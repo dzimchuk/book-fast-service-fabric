@@ -14,8 +14,7 @@ namespace BookFast.Search.Indexer.Composition
         {
             services.AddMediatR(typeof(CompositionModule).Assembly);
 
-            services.AddIntegrationEventReceiver(configuration);
-            services.AddSingleton<IEventMapper, IntegrationEventMapper>();
+            services.AddIntegrationEventReceiver(configuration, new IntegrationEventMapper());
 
             services.AddSingleton<IndexerService>();
 

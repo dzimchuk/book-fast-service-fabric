@@ -20,12 +20,10 @@ namespace BookFast.Facility.Composition
             services.AddAndConfigureMvc();
 
             services.AddCommandContext();
-            services.AddReliableEventsDispatcher(configuration);
-            services.AddSingleton<IReliableEventMapper, ReliableEventMapper>();
+            services.AddReliableEventsDispatcher(configuration, new DefaultReliableEventMapper(typeof(Domain.Events.FacilityCreatedEvent).Assembly));
 
             services.AddIntegrationEventPublisher(configuration);
-            services.AddIntegrationEventReceiver(configuration);
-            services.AddSingleton<IEventMapper, IntegrationEventMapper>();
+            services.AddIntegrationEventReceiver(configuration, new IntegrationEventMapper());
 
             RegisterAuthorizationPolicies(services);
         }

@@ -15,10 +15,11 @@ namespace BookFast.ServiceBus
             services.AddScoped<INotificationHandler<IntegrationEvent>, IntegrationEventPublisher>();
         }
 
-        public static void AddIntegrationEventReceiver(this IServiceCollection services, IConfiguration configuration)
+        public static void AddIntegrationEventReceiver(this IServiceCollection services, IConfiguration configuration, IEventMapper eventMapper)
         {
             services.Configure<ConnectionOptions>(configuration.GetSection("ServiceBus"));
             services.AddSingleton<IHostedService, IntegrationEventReceiver>();
+            services.AddSingleton(eventMapper);
         }
     }
 }
