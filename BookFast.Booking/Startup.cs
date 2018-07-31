@@ -25,7 +25,7 @@ namespace BookFast.Booking
             var modules = new List<ICompositionModule>
                           {
                               new Composition.CompositionModule(),
-                              new Business.Composition.CompositionModule(),
+                              new CommandStack.Composition.CompositionModule(),
                               new Data.Composition.CompositionModule()
                           };
 

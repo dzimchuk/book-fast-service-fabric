@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookFast.Booking.Domain\BookFast.Booking.Domain.csproj" />
+    <ProjectReference Include="..\Common\BookFast.ReliableEvents\BookFast.ReliableEvents.csproj" />
+  </ItemGroup>
+
+</Project>

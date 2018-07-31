@@ -1,12 +1,9 @@
 using BookFast.SeedWork;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using BookFast.Booking.Controllers;
-using BookFast.Booking.Mappers;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Security.Claims;
-using BookFast.Booking.Models;
 using BookFast.Api.Authentication;
 
 namespace BookFast.Booking.Composition
@@ -19,8 +16,6 @@ namespace BookFast.Booking.Composition
 
             services.AddSecurityContext();
             services.AddAndConfigureMvc();
-
-            services.AddScoped<IBookingMapper, BookingMapper>();
 
             services.Configure<TestOptions>(configuration.GetSection("Test"));
         }

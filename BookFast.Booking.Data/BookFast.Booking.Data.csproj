@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookFast.Booking.Business\BookFast.Booking.Business.csproj" />
+    <ProjectReference Include="..\BookFast.Booking.CommandStack\BookFast.Booking.CommandStack.csproj" />
+    <ProjectReference Include="..\BookFast.Booking.QueryStack\BookFast.Booking.QueryStack.csproj" />
     <ProjectReference Include="..\BookFast.Facility.Client\BookFast.Facility.Client.csproj" />
   </ItemGroup>
 
