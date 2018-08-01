@@ -5,6 +5,9 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using BookFast.Api.Authentication;
+using BookFast.ReliableEvents;
+using BookFast.ServiceBus;
+using BookFast.Booking.Integration;
 
 namespace BookFast.Booking.Composition
 {
@@ -18,6 +21,12 @@ namespace BookFast.Booking.Composition
             services.AddAndConfigureMvc();
 
             services.Configure<TestOptions>(configuration.GetSection("Test"));
+
+            services.AddCommandContext();
+            services.AddReliableEventsDispatcher(configuration, new DefaultReliableEventMapper(typeof(Domain.Events.BookingCreatedEvent).Assembly));
+
+            services.AddIntegrationEventPublisher(configuration);
+            services.AddIntegrationEventReceiver(configuration, new IntegrationEventMapper());
         }
 
         private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)

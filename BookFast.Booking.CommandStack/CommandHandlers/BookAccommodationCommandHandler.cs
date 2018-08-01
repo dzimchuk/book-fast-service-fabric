@@ -2,6 +2,7 @@
 using BookFast.Booking.CommandStack.Data;
 using BookFast.Booking.Domain.Exceptions;
 using BookFast.Booking.Domain.Models;
+using BookFast.ReliableEvents.CommandStack;
 using BookFast.Security;
 using MediatR;
 using System;
@@ -15,12 +16,17 @@ namespace BookFast.Booking.CommandStack.CommandHandlers
         private readonly IBookingRepository bookingRepository;
         private readonly ISecurityContext securityContext;
         private readonly IFacilityDataSource facilityDataSource;
+        private readonly CommandContext commandContext;
 
-        public BookAccommodationCommandHandler(IBookingRepository bookingRepository, ISecurityContext securityContext, IFacilityDataSource facilityDataSource)
+        public BookAccommodationCommandHandler(IBookingRepository bookingRepository, 
+            ISecurityContext securityContext, 
+            IFacilityDataSource facilityDataSource, 
+            CommandContext commandContext)
         {
             this.bookingRepository = bookingRepository;
             this.securityContext = securityContext;
             this.facilityDataSource = facilityDataSource;
+            this.commandContext = commandContext;
         }
 
         public async Task<Guid> Handle(BookAccommodationCommand request, CancellationToken cancellationToken)
@@ -35,6 +41,8 @@ namespace BookFast.Booking.CommandStack.CommandHandlers
 
             var bookingRecord = BookingRecord.NewBooking(accommodation, facility, request.FromDate, request.ToDate, securityContext);
             await bookingRepository.AddAsync(bookingRecord);
+
+            await bookingRepository.SaveChangesAsync(bookingRecord, commandContext);
 
             return bookingRecord.Id;
         }

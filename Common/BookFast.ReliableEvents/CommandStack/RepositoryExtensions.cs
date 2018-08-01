@@ -39,11 +39,12 @@ namespace BookFast.ReliableEvents.CommandStack
             }
         }
 
-        private static IEnumerable<ReliableEvent> AsReliableEvents(this IEnumerable<Event> events, ISecurityContext securityContext)
+        private static IEnumerable<ReliableEvent> AsReliableEvents(this IEnumerable<IntegrationEvent> events, ISecurityContext securityContext)
         {
             return from @event in events
                    select new ReliableEvent
                    {
+                       Id = @event.EventId.ToString(),
                        EventName = @event.GetType().Name,
                        OccurredAt = @event.OccurredAt,
                        User = securityContext.GetCurrentUser(),

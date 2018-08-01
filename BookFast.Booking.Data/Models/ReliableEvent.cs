@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 
-namespace BookFast.ReliableEvents
+namespace BookFast.Booking.Data.Models
 {
-    public class ReliableEvent
+    internal class ReliableEvent
     {
         public string Id { get; set; }
 

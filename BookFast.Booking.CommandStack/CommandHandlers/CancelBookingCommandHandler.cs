@@ -1,6 +1,7 @@
 ﻿using BookFast.Booking.CommandStack.Commands;
 using BookFast.Booking.CommandStack.Data;
 using BookFast.Booking.Domain.Exceptions;
+using BookFast.ReliableEvents.CommandStack;
 using BookFast.Security;
 using MediatR;
 using System.Threading;
@@ -12,11 +13,13 @@ namespace BookFast.Booking.CommandStack.CommandHandlers
     {
         private readonly IBookingRepository bookingRepository;
         private readonly ISecurityContext securityContext;
+        private readonly CommandContext commandContext;
 
-        public CancelBookingCommandHandler(IBookingRepository bookingRepository, ISecurityContext securityContext)
+        public CancelBookingCommandHandler(IBookingRepository bookingRepository, ISecurityContext securityContext, CommandContext commandContext)
         {
             this.bookingRepository = bookingRepository;
             this.securityContext = securityContext;
+            this.commandContext = commandContext;
         }
 
         protected override async Task Handle(CancelBookingCommand request, CancellationToken cancellationToken)
@@ -30,6 +33,8 @@ namespace BookFast.Booking.CommandStack.CommandHandlers
             bookingRecord.Cancel(securityContext);
 
             await bookingRepository.UpdateAsync(bookingRecord);
+
+            await bookingRepository.SaveChangesAsync(bookingRecord, commandContext);
         }
     }
 }

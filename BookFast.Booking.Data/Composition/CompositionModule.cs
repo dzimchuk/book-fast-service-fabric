@@ -5,6 +5,7 @@ using BookFast.Rest;
 using Microsoft.Extensions.Caching.Distributed;
 using BookFast.Booking.CommandStack.Data;
 using BookFast.Booking.QueryStack;
+using BookFast.ReliableEvents;
 
 namespace BookFast.Booking.Data.Composition
 {
@@ -14,6 +15,8 @@ namespace BookFast.Booking.Data.Composition
         {
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IBookingQueryDataSource, BookingQueryDataSource>();
+
+            services.AddSingleton<IReliableEventsDataSource, ReliableEventsDataSource>();
 
             services.AddScoped<FacilityDataSource>();
             services.AddScoped<IFacilityDataSource, CachingFacilityDataSource>(serviceProvider => 

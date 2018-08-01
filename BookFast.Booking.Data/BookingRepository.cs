@@ -1,6 +1,7 @@
 ﻿using BookFast.Booking.CommandStack.Data;
 using BookFast.Booking.Data.Mappers;
 using BookFast.Booking.Domain.Models;
+using BookFast.ReliableEvents;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
 using System;
@@ -14,28 +15,32 @@ namespace BookFast.Booking.Data
     {
         private readonly IReliableStateManager stateManager;
 
+        private readonly List<Models.BookingRecord> addedRecords = new List<Models.BookingRecord>();
+        private readonly List<Models.BookingRecord> updatedRecords = new List<Models.BookingRecord>();
+        private readonly List<Models.ReliableEvent> addedEvents = new List<Models.ReliableEvent>();
+
         public BookingRepository(IReliableStateManager stateManager)
         {
             this.stateManager = stateManager;
         }
 
-        public async Task AddAsync(BookingRecord booking)
+        public Task AddAsync(BookingRecord booking)
         {
-            var bookingsDictionary = await stateManager.GetAllBookingsAsync();
-            var userBookingsDictionary = await stateManager.GetUserBookingsAsync();
-            using (var transaction = stateManager.CreateTransaction())
-            {
-                var dataModel = booking.ToDataModel();
-                await bookingsDictionary.AddAsync(transaction, booking.Id, dataModel);
-
-                var userBookings = await userBookingsDictionary.GetOrAddAsync(transaction, booking.User, new List<Models.BookingRecord>());
-                userBookings.Add(dataModel);
-
-                await userBookingsDictionary.SetAsync(transaction, booking.User, userBookings);
-
-                await transaction.CommitAsync();
-            }
+            addedRecords.Add(booking.ToDataModel());
+            return Task.CompletedTask;
         }
+
+        public Task UpdateAsync(BookingRecord booking)
+        {
+            updatedRecords.Add(booking.ToDataModel());
+            return Task.CompletedTask;
+        }
+        public Task PersistEventsAsync(IEnumerable<ReliableEvent> events)
+        {
+            addedEvents.AddRange(events.Select(@event => @event.ToDataModel()));
+            return Task.CompletedTask;
+        }
+
 
         public async Task<BookingRecord> FindAsync(Guid id)
         {
@@ -51,21 +56,40 @@ namespace BookFast.Booking.Data
             return result.HasValue ? result.Value.ToDomainModel() : null;
         }
 
-        public async Task UpdateAsync(BookingRecord booking)
+        public async Task SaveChangesAsync()
         {
             var bookingsDictionary = await stateManager.GetAllBookingsAsync();
             var userBookingsDictionary = await stateManager.GetUserBookingsAsync();
+            var eventsDictionary = addedEvents.Any() ? await stateManager.GetAllReliableEventsAsync() : null;
+
             using (var transaction = stateManager.CreateTransaction())
             {
-                var dataModel = booking.ToDataModel();
-                await bookingsDictionary.SetAsync(transaction, booking.Id, dataModel);
+                foreach (var addedRecord in addedRecords)
+                {
+                    await bookingsDictionary.AddAsync(transaction, addedRecord.Id, addedRecord);
 
-                var userBookings = (await userBookingsDictionary.TryGetValueAsync(transaction, booking.User, LockMode.Update)).Value;
-                var existingBooking = userBookings.First(b => b.Id == booking.Id);
-                userBookings.Remove(existingBooking);
-                userBookings.Add(dataModel);
+                    var userBookings = await userBookingsDictionary.GetOrAddAsync(transaction, addedRecord.User, new List<Models.BookingRecord>());
+                    userBookings.Add(addedRecord);
 
-                await userBookingsDictionary.SetAsync(transaction, booking.User, userBookings);
+                    await userBookingsDictionary.SetAsync(transaction, addedRecord.User, userBookings);
+                }
+
+                foreach (var updatedRecord in updatedRecords)
+                {
+                    await bookingsDictionary.SetAsync(transaction, updatedRecord.Id, updatedRecord);
+
+                    var userBookings = (await userBookingsDictionary.TryGetValueAsync(transaction, updatedRecord.User, LockMode.Update)).Value;
+                    var existingBooking = userBookings.First(b => b.Id == updatedRecord.Id);
+                    userBookings.Remove(existingBooking);
+                    userBookings.Add(updatedRecord);
+
+                    await userBookingsDictionary.SetAsync(transaction, updatedRecord.User, userBookings);
+                }
+
+                foreach (var addedEvent in addedEvents)
+                {
+                    await eventsDictionary.AddAsync(transaction, addedEvent.Id, addedEvent);
+                }
 
                 await transaction.CommitAsync();
             }
