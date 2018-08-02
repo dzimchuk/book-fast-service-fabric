@@ -1,6 +1,8 @@
 ﻿using BookFast.Security;
 using BookFast.SeedWork.Modeling;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,7 +36,14 @@ namespace BookFast.ReliableEvents.CommandStack
 
                 if (context.ShouldNotify)
                 {
-                    await context.Mediator.Publish(new EventsAvailableNotification());
+                    try
+                    {
+                        await context.Mediator.Publish(new EventsAvailableNotification());
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Logger.LogError($"Error sending event notification. Details: {ex}");
+                    }
                 }
             }
         }
