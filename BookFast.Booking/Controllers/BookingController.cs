@@ -3,28 +3,32 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BookFast.Booking.Contracts;
-using BookFast.Booking.Models.Representations;
-using BookFast.Booking.Contracts.Exceptions;
-using BookFast.Booking.Models;
 using System.Security.Cryptography;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.Extensions.Options;
+using MediatR;
+using BookFast.Booking.QueryStack;
+using BookFast.Booking.QueryStack.Representations;
+using BookFast.Booking.Domain.Exceptions;
+using BookFast.Booking.CommandStack.Commands;
+using BookFast.Security;
 
 namespace BookFast.Booking.Controllers
 {
     [Authorize]
     public class BookingController : Controller
     {
-        private readonly IBookingService service;
-        private readonly IBookingMapper mapper;
+        private readonly IMediator mediator;
+        private readonly IBookingQueryDataSource queryDataSource;
         private readonly TestOptions testOptions;
+        private readonly ISecurityContext securityContext;
 
-        public BookingController(IBookingService service, IBookingMapper mapper, IOptions<TestOptions> testOptions)
+        public BookingController(IMediator mediator, IBookingQueryDataSource queryDataSource, IOptions<TestOptions> testOptions, ISecurityContext securityContext)
         {
-            this.service = service;
-            this.mapper = mapper;
+            this.mediator = mediator;
+            this.queryDataSource = queryDataSource;
             this.testOptions = testOptions.Value;
+            this.securityContext = securityContext;
         }
 
         /// <summary>
@@ -34,12 +38,11 @@ namespace BookFast.Booking.Controllers
         [HttpGet("api/bookings")]
         [SwaggerOperation("list-bookings")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.OK, Type = typeof(IEnumerable<BookingRepresentation>))]
-        public async Task<IEnumerable<BookingRepresentation>> List()
+        public Task<IEnumerable<BookingRepresentation>> List()
         {
             FailRandom();
 
-            var bookings = await service.ListPendingAsync();
-            return mapper.MapFrom(bookings);
+            return queryDataSource.ListPendingAsync(securityContext.GetCurrentUser());
         }
 
         /// <summary>
@@ -55,12 +58,17 @@ namespace BookFast.Booking.Controllers
         {
             try
             {
-                var booking = await service.FindAsync(id);
-                return Ok(mapper.MapFrom(booking));
+                var booking = await queryDataSource.FindAsync(id);
+                if (booking == null)
+                {
+                    throw new BookingNotFoundException(id);
+                }
+
+                return Ok(booking);
             }
-            catch (BookingNotFoundException)
+            catch (BookingNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex);
             }
         }
 
@@ -72,24 +80,26 @@ namespace BookFast.Booking.Controllers
         /// <returns></returns>
         [HttpPost("api/accommodations/{accommodationId}/bookings")]
         [SwaggerOperation("create-booking")]
-        [SwaggerResponse((int)System.Net.HttpStatusCode.Created, Type = typeof(BookingRepresentation))]
+        [SwaggerResponse((int)System.Net.HttpStatusCode.Created)]
         [SwaggerResponse((int)System.Net.HttpStatusCode.BadRequest, Description = "Invalid parameters")]
         [SwaggerResponse((int)System.Net.HttpStatusCode.NotFound, Description = "Accommodation not found")]
-        public async Task<IActionResult> Create([FromRoute]int accommodationId, [FromBody]BookingData bookingData)
+        public async Task<IActionResult> Create([FromRoute]int accommodationId, [FromBody]BookAccommodationCommand bookingData)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var booking = await service.BookAsync(accommodationId, mapper.MapFrom(bookingData));
-                    return CreatedAtAction("Find", new { id = booking.Id }, mapper.MapFrom(booking));
+                    bookingData.AccommodationId = accommodationId;
+                    var bookingId = await mediator.Send(bookingData);
+
+                    return CreatedAtAction("Find", new { id = bookingId }, null);
                 }
 
                 return BadRequest();
             }
-            catch (AccommodationNotFoundException)
+            catch (AccommodationNotFoundException ex)
             {
-                return NotFound();
+                return NotFound(ex);
             }
         }
 
@@ -128,7 +138,7 @@ namespace BookFast.Booking.Controllers
         {
             try
             {
-                await service.CancelAsync(id);
+                await mediator.Send(new CancelBookingCommand { Id = id });
                 return new NoContentResult();
             }
             catch (BookingNotFoundException)

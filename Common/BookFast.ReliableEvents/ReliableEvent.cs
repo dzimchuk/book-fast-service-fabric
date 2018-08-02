@@ -4,7 +4,7 @@ namespace BookFast.ReliableEvents
 {
     public class ReliableEvent
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public string EventName { get; set; }
         public DateTimeOffset OccurredAt { get; set; }

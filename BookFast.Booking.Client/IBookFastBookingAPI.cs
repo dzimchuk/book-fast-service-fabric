@@ -94,7 +94,7 @@ namespace BookFast.Booking.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<BookingRepresentation>> CreateBookingWithHttpMessagesAsync(int accommodationId, BookingData bookingData = default(BookingData), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse> CreateBookingWithHttpMessagesAsync(int accommodationId, BookAccommodationCommand bookingData = default(BookAccommodationCommand), Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

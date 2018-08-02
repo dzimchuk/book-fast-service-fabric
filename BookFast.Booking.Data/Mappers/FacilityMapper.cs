@@ -1,38 +1,29 @@
 using System.Linq;
-using BookFast.Booking.Contracts.Models;
 using BookFast.Facility.Client.Models;
-using AutoMapper;
+using BookFast.Booking.Domain.Models;
 
 namespace BookFast.Booking.Data.Mappers
 {
-    internal class FacilityMapper : IFacilityMapper
+    internal static class FacilityMapper
     {
-        private static readonly IMapper Mapper;
-
-        static FacilityMapper()
-        {
-            var mapperConfiguration = new MapperConfiguration(configuration =>
+        public static Domain.Models.Facility ToDomainModel(this FacilityRepresentation facility) =>
+            new Domain.Models.Facility
             {
-                configuration.CreateMap<AccommodationRepresentation, Accommodation>()
-                .ConstructUsing(representation => new Accommodation
-                {
-                    Id = representation.Id,
-                    FacilityId = representation.FacilityId,
-                    Name = representation.Name,
-                    Description = representation.Description,
-                    RoomCount = representation.RoomCount,
-                    Images = representation.Images != null ? representation.Images.ToArray() : null
-                });
+                Id = facility.Id,
+                Name = facility.Name,
+                Description = facility.Description,
+                StreetAddress = facility.StreetAddress
+            };
 
-                configuration.CreateMap<FacilityRepresentation, Contracts.Models.Facility>();
-            });
-
-            mapperConfiguration.AssertConfigurationIsValid();
-            Mapper = mapperConfiguration.CreateMapper();
-        }
-
-        public Contracts.Models.Facility MapFrom(FacilityRepresentation facility) => Mapper.Map<Contracts.Models.Facility>(facility);
-
-        public Accommodation MapFrom(AccommodationRepresentation accommodation) => Mapper.Map<Accommodation>(accommodation);
+        public static Accommodation ToDomainModel(this AccommodationRepresentation accommodation) =>
+            new Accommodation
+            {
+                Id = accommodation.Id,
+                Name = accommodation.Name,
+                Description = accommodation.Description,
+                FacilityId = accommodation.FacilityId,
+                RoomCount = accommodation.RoomCount,
+                Images = accommodation.Images?.ToArray()
+            };
     }
 }

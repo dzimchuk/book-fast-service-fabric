@@ -1,5 +1,6 @@
 ﻿using BookFast.Security;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace BookFast.ReliableEvents.CommandStack
 {
@@ -7,14 +8,16 @@ namespace BookFast.ReliableEvents.CommandStack
     {
         private bool owned;
 
-        public CommandContext(IMediator mediator, ISecurityContext securityContext)
+        public CommandContext(IMediator mediator, ISecurityContext securityContext, ILogger<CommandContext> logger)
         {
             Mediator = mediator;
             SecurityContext = securityContext;
+            Logger = logger;
         }
 
         public IMediator Mediator { get; }
         public ISecurityContext SecurityContext { get; }
+        public ILogger Logger { get; }
 
         public bool AcquireOwnership()
         {

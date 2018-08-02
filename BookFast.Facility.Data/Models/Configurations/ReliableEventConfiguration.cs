@@ -1,4 +1,3 @@
-using BookFast.ReliableEvents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,14 +9,14 @@ namespace BookFast.Facility.Data.Models.Configurations
         {
             builder.ToTable("Events", "fm");
 
-            builder.HasKey(facility => facility.Id);
-            builder.Property(facility => facility.Id).UseSqlServerIdentityColumn();
+            builder.HasKey(@event => @event.Id);
+            builder.Property(@event => @event.Id).UseSqlServerIdentityColumn();
 
-            builder.Property(facility => facility.EventName).IsRequired(true).HasMaxLength(100);
-            builder.Property(facility => facility.OccurredAt).IsRequired(true);
-            builder.Property(facility => facility.User).IsRequired(true).HasMaxLength(50);
-            builder.Property(facility => facility.Tenant).IsRequired(true).HasMaxLength(50);
-            builder.Property(facility => facility.Payload).IsRequired(true);
+            builder.Property(@event => @event.EventName).IsRequired(true).HasMaxLength(100);
+            builder.Property(@event => @event.OccurredAt).IsRequired(true);
+            builder.Property(@event => @event.User).IsRequired(true).HasMaxLength(50);
+            builder.Property(@event => @event.Tenant).IsRequired(true).HasMaxLength(50);
+            builder.Property(@event => @event.Payload).IsRequired(true);
         }
     }
 }

@@ -1,21 +1,19 @@
-using BookFast.Booking.Business.Data;
-using System;
 using System.Threading.Tasks;
-using BookFast.Booking.Contracts.Models;
 using BookFast.ServiceFabric.Communication;
 using BookFast.Facility.Client;
+using BookFast.Booking.CommandStack.Data;
+using BookFast.Booking.Domain.Models;
+using BookFast.Booking.Data.Mappers;
 
 namespace BookFast.Booking.Data
 {
     internal class FacilityDataSource : IFacilityDataSource
     {
         private readonly IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory;
-        private readonly IFacilityMapper mapper;
 
-        public FacilityDataSource(IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory, IFacilityMapper mapper)
+        public FacilityDataSource(IPartitionClientFactory<CommunicationClient<IBookFastFacilityAPI>> partitionClientFactory)
         {
             this.partitionClientFactory = partitionClientFactory;
-            this.mapper = mapper;
         }
 
         public async Task<Accommodation> FindAccommodationAsync(int accommodationId)
@@ -27,11 +25,11 @@ namespace BookFast.Booking.Data
             });
 
             return result.Response.StatusCode == System.Net.HttpStatusCode.OK
-                ? mapper.MapFrom(result.Body)
+                ? result.Body.ToDomainModel()
                 : null;
         }
 
-        public async Task<Contracts.Models.Facility> FindFacilityAsync(int facilityId)
+        public async Task<Domain.Models.Facility> FindFacilityAsync(int facilityId)
         {
             var result = await partitionClientFactory.CreatePartitionClient().InvokeWithRetryAsync(async client =>
             {
@@ -40,7 +38,7 @@ namespace BookFast.Booking.Data
             });
 
             return result.Response.StatusCode == System.Net.HttpStatusCode.OK
-                ? mapper.MapFrom(result.Body)
+                ? result.Body.ToDomainModel()
                 : null;
         }
     }

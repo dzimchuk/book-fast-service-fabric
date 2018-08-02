@@ -13,26 +13,26 @@ namespace BookFast.Web.Proxy.Mappers
         {
             var mapperConfiguration = new MapperConfiguration(configuration =>
                 {
-                    configuration.CreateMap<BookingDetails, BookingData>()
-                                 .ConvertUsing(details => new BookingData
-                                                          {
-                                                              FromDate = details.FromDate.UtcDateTime,
-                                                              ToDate = details.ToDate.UtcDateTime
-                                                          });
+                    configuration.CreateMap<BookingDetails, BookAccommodationCommand>()
+                                 .ConvertUsing(details => new BookAccommodationCommand
+                                 {
+                                     FromDate = details.FromDate.UtcDateTime,
+                                     ToDate = details.ToDate.UtcDateTime
+                                 });
                     configuration.CreateMap<BookingRepresentation, Contracts.Models.Booking>()
                                  .ConvertUsing(representation => new Contracts.Models.Booking
                                  {
-                                     Id = representation.Id,
-                                     AccommodationId = representation.AccommodationId,
+                                     Id = representation.Id.Value,
+                                     AccommodationId = representation.AccommodationId.Value,
                                      AccommodationName = representation.AccommodationName,
-                                     FacilityId = representation.FacilityId,
+                                     FacilityId = representation.FacilityId.Value,
                                      FacilityName = representation.FacilityName,
                                      StreetAddress = representation.StreetAddress,
                                      User = null,
                                      Details = new BookingDetails
                                      {
-                                         FromDate = representation.FromDate,
-                                         ToDate = representation.ToDate
+                                         FromDate = representation.FromDate.Value,
+                                         ToDate = representation.ToDate.Value
                                      }
                                  });
                 });
@@ -41,9 +41,9 @@ namespace BookFast.Web.Proxy.Mappers
             Mapper = mapperConfiguration.CreateMapper();
         }
 
-        public BookingData MapFrom(BookingDetails details)
+        public BookAccommodationCommand MapFrom(BookingDetails details)
         {
-            return Mapper.Map<BookingData>(details);
+            return Mapper.Map<BookAccommodationCommand>(details);
         }
 
         public Contracts.Models.Booking MapFrom(BookingRepresentation booking)

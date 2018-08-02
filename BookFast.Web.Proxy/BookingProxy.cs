@@ -25,7 +25,6 @@ namespace BookFast.Web.Proxy
         public async Task BookAsync(string userId, int accommodationId, BookingDetails details)
         {
             var data = mapper.MapFrom(details);
-            data.AccommodationId = accommodationId;
 
             var result = await partitionClientFactory.CreatePartitionClient(new ServicePartitionKey(userId.ToPartitionKey())).InvokeWithRetryAsync(async client =>
             {

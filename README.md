@@ -1,22 +1,38 @@
-# Book Fast
+# Book Fast (Service Fabric)
 
-A Service Fabric based multitenant facility management and accommodation booking application.
+A sample demonstrating how to implement a multitenant facility management and accommodation booking application as native Azure Service Fabric reliable services.
+
+Here's the introductory blog [post](https://dzimchuk.net/microservices-primer-with-azure-service-fabric/).
 
 ## Features
 
-- Microservices architecture
+### Architecture
+- 4 bounded contexts
+- CQRS and DDD (with [reliable domain events](https://dzimchuk.net/reliable-domain-events/))
 - Stateless and stateful services
-- ASP.NET Core Web API and web frontend
-- Swagger and AutoRest
-- Per environment configuration integrated with ASP.NET Core infrastructure
-- Redis cache
-- Multitenant Azure AD organizational accounts
-- Azure AD B2C authentication for customers
-- OpenID Connect and OAuth2
-- Azure Search
+- ASP.NET Core 2.x Web API and web frontend
+
+### Service Fabric
+- [Per environment configuration](https://dzimchuk.net/configuring-asp-net-core-applications-in-service-fabric/) integrated with ASP.NET Core infrastructure
+- [ServicePartitionClient](https://dzimchuk.net/implementing-a-rest-client-for-internal-communication-in-service-fabric/) and Reverse Proxy based [service clients](https://dzimchuk.net/re-iterating-communication-options-in-service-fabric/)
 - Application Insights
-- ServicePartitionClient and Reverse Proxy based service clients
-- Circuit Breaker
+- EventFlow
+
+### Security
+- [Multitenant](https://dzimchuk.net/enabling-multitenant-support-in-you-azure-ad-protected-applications/) Azure AD organizational accounts
+- [Azure AD B2C](https://dzimchuk.net/setting-up-your-asp-net-core-2-0-apps-and-services-for-azure-ad-b2c/) authentication for customers
+- OpenID Connect and OAuth2
+
+### Azure services
+- Azure SQL databases
+- Azure Storage
+- Azure Service Bus
+- Azure Search
+
+### Misc
+- [Swagger and AutoRest](https://dzimchuk.net/generating-clients-for-your-apis-with-autorest/)
+- Redis cache
+- [Circuit Breaker](https://dzimchuk.net/be-prepared-for-downstream-failures-by-implementing-the-circuit-breaker-pattern/)
 
 ![BookFast Service Fabric](BookFastServiceFabric.png)
 
@@ -110,11 +126,23 @@ You will need to create a B2C tenant and an app. You will also need to policies:
 1. Sign in or sign up policy
 2. Profile edit policy
 
-You may also find this [post](https://dzimchuk.net/setting-up-your-aspnet-core-apps-and-services-for-azure-ad-b2c/) useful when setting you your application.
+You may also find this [post](https://dzimchuk.net/setting-up-your-asp-net-core-2-0-apps-and-services-for-azure-ad-b2c/) useful when setting you your application.
 
 ### SQL Database
 
 BookFast.Facility.Data contain EFCore migrations to set up you SQL database schema.
+
+### Service Bus
+Azure Service Bus is used as message broker for integration events.
+
+Please make sure to provision a single topic with 3 subscriptions:
+- Booking
+- Facility
+- SearchIndexer
+
+Also provision 2 notification queues:
+- bookfast-facility-notifications
+- bookfast-booking-notifications
 
 ### Azure Search
 

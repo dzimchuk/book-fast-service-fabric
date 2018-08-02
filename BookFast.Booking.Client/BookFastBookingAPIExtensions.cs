@@ -122,9 +122,9 @@ namespace BookFast.Booking.Client
             /// <param name='bookingData'>
             /// Booking details
             /// </param>
-            public static BookingRepresentation CreateBooking(this IBookFastBookingAPI operations, int accommodationId, BookingData bookingData = default(BookingData))
+            public static void CreateBooking(this IBookFastBookingAPI operations, int accommodationId, BookAccommodationCommand bookingData = default(BookAccommodationCommand))
             {
-                return operations.CreateBookingAsync(accommodationId, bookingData).GetAwaiter().GetResult();
+                operations.CreateBookingAsync(accommodationId, bookingData).GetAwaiter().GetResult();
             }
 
             /// <summary>
@@ -142,12 +142,9 @@ namespace BookFast.Booking.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<BookingRepresentation> CreateBookingAsync(this IBookFastBookingAPI operations, int accommodationId, BookingData bookingData = default(BookingData), CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task CreateBookingAsync(this IBookFastBookingAPI operations, int accommodationId, BookAccommodationCommand bookingData = default(BookAccommodationCommand), CancellationToken cancellationToken = default(CancellationToken))
             {
-                using (var _result = await operations.CreateBookingWithHttpMessagesAsync(accommodationId, bookingData, null, cancellationToken).ConfigureAwait(false))
-                {
-                    return _result.Body;
-                }
+                (await operations.CreateBookingWithHttpMessagesAsync(accommodationId, bookingData, null, cancellationToken).ConfigureAwait(false)).Dispose();
             }
 
     }

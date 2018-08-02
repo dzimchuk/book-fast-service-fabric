@@ -1,7 +1,9 @@
 using BookFast.Facility.CommandStack.Repositories;
+using BookFast.Facility.Data.Mappers;
 using BookFast.ReliableEvents;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookFast.Facility.Data.Repositories
@@ -58,7 +60,7 @@ namespace BookFast.Facility.Data.Repositories
 
         public Task PersistEventsAsync(IEnumerable<ReliableEvent> events)
         {
-            context.Events.AddRange(events);
+            context.Events.AddRange(events.Select(@event => @event.ToDataModel()));
             return Task.CompletedTask;
         }
 
