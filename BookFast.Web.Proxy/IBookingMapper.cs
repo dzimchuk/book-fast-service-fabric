@@ -6,7 +6,7 @@ namespace BookFast.Web.Proxy
 {
     public interface IBookingMapper
     {
-        BookingData MapFrom(BookingDetails details);
+        BookAccommodationCommand MapFrom(BookingDetails details);
         Contracts.Models.Booking MapFrom(BookingRepresentation booking);
         List<Contracts.Models.Booking> MapFrom(IList<BookingRepresentation> bookings);
     }
