@@ -4,6 +4,8 @@ A sample demonstrating how to implement a multitenant facility management and ac
 
 Here's the introductory blog [post](https://dzimchuk.net/microservices-primer-with-azure-service-fabric/).
 
+**Note**: An up-to-date containerized version of the sample is available [here](https://github.com/dzimchuk/book-fast-docker).
+
 ## Features
 
 ### Architecture
@@ -133,7 +135,7 @@ You may also find this [post](https://dzimchuk.net/setting-up-your-asp-net-core-
 BookFast.Facility.Data contain EFCore migrations to set up you SQL database schema.
 
 ### Service Bus
-Azure Service Bus is used as message broker for integration events.
+Azure Service Bus is used as a message broker for integration events.
 
 Please make sure to provision a single topic with 3 subscriptions:
 - Booking
