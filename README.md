@@ -4,7 +4,7 @@ A sample demonstrating how to implement a multitenant facility management and ac
 
 Here's the introductory blog [post](https://dzimchuk.net/microservices-primer-with-azure-service-fabric/).
 
-**Note**: An up-to-date containerized version of the sample is available [here](https://github.com/dzimchuk/book-fast-docker).
+> **Note**: An up-to-date containerized version of the sample is available [here](https://github.com/dzimchuk/book-fast-docker).
 
 ## Features
 
